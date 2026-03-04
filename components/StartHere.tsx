@@ -3,7 +3,6 @@ import Link from "next/link";
 export type StartHereSection = {
   label: string;
   heading: string;
-  lead: string;
   secondaryLink: { label: string; href: string };
 };
 
@@ -23,15 +22,14 @@ export function StartHere({ section, cards }: StartHereProps) {
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:px-8 sm:py-12 lg:py-14">
       <div className="rounded-2xl border border-[var(--border)] bg-transparent p-7 sm:p-9 lg:p-12">
-        <div className="flex flex-col gap-10">
-            {/* Center: kicker + section title + lead */}
-            <div className="flex flex-col items-center text-center section-header">
-              <span className="section-kicker" aria-hidden="true">
+        <div className="flex flex-col gap-4">
+            {/* Center: kicker + section title */}
+            <div className="flex flex-col items-center text-center mb-6">
+              <span className="section-kicker mb-1.5 block" aria-hidden="true">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]/70" aria-hidden="true" />
                 {section.label}
               </span>
-              <h2 id="start-heading" className="text-center">{section.heading}</h2>
-              <p className="section-lead text-muted">{section.lead}</p>
+              <h2 id="start-heading" className="text-center !mt-0 mb-0">{section.heading}</h2>
             </div>
 
             {/* Three cards in a row */}
@@ -58,7 +56,7 @@ export function StartHere({ section, cards }: StartHereProps) {
                           <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--card-rail)] opacity-70" aria-hidden="true" />
                           {card.category}
                         </p>
-                        <h3 className="mt-3 text-[var(--foreground)] min-w-0 break-words">
+                        <h3 className="mt-3 font-body text-[var(--foreground)] min-w-0 break-words">
                           {card.title}
                         </h3>
                         <p className="mt-2 flex-1 text-[16px] sm:text-[17px] leading-[1.8] text-[var(--text-body)]">

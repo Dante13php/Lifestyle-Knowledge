@@ -5,9 +5,7 @@ import { StartHere } from "@/components/StartHere";
 
 const startHereSection = {
   label: "For new readers",
-  heading: "Start here",
-  lead:
-    "Pick one path below — each is designed to get you thinking clearly and moving with less friction.",
+  heading: "Productivity insights",
   secondaryLink: { label: "Browse all guides", href: "/blog" },
 } as const;
 
@@ -231,7 +229,7 @@ export default function Home() {
                         >
                           {item.category}
                         </span>
-                        <h3 className="min-w-0 break-words">
+                        <h3 className="min-w-0 break-words font-body">
                           {isSingleWord && firstPart ? (
                             <>
                                 <span className="text-[var(--muted)]">
@@ -243,7 +241,7 @@ export default function Home() {
                             </>
                           ) : (
                             <>
-                              <span className="text-[var(--ink)]">
+                              <span className="text-[var(--muted)]">
                                 {firstPart}{" "}
                               </span>
                               <span style={{ color: accentColor }}>

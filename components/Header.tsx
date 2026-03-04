@@ -24,7 +24,7 @@ export async function Header() {
             href="/"
             className="logo-link group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] focus-visible:rounded"
           >
-            <span className="font-heading text-2xl font-normal tracking-tighter text-[var(--ink)] sm:text-3xl">
+            <span className="font-heading text-2xl font-normal tracking-tighter text-[var(--muted)] sm:text-3xl">
               Lifestyle Knowledge
             </span>
             <span className="mt-1 block text-sm font-normal tracking-wide text-[var(--muted)] sm:mt-1.5">

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@config "../tailwind.config.js";
 
 :root {
   /* Core design tokens */
@@ -6,7 +8,6 @@
   --surface: #FBF8F1; /* карти / панели */
   --surface-2: #F2EBDD; /* алтернативна повърхност */
 
-  --ink: #171613; /* основен текст / заглавия */
   --text: #171613;
   --muted: #5B564D; /* вторичен текст */
 
@@ -28,7 +29,7 @@
   --background-alt: var(--surface-2);
   --background-card: var(--surface);
 
-  --foreground: var(--ink);
+  --foreground: var(--muted);
   --text-body: var(--muted);
   --text-body-muted: var(--muted);
 
@@ -51,7 +52,7 @@
   --color-background: var(--bg);
   --color-background-alt: var(--surface-2);
   --color-background-card: var(--surface);
-  --color-foreground: var(--ink);
+  --color-foreground: var(--muted);
   --color-text-body: var(--text);
   --color-text-body-muted: var(--muted);
   --color-border: var(--border);
@@ -82,7 +83,6 @@
   --surface-rgba: rgba(25, 30, 21, 0.96);
 
   /* Text: off-white primary, muted with opacity */
-  --ink: #F3EBDD;
   --text: #E6DDCC;
   --muted: rgba(230, 221, 204, 0.7);
 
@@ -102,7 +102,7 @@
   --background: var(--bg);
   --background-alt: var(--surface-2);
   --background-card: var(--surface);
-  --foreground: var(--ink);
+  --foreground: var(--muted);
   --text-body: var(--text);
   --text-body-muted: var(--muted);
 
@@ -123,7 +123,7 @@
 }
 
 @utility text-ink {
-  color: var(--ink);
+  color: var(--muted);
 }
 
 @utility text-muted {
@@ -369,90 +369,6 @@ a:hover {
 }
 /* Links that contain .link-pill use the pill’s own hover underline */
 a:has(.link-pill):hover {
-  text-decoration: none;
-}
-
-/* ============================================
-   Article / long-form editorial typography
-   Apply to wrapper: <article className="article-prose">
-   ============================================ */
-.article-prose {
-  max-width: 65ch;
-  font-size: 1.0625rem; /* ~17px, slightly up from body */
-  line-height: 1.625;
-}
-
-.article-prose p + p {
-  margin-top: 1.75rem;
-}
-
-.article-prose h2 {
-  font-family: var(--font-heading), serif;
-  font-size: 2rem;
-  line-height: 1.25;
-  margin-top: 3rem; /* mt-12 */
-  margin-bottom: 0.75rem;
-  font-weight: 500;
-}
-
-.article-prose h2:first-child {
-  margin-top: 0;
-}
-
-.article-prose h3 {
-  font-family: var(--font-heading), serif;
-  font-size: 1.5rem;
-  line-height: 1.25;
-  margin-top: 2.5rem;
-  margin-bottom: 0.5rem;
-  font-weight: 400;
-}
-
-.article-prose h4 {
-  font-family: var(--font-heading), serif;
-  font-size: 1.25rem;
-  line-height: 1.25;
-  margin-top: 2rem;
-  margin-bottom: 0.5rem;
-  font-weight: 400;
-}
-
-.article-prose blockquote {
-  margin-top: 1.75rem;
-  margin-bottom: 1.75rem;
-  padding-left: 1rem;
-  border-left: 3px solid var(--border);
-  color: var(--muted);
-  font-style: italic;
-  font-family: var(--font-heading), serif;
-  font-size: 1.0625rem;
-  line-height: 1.625;
-}
-
-.article-prose ul,
-.article-prose ol {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-  padding-left: 1.5rem;
-}
-
-.article-prose li + li {
-  margin-top: 0.5rem;
-}
-
-.article-prose ul ul,
-.article-prose ol ol,
-.article-prose ul ol,
-.article-prose ol ul {
-  margin-top: 0.5rem;
-  margin-bottom: 0;
-}
-
-.article-prose a {
-  color: var(--accent);
-}
-
-.article-prose a:hover {
   text-decoration: none;
 }
 
