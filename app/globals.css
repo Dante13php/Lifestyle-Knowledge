@@ -1,26 +1,653 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core design tokens */
+  --bg: #F6F1E8; /* основен фон, топъл off-white */
+  --surface: #FBF8F1; /* карти / панели */
+  --surface-2: #F2EBDD; /* алтернативна повърхност */
+
+  --ink: #171613; /* основен текст / заглавия */
+  --text: #171613;
+  --muted: #5B564D; /* вторичен текст */
+
+  --border: #E3DACB;
+
+  --accent: #6F7C4A; /* muted olive */
+  --accent-2: #B46A4D; /* clay / terracotta */
+  --highlight: #E6EAD8; /* pale olive tint */
+
+  /* Text on accent surfaces (buttons, pills) */
+  --on-accent: #FBF8F1;
+
+  /* Soft, layered shadow for surfaces */
+  --shadow: 0 18px 45px rgba(23, 22, 19, 0.18), 0 4px 12px rgba(23, 22, 19, 0.06);
+  --shadow-soft: var(--shadow);
+
+  /* Legacy aliases mapped to tokens (compat) */
+  --background: var(--bg);
+  --background-alt: var(--surface-2);
+  --background-card: var(--surface);
+
+  --foreground: var(--ink);
+  --text-body: var(--muted);
+  --text-body-muted: var(--muted);
+
+  --border-subtle: rgba(23, 22, 19, 0.06);
+  --border-visible: rgba(23, 22, 19, 0.12);
+
+  --accent-hover: #5C6A3F;
+
+  --hero-gradient-start: var(--highlight);
+  --header-footer-bg: var(--surface-2);
+  --section-olive-bg: #D2D8CA;
+
+  /* Card: semi-transparent surface for glass effect */
+  --surface-rgba: rgba(251, 248, 241, 0.88);
+
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-background-alt: var(--surface-2);
+  --color-background-card: var(--surface);
+  --color-foreground: var(--ink);
+  --color-text-body: var(--text);
+  --color-text-body-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-visible: var(--border-visible);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-muted: var(--muted);
+  --color-hero-gradient-start: var(--hero-gradient-start);
+  --color-header-footer-bg: var(--header-footer-bg);
+  --color-section-olive-bg: var(--section-olive-bg);
+  --shadow-soft: var(--shadow-soft);
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Theme scope: light is :root; dark is applied via data-theme="dark" on a container.
+   All text, muted, border, surface and button styles inside switch via CSS variables. */
+
+/* Dark context: override tokens so content stays readable on dark background */
+[data-theme="dark"],
+.theme-dark {
+  color-scheme: dark;
+
+  /* Surfaces: dark “glass” layers */
+  --bg: #181D13;
+  --surface: #202618;
+  --surface-2: #252B1C;
+  --surface-rgba: rgba(25, 30, 21, 0.96);
+
+  /* Text: off-white primary, muted with opacity */
+  --ink: #F3EBDD;
+  --text: #E6DDCC;
+  --muted: rgba(230, 221, 204, 0.7);
+
+  /* Border: softer, lower-contrast light */
+  --border: rgba(239, 229, 210, 0.22);
+  --border-subtle: rgba(239, 229, 210, 0.12);
+  --border-visible: rgba(239, 229, 210, 0.28);
+
+  /* Accent: slightly desaturated for rails & details */
+  --accent: #96AA66;
+  --accent-2: #C27A58;
+  --accent-hover: #A9BC73;
+  --highlight: rgba(230, 234, 216, 0.45);
+  --on-accent: #151911;
+
+  /* Legacy aliases */
+  --background: var(--bg);
+  --background-alt: var(--surface-2);
+  --background-card: var(--surface);
+  --foreground: var(--ink);
+  --text-body: var(--text);
+  --text-body-muted: var(--muted);
+
+  background-color: var(--bg);
+  color: var(--text-body);
+}
+
+@utility bg-app {
+  background-color: var(--bg);
+}
+
+@utility bg-surface {
+  background-color: var(--surface);
+}
+
+@utility bg-surface-2 {
+  background-color: var(--surface-2);
+}
+
+@utility text-ink {
+  color: var(--ink);
+}
+
+@utility text-muted {
+  color: var(--muted);
+}
+
+@utility border-subtle {
+  border-color: var(--border);
+}
+
+@utility shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+/* ============================================
+   Shared Card style: editorial, calm, accent rail
+   Use .card + .card-rail-accent | .card-rail-accent-2 | .card-rail-highlight
+   ============================================ */
+.card {
+  --card-rail: var(--accent);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 1rem; /* rounded-2xl */
+  border: 1px solid var(--border);
+  background: rgba(251, 248, 241, 0.8); /* very light surface, no strong color block */
+  box-shadow: 0 8px 24px rgba(23, 22, 19, 0.06);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+@supports (backdrop-filter: blur(10px)) {
+  .card {
+    backdrop-filter: blur(10px);
   }
 }
+.card:hover {
+  border-color: var(--border-visible);
+  box-shadow: 0 10px 32px rgba(23, 22, 19, 0.08);
+  transform: translateY(-1px);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 1rem 0 0 1rem;
+  background: var(--card-rail);
+  pointer-events: none;
+}
+.card-rail-accent {
+  --card-rail: var(--accent);
+}
+.card-rail-accent-2 {
+  --card-rail: var(--accent-2);
+}
+/* Tools card: darker rail so it’s visible on light background */
+.card-rail-highlight {
+  --card-rail: #9A8E6F;
+}
 
+/* Dark zone: cards should feel muted/editorial, not neon */
+[data-theme="dark"] .card,
+.theme-dark .card {
+  border-color: var(--border-subtle);
+  background: rgba(25, 30, 21, 0.9);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.32);
+}
+
+[data-theme="dark"] .card-rail-accent,
+.theme-dark .card-rail-accent {
+  --card-rail: rgba(150, 170, 102, 0.75);
+}
+
+[data-theme="dark"] .card-rail-accent-2,
+.theme-dark .card-rail-accent-2 {
+  --card-rail: rgba(194, 122, 88, 0.75);
+}
+
+[data-theme="dark"] .card-rail-highlight,
+.theme-dark .card-rail-highlight {
+  --card-rail: rgba(180, 170, 130, 0.75);
+}
+
+/* Typography utilities: use when you need to force body or heading font */
+.font-body {
+  font-family: var(--font-body), sans-serif;
+}
+.font-heading {
+  font-family: var(--font-heading), serif;
+}
+
+html {
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Base: Inter everywhere by default */
 body {
-  background: var(--background);
+  font-family: var(--font-body), sans-serif;
+  background-color: var(--background);
+  color: var(--text-body);
+  font-size: 18px;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================
+   Global heading scale (Lora) — do not override
+   with random text-* / leading-* on h1/h2/h3.
+   ============================================ */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading), serif;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: common-ligatures;
+}
+
+/* H1: page title (default). Use .display-hero for hero only. */
+h1 {
+  font-weight: 600;
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  max-width: 18ch;
+  margin-bottom: 0.35em;
+}
+
+/* Hero headline: single focal point — apply only to hero H1 */
+.display-hero {
+  font-family: var(--font-heading), serif !important;
+  font-weight: 600 !important;
+  font-size: clamp(56px, 6vw, 80px) !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.03em !important;
+  max-width: 18ch;
+  margin-bottom: 0.35em;
+}
+
+/* H2: section titles — clear top spacing, no decorative line */
+h2 {
+  font-weight: 600;
+  font-size: clamp(34px, 3.6vw, 48px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  max-width: 26ch;
+  margin-top: 2.2em;
+  margin-bottom: 0.35em;
+}
+h2:first-child {
+  margin-top: 0;
+}
+
+/* H3: card/article titles only — not for subheads/leads */
+h3 {
+  font-family: var(--font-heading), serif;
+  font-weight: 600;
+  font-size: clamp(22px, 1.5vw, 24px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+h4 {
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 600;
+  margin-bottom: 0.4em;
+}
+
+/* Lead paragraph under hero: body font, constrained width, spacing */
+.lead-hero {
+  font-family: var(--font-body), sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--text-body);
+  max-width: 42ch;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1.25em;
+  margin-bottom: 0;
+}
+
+/* Lead: subtitle line (Inter, premium, not a heading) */
+.lead {
+  font-family: var(--font-body), sans-serif;
+  font-size: clamp(18px, 1.25rem, 22px);
+  line-height: 1.55;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0;
+  max-width: 48ch;
+}
+.section-header .lead {
+  margin-top: 0.35em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Lead bubble: rounded, glassmorphism, greenish tint */
+.lead-bubble {
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(218, 214, 200, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 6px 20px rgba(23, 22, 19, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Paragraph rhythm */
+p {
+  margin-bottom: 1.2em;
+}
+p:last-child {
+  margin-bottom: 0;
+}
+p + p {
+  margin-top: 0;
+}
+
+/* Long-form content: comfortable reading width */
+.max-ch {
+  max-width: 65ch;
+}
+
+/* Uppercase kickers: slightly reduced letter-spacing for editorial feel */
+.kicker {
+  letter-spacing: 0.05em;
+}
+
+/* Links: readable, no underline on hover */
+a {
+  transition: color 0.2s ease;
+}
+a:hover {
+  text-decoration: none;
+}
+/* Links that contain .link-pill use the pill’s own hover underline */
+a:has(.link-pill):hover {
+  text-decoration: none;
+}
+
+/* ============================================
+   Article / long-form editorial typography
+   Apply to wrapper: <article className="article-prose">
+   ============================================ */
+.article-prose {
+  max-width: 65ch;
+  font-size: 1.0625rem; /* ~17px, slightly up from body */
+  line-height: 1.625;
+}
+
+.article-prose p + p {
+  margin-top: 1.75rem;
+}
+
+.article-prose h2 {
+  font-family: var(--font-heading), serif;
+  font-size: 2rem;
+  line-height: 1.25;
+  margin-top: 3rem; /* mt-12 */
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.article-prose h2:first-child {
+  margin-top: 0;
+}
+
+.article-prose h3 {
+  font-family: var(--font-heading), serif;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin-top: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+.article-prose h4 {
+  font-family: var(--font-heading), serif;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+.article-prose blockquote {
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--border);
+  color: var(--muted);
+  font-style: italic;
+  font-family: var(--font-heading), serif;
+  font-size: 1.0625rem;
+  line-height: 1.625;
+}
+
+.article-prose ul,
+.article-prose ol {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.article-prose li + li {
+  margin-top: 0.5rem;
+}
+
+.article-prose ul ul,
+.article-prose ol ol,
+.article-prose ul ol,
+.article-prose ol ul {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+.article-prose a {
+  color: var(--accent);
+}
+
+.article-prose a:hover {
+  text-decoration: none;
+}
+
+/* Inline button-link for “Read →” and similar */
+/* Inline link-button: "Read →", arrow shifts on hover */
+.link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: text-decoration-color 0.2s ease;
+}
+.link-pill:hover {
+  text-decoration: none;
+}
+.link-pill .link-pill-arrow {
+  transition: transform 0.2s ease;
+}
+.group:hover .link-pill-arrow {
+  transform: translateX(4px);
+}
+
+/* Logo link: editorial look with subtle underline on hover (scaleX) */
+.logo-link {
+  position: relative;
+}
+.logo-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.4;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.28s ease;
+}
+.logo-link:hover {
+  text-decoration: none;
+}
+.logo-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Global backdrop: single radial-ink wash on warm off-white, shared by header/content/footer */
+.app-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--bg);
+  background-image:
+    /* Muted olive lift, very soft, top-left */
+    radial-gradient(
+      ellipse 180% 140% at 6% -10%,
+      rgba(111, 124, 74, 0.045) 0%,
+      rgba(111, 124, 74, 0.022) 32%,
+      transparent 70%
+    ),
+    /* Neutral warm depth through center */
+    radial-gradient(
+      ellipse 220% 180% at 50% 40%,
+      rgba(188, 167, 137, 0.035) 0%,
+      rgba(188, 167, 137, 0.02) 35%,
+      transparent 78%
+    ),
+    /* Clay accent, grounded bottom-right */
+    radial-gradient(
+      ellipse 210% 170% at 110% 110%,
+      rgba(180, 106, 77, 0.04) 0%,
+      rgba(180, 106, 77, 0.018) 30%,
+      transparent 75%
+    );
+  background-repeat: no-repeat;
+}
+
+.app-shell {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* Section kicker: small label above H2 (not a heading) */
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  background: var(--surface-2);
+  font-family: var(--font-body), sans-serif;
+}
+
+*:focus {
+  outline: none;
+}
+
+::selection {
+  background: rgba(94, 107, 82, 0.2);
+}
+
+[id],
+[id]:target {
+  scroll-margin-top: 1rem;
+}
+
+a,
+button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(94, 107, 82, 0.12);
+}
+
+/* Nav: Inter (body), weight 500, tighter leading */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  border-radius: 9999px;
+  border-bottom: 2px solid transparent;
+  color: var(--foreground);
+  font-family: var(--font-body), sans-serif;
+  transition: color 0.2s ease, border-bottom-color 0.2s ease, background-color 0.2s ease;
+}
+.nav-link:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  text-decoration: none;
+}
+.nav-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--accent);
+}
+.nav-link--active {
+  background-color: var(--highlight);
+  color: var(--accent);
+}
+.nav-link--active:hover {
+  border-bottom-color: var(--accent);
+}
+.nav-link--muted {
+  color: var(--muted);
+}
+.nav-link--muted:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Section header block: kicker + H2 + optional lead */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+@media (min-width: 640px) {
+  .section-header {
+    margin-bottom: 3.5rem;
+  }
+}
+.section-header h2 {
+  margin-top: 0;
+}
+.section-header .section-kicker {
+  margin-bottom: 0.75rem;
+}
+.section-header .lead-hero,
+.section-header .section-lead {
+  margin-top: 0.35em;
+  margin-bottom: 0;
+  font-size: 1.125rem;
+  max-width: 48ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
