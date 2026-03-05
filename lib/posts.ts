@@ -15,6 +15,8 @@ export type PostFrontmatter = {
   draft?: boolean;
   /** Manual related post slugs (used when by: "manual"). */
   related?: string[];
+  /** Key takeaways list (shown in ArticleLayout when present). */
+  takeaways?: string[];
 };
 
 export type Post = PostFrontmatter & {
@@ -66,6 +68,13 @@ function validateFrontmatter(data: Record<string, unknown>): data is PostFrontma
     )
       return false;
   }
+  if (data.takeaways !== undefined && data.takeaways !== null) {
+    if (
+      !Array.isArray(data.takeaways) ||
+      data.takeaways.some((t) => typeof t !== "string")
+    )
+      return false;
+  }
   return true;
 }
 
@@ -105,6 +114,7 @@ export function getPostBySlug(slug: string): Post | null {
     tags: fm.tags,
     category: fm.category,
     ...(fm.draft !== undefined && { draft: fm.draft }),
+    ...(fm.takeaways && { takeaways: fm.takeaways }),
   };
 }
 
@@ -140,6 +150,7 @@ export function getPostDetailsBySlug(slug: string): {
     tags: fm.tags,
     category: fm.category,
     ...(fm.draft !== undefined && { draft: fm.draft }),
+    ...(fm.takeaways && { takeaways: fm.takeaways }),
   };
 
   const toc: TocEntry[] = [];
