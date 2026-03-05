@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Post } from "@/lib/posts";
+import type { Post, SeriesNav } from "@/lib/posts";
 
 export type TocEntry = {
   id: string;
@@ -16,7 +16,9 @@ type ArticleLayoutProps = {
   post: ArticleLayoutPost;
   children: React.ReactNode;
   toc: TocEntry[];
-  /** Related posts for "More articles" (manual or by tags). */
+  /** When post is part of a series. */
+  seriesNav?: SeriesNav;
+  /** Related posts or other posts in series for "More articles". */
   relatedPosts?: Post[];
 };
 
@@ -28,9 +30,10 @@ function formatDate(iso: string) {
   });
 }
 
-export function ArticleLayout({ post, children, toc, relatedPosts }: ArticleLayoutProps) {
+export function ArticleLayout({ post, children, toc, seriesNav, relatedPosts }: ArticleLayoutProps) {
   const hasToc = toc.length > 0;
   const hasRelated = relatedPosts && relatedPosts.length > 0;
+  const hasSeries = !!seriesNav;
 
   return (
     <article className="mx-auto max-w-6xl px-6 py-12 sm:py-16">
@@ -90,6 +93,23 @@ export function ArticleLayout({ post, children, toc, relatedPosts }: ArticleLayo
             </span>
           )}
         </div>
+
+        {hasSeries && (
+          <div className="mt-6 rounded-lg border border-[var(--border)] bg-[var(--surface-1)] px-4 py-3 text-sm">
+            <p className="font-medium text-[var(--foreground)]">
+              Part of the Productivity System
+            </p>
+            <p className="mt-1 text-[var(--muted)]">
+              Part {seriesNav.index} of {seriesNav.total}
+            </p>
+            <Link
+              href={`/blog/series/${seriesNav.seriesSlug}`}
+              className="mt-2 inline-block text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
+            >
+              Series hub
+            </Link>
+          </div>
+        )}
       </header>
 
       {/* Main grid: content (left) | sticky TOC (right). Mobile: TOC above content, collapsed */}
@@ -136,6 +156,34 @@ export function ArticleLayout({ post, children, toc, relatedPosts }: ArticleLayo
 
           {/* End block */}
           <footer className="mt-14 border-t border-[var(--border)] pt-10">
+            {hasSeries && seriesNav && (seriesNav.prevPost || seriesNav.nextPost) && (
+              <nav
+                className="mb-10 flex flex-wrap items-center justify-between gap-4"
+                aria-label="Series navigation"
+              >
+                {seriesNav.prevPost ? (
+                  <Link
+                    href={`/blog/${seriesNav.prevPost.slug}`}
+                    className="text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
+                  >
+                    ← Previous in series
+                  </Link>
+                ) : (
+                  <span />
+                )}
+                {seriesNav.nextPost ? (
+                  <Link
+                    href={`/blog/${seriesNav.nextPost.slug}`}
+                    className="text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
+                  >
+                    Next in series →
+                  </Link>
+                ) : (
+                  <span />
+                )}
+              </nav>
+            )}
+
             {post.takeaways && post.takeaways.length > 0 && (
               <section className="mb-10" aria-label="Key takeaways">
                 <h2 className="font-heading text-lg text-[var(--foreground)]">

@@ -4,6 +4,13 @@ import matter from "gray-matter";
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts");
 
+/** Series info when post is part of a series. */
+export type PostSeries = {
+  slug: string;
+  title: string;
+  order: number;
+};
+
 /** Strict frontmatter contract for all posts. */
 export type PostFrontmatter = {
   title: string;
@@ -17,6 +24,8 @@ export type PostFrontmatter = {
   related?: string[];
   /** Key takeaways list (shown in ArticleLayout when present). */
   takeaways?: string[];
+  /** When present, post is part of a series. */
+  series?: PostSeries;
 };
 
 export type Post = PostFrontmatter & {
@@ -75,6 +84,13 @@ function validateFrontmatter(data: Record<string, unknown>): data is PostFrontma
     )
       return false;
   }
+  if (data.series !== undefined && data.series !== null) {
+    const s = data.series as Record<string, unknown>;
+    if (typeof s !== "object" || s === null) return false;
+    if (typeof s.slug !== "string" || s.slug.trim() === "") return false;
+    if (typeof s.title !== "string" || s.title.trim() === "") return false;
+    if (typeof s.order !== "number" || !Number.isFinite(s.order)) return false;
+  }
   return true;
 }
 
@@ -115,6 +131,7 @@ export function getPostBySlug(slug: string): Post | null {
     category: fm.category,
     ...(fm.draft !== undefined && { draft: fm.draft }),
     ...(fm.takeaways && { takeaways: fm.takeaways }),
+    ...(fm.series && { series: fm.series }),
   };
 }
 
@@ -151,6 +168,7 @@ export function getPostDetailsBySlug(slug: string): {
     category: fm.category,
     ...(fm.draft !== undefined && { draft: fm.draft }),
     ...(fm.takeaways && { takeaways: fm.takeaways }),
+    ...(fm.series && { series: fm.series }),
   };
 
   const toc: TocEntry[] = [];
@@ -213,6 +231,54 @@ export function getRelatedPosts(
   }));
   withScore.sort((a, b) => b.score - a.score);
   return withScore.slice(0, TOP_RELATED).map((x) => x.post);
+}
+
+/** Minimal post info for series prev/next links. */
+export type SeriesPostRef = { slug: string; title: string };
+
+export type SeriesNav = {
+  prevPost: SeriesPostRef | null;
+  nextPost: SeriesPostRef | null;
+  seriesTitle: string;
+  seriesSlug: string;
+  index: number; // 1-based
+  total: number;
+};
+
+/**
+ * All posts in a series (same series.slug), sorted by series.order ASC.
+ * Excludes drafts.
+ */
+export function getSeriesPosts(seriesSlug: string): Post[] {
+  return getAllPosts()
+    .filter((p) => p.series?.slug === seriesSlug)
+    .sort((a, b) => (a.series!.order - b.series!.order));
+}
+
+/**
+ * Navigation within the current post's series.
+ * Returns prev/next refs, series title/slug, and 1-based index/total.
+ */
+export function getSeriesNav(slug: string): SeriesNav | null {
+  const post = getPostBySlug(slug);
+  if (!post?.series) return null;
+  const posts = getSeriesPosts(post.series.slug);
+  const idx = posts.findIndex((p) => p.slug === slug);
+  if (idx < 0) return null;
+  return {
+    prevPost:
+      idx > 0
+        ? { slug: posts[idx - 1].slug, title: posts[idx - 1].title }
+        : null,
+    nextPost:
+      idx < posts.length - 1
+        ? { slug: posts[idx + 1].slug, title: posts[idx + 1].title }
+        : null,
+    seriesTitle: post.series.title,
+    seriesSlug: post.series.slug,
+    index: idx + 1,
+    total: posts.length,
+  };
 }
 
 /** For Next.js generateStaticParams(): only published posts. */

@@ -3,6 +3,8 @@ import {
   generateStaticParams as getStaticParams,
   getPostDetailsBySlug,
   getRelatedPosts,
+  getSeriesNav,
+  getSeriesPosts,
 } from "@/lib/posts";
 import { notFound } from "next/navigation";
 import { ArticleLayout } from "@/components/blog/ArticleLayout";
@@ -41,16 +43,24 @@ export default async function BlogPostPage({ params }: Props) {
   if (!details) notFound();
 
   const { post, toc, readingTime } = details;
+  const seriesNav = post.series ? getSeriesNav(slug) : null;
   const manualRelated = getRelatedPosts(slug, { by: "manual" });
-  const relatedPosts =
+  const relatedByTags =
     manualRelated.length > 0 ? manualRelated : getRelatedPosts(slug, { by: "tags" });
+  const moreArticles =
+    post.series
+      ? getSeriesPosts(post.series.slug)
+          .filter((p) => p.slug !== slug)
+          .slice(0, 3)
+      : relatedByTags;
   const MdxContent = (await import(`@/content/posts/${slug}.mdx`)).default;
 
   return (
     <ArticleLayout
       post={{ ...post, readingTime }}
       toc={toc}
-      relatedPosts={relatedPosts.length > 0 ? relatedPosts : undefined}
+      seriesNav={seriesNav ?? undefined}
+      relatedPosts={moreArticles.length > 0 ? moreArticles : undefined}
     >
       <MdxContent />
     </ArticleLayout>
