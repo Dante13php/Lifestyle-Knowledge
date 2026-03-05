@@ -13,10 +13,19 @@ export type PostFrontmatter = {
   tags: string[];
   category: string;
   draft?: boolean;
+  /** Manual related post slugs (used when by: "manual"). */
+  related?: string[];
 };
 
 export type Post = PostFrontmatter & {
   slug: string;
+};
+
+/** TOC entry from ## or ### in markdown; id matches MDXComponents headingId. */
+export type TocEntry = {
+  level: 2 | 3;
+  text: string;
+  id: string;
 };
 
 const REQUIRED_KEYS: (keyof PostFrontmatter)[] = [
@@ -49,6 +58,13 @@ function validateFrontmatter(data: Record<string, unknown>): data is PostFrontma
   }
   if (data.draft !== undefined && data.draft !== null) {
     if (typeof data.draft !== "boolean") return false;
+  }
+  if (data.related !== undefined && data.related !== null) {
+    if (
+      !Array.isArray(data.related) ||
+      data.related.some((s) => typeof s !== "string")
+    )
+      return false;
   }
   return true;
 }
@@ -92,12 +108,100 @@ export function getPostBySlug(slug: string): Post | null {
   };
 }
 
+/** Same slug logic as MDXComponents.tsx (lowercase, non-alnum → dash, trim). */
+function headingIdFromText(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+const H2_H3_REGEX = /^(#{2,3})\s+(.+)$/gm;
+const WPM = 215;
+
+/** Build-time: post + TOC (h2/h3 only) + reading time. No heavy deps. */
+export function getPostDetailsBySlug(slug: string): {
+  post: Post;
+  toc: TocEntry[];
+  readingTime: string;
+} | null {
+  const filePath = path.join(POSTS_DIR, `${slug}.mdx`);
+  if (!fs.existsSync(filePath)) return null;
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const { data, content: body } = matter(raw);
+  if (!validateFrontmatter(data as Record<string, unknown>)) return null;
+  const fm = data as PostFrontmatter;
+  const post: Post = {
+    slug,
+    title: fm.title,
+    description: fm.description,
+    date: fm.date,
+    ...(fm.updated && { updated: fm.updated }),
+    tags: fm.tags,
+    category: fm.category,
+    ...(fm.draft !== undefined && { draft: fm.draft }),
+  };
+
+  const toc: TocEntry[] = [];
+  let match: RegExpExecArray | null;
+  H2_H3_REGEX.lastIndex = 0;
+  while ((match = H2_H3_REGEX.exec(body)) !== null) {
+    const level = match[1].length as 2 | 3;
+    const text = match[2].trim();
+    toc.push({ level, text, id: headingIdFromText(text) });
+  }
+
+  const wordCount = body.split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.round(wordCount / WPM));
+  const readingTime = `${minutes} min`;
+
+  return { post, toc, readingTime };
+}
+
 /** All posts for /blog listing; excludes drafts, sorted by date descending. */
 export function getAllPosts(): Post[] {
   return getAllSlugs()
     .map((slug) => getPostBySlug(slug))
     .filter((p): p is Post => p !== null)
     .sort((a, b) => (b.date < a.date ? -1 : 1));
+}
+
+const TOP_RELATED = 3;
+
+/**
+ * Related posts: by "manual" uses frontmatter related: [slug1, slug2]; by "tags"
+ * finds posts with overlapping tags, sorted by shared tag count, top 3.
+ */
+export function getRelatedPosts(
+  slug: string,
+  options: { by: "tags" | "manual" }
+): Post[] {
+  if (options.by === "manual") {
+    const filePath = path.join(POSTS_DIR, `${slug}.mdx`);
+    if (!fs.existsSync(filePath)) return [];
+    const raw = fs.readFileSync(filePath, "utf-8");
+    const { data } = matter(raw);
+    const related = (data as Record<string, unknown>).related;
+    if (!Array.isArray(related) || related.some((s) => typeof s !== "string"))
+      return [];
+    const posts: Post[] = [];
+    for (const s of related) {
+      const p = getPostBySlug(s);
+      if (p && !p.draft) posts.push(p);
+    }
+    return posts.slice(0, TOP_RELATED);
+  }
+
+  const current = getPostBySlug(slug);
+  if (!current) return [];
+  const others = getAllPosts().filter((p) => p.slug !== slug);
+  const tagSet = new Set(current.tags);
+  const withScore = others.map((p) => ({
+    post: p,
+    score: p.tags.filter((t) => tagSet.has(t)).length,
+  }));
+  withScore.sort((a, b) => b.score - a.score);
+  return withScore.slice(0, TOP_RELATED).map((x) => x.post);
 }
 
 /** For Next.js generateStaticParams(): only published posts. */

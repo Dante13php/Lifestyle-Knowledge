@@ -9,12 +9,15 @@ export type TocEntry = {
 
 export type ArticleLayoutPost = Post & {
   readingTime?: string;
+  takeaways?: string[];
 };
 
 type ArticleLayoutProps = {
   post: ArticleLayoutPost;
   children: React.ReactNode;
   toc: TocEntry[];
+  /** Related posts for "More articles" (manual or by tags). */
+  relatedPosts?: Post[];
 };
 
 function formatDate(iso: string) {
@@ -25,8 +28,9 @@ function formatDate(iso: string) {
   });
 }
 
-export function ArticleLayout({ post, children, toc }: ArticleLayoutProps) {
+export function ArticleLayout({ post, children, toc, relatedPosts }: ArticleLayoutProps) {
   const hasToc = toc.length > 0;
+  const hasRelated = relatedPosts && relatedPosts.length > 0;
 
   return (
     <article className="mx-auto max-w-6xl px-6 py-12 sm:py-16">
@@ -132,25 +136,38 @@ export function ArticleLayout({ post, children, toc }: ArticleLayoutProps) {
 
           {/* End block */}
           <footer className="mt-14 border-t border-[var(--border)] pt-10">
-            {/* Key Takeaways placeholder */}
-            <section className="mb-10" aria-label="Key takeaways">
-              <h2 className="font-heading text-lg text-[var(--foreground)]">
-                Key Takeaways
-              </h2>
-              <p className="mt-2 text-sm text-[var(--muted)]">
-                Placeholder — to be filled from MDX later.
-              </p>
-            </section>
+            {post.takeaways && post.takeaways.length > 0 && (
+              <section className="mb-10" aria-label="Key takeaways">
+                <h2 className="font-heading text-lg text-[var(--foreground)]">
+                  Key Takeaways
+                </h2>
+                <ul className="mt-3 list-disc space-y-2 pl-6 text-[var(--text-body)]">
+                  {post.takeaways.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
-            {/* Next / Previous placeholder */}
-            <section aria-label="Article navigation">
-              <h2 className="font-heading text-lg text-[var(--foreground)]">
-                More articles
-              </h2>
-              <p className="mt-2 text-sm text-[var(--muted)]">
-                Next / Previous links — to be wired when more posts exist.
-              </p>
-            </section>
+            {hasRelated && (
+              <section aria-label="Related articles">
+                <h2 className="font-heading text-lg text-[var(--foreground)]">
+                  More articles
+                </h2>
+                <ul className="mt-3 space-y-2 text-[var(--text-body)]">
+                  {relatedPosts!.map((p) => (
+                    <li key={p.slug}>
+                      <Link
+                        href={`/blog/${p.slug}`}
+                        className="text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
+                      >
+                        {p.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
           </footer>
         </div>
 
