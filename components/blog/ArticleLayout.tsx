@@ -1,8 +1,10 @@
 import Link from "next/link";
 import type { Post, SeriesNav } from "@/lib/posts";
 import { SeriesNav as SeriesNavBlock } from "@/components/blog/SeriesNav";
+import { SeriesProgress } from "@/components/blog/SeriesProgress";
 import { ContinueLearning } from "@/components/blog/ContinueLearning";
 import { ReadingProgressBar } from "@/components/blog/ProgressBar";
+import { TocSidebar } from "@/components/blog/TocSidebar";
 
 export type TocEntry = {
   id: string;
@@ -63,15 +65,18 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
         </ol>
       </nav>
 
-      {/* ArticleHeader: H1, intro, meta */}
-      <header className="mb-10">
-        <h1 className="font-heading text-3xl font-semibold tracking-tight text-[var(--foreground)] sm:text-4xl">
+      {/* Article hero: category, H1, subtitle, meta, series */}
+      <header className="mb-12 sm:mb-14">
+        <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+          {post.category}
+        </p>
+        <h1 className="font-heading text-3xl font-semibold tracking-tight text-[var(--foreground)] sm:text-4xl md:text-[2.5rem] md:leading-[1.2]">
           {post.title}
         </h1>
-        <p className="mt-4 text-lg text-[var(--text-body)]">
+        <p className="mt-5 max-w-[65ch] text-lg leading-relaxed text-[var(--text-body)]">
           {post.description}
         </p>
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[var(--muted)]">
+        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[var(--muted)]">
           <time dateTime={post.date}>{formatDate(post.date)}</time>
           {post.updated && (
             <span>Updated {formatDate(post.updated)}</span>
@@ -79,9 +84,6 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
           {post.readingTime && (
             <span>{post.readingTime} read</span>
           )}
-          <span className="rounded bg-[var(--border)] px-2 py-0.5 font-medium text-[var(--foreground)]">
-            {post.category}
-          </span>
           {post.tags.length > 0 && (
             <span className="flex flex-wrap gap-1.5">
               {post.tags.map((tag) => (
@@ -95,6 +97,11 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
             </span>
           )}
         </div>
+        {hasSeries && (
+          <p className="mt-3 inline-flex items-center rounded border border-[var(--border)] bg-[var(--surface-2)]/60 px-2.5 py-1 text-xs font-medium text-[var(--muted)]">
+            {seriesNav?.seriesTitle ?? "Series"} · Part {seriesNav?.index ?? 1} of {seriesNav?.total ?? 1}
+          </p>
+        )}
 
         {hasSeries && (
           <SeriesNavBlock
@@ -142,17 +149,17 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
             </details>
           )}
 
-          {/* Content: reading width, vertical rhythm, clear H2/H3 hierarchy */}
+          {/* Content: 65–70ch reading width, vertical rhythm, editorial hierarchy */}
           <div
             className={[
-              "article-content max-w-[70ch] font-body text-[var(--text-body)]",
+              "article-content max-w-[68ch] font-body text-[var(--text-body)]",
               "prose prose-neutral max-w-none",
-              "prose-p:mb-6 prose-p:leading-[1.625]",
-              "prose-h2:mb-4 prose-h2:mt-12 prose-h2:font-heading prose-h2:text-2xl prose-h2:font-semibold prose-h2:tracking-tight prose-h2:text-[var(--foreground)]",
-              "prose-h3:mb-3 prose-h3:mt-6 prose-h3:font-heading prose-h3:text-lg prose-h3:font-medium prose-h3:tracking-tight prose-h3:text-[var(--foreground)]",
-              "prose-h4:mb-2 prose-h4:mt-6 prose-h4:text-base prose-h4:font-medium",
-              "prose-ul:my-4 prose-ol:my-4 prose-li:my-1",
-              "prose-blockquote:my-6 prose-pre:my-6 prose-table:my-6",
+              "prose-p:mb-5 prose-p:leading-[1.625] prose-p:first-of-type:text-lg prose-p:first-of-type:leading-[1.6] prose-p:first-of-type:text-[var(--foreground)]",
+              "prose-h2:mb-4 prose-h2:mt-14 prose-h2:pt-6 prose-h2:font-heading prose-h2:text-2xl prose-h2:font-semibold prose-h2:tracking-tight prose-h2:text-[var(--foreground)] prose-h2:border-t prose-h2:border-[var(--border)] prose-h2:first-of-type:mt-10 prose-h2:first-of-type:border-0 prose-h2:first-of-type:pt-0",
+              "prose-h3:mb-2 prose-h3:mt-7 prose-h3:font-heading prose-h3:text-lg prose-h3:font-medium prose-h3:tracking-tight prose-h3:text-[var(--foreground)]",
+              "prose-h4:mb-2 prose-h4:mt-5 prose-h4:text-base prose-h4:font-medium",
+              "prose-ul:my-4 prose-ol:my-4 prose-li:my-1.5 prose-li:leading-[1.6]",
+              "prose-blockquote:my-8 prose-pre:my-6 prose-table:my-6",
             ].join(" ")}
           >
             {children}
@@ -161,11 +168,14 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
           {/* End block */}
           <footer className="mt-14 border-t border-[var(--border)] pt-10">
             {post.takeaways && post.takeaways.length > 0 && (
-              <section className="mb-10" aria-label="Key takeaways">
-                <h2 className="font-heading text-lg text-[var(--foreground)]">
-                  Key Takeaways
+              <section
+                className="mb-10 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-7 py-8 sm:px-10 sm:py-10"
+                aria-label="Key takeaways"
+              >
+                <h2 className="mb-7 text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--muted)]/80">
+                  What to remember
                 </h2>
-                <ul className="mt-3 list-disc space-y-2 pl-6 text-[var(--text-body)]">
+                <ul className="grid list-none grid-cols-1 gap-x-8 gap-y-4 pl-0 text-[var(--text-body)] md:grid-cols-2 [&>li]:flex [&>li]:items-start [&>li]:gap-3 [&>li]:leading-[1.6] [&>li]:before:mt-1 [&>li]:before:shrink-0 [&>li]:before:font-body [&>li]:before:text-[var(--accent)] [&>li]:before:content-['✓']">
                   {post.takeaways.map((item, i) => (
                     <li key={i}>{item}</li>
                   ))}
@@ -173,41 +183,32 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
               </section>
             )}
 
-            <ContinueLearning
-              currentSlug={post.slug}
-              seriesSlug={post.series?.slug}
-              tags={post.tags}
-              category={post.category}
-            />
+            {hasSeries && seriesNav && (
+              <SeriesProgress
+                currentSlug={post.slug}
+                seriesSlug={seriesNav.seriesSlug}
+                seriesTitle={seriesNav.seriesTitle}
+              />
+            )}
+
+            <div className="mt-20 border-t border-[var(--border)] pt-16 sm:mt-24 sm:pt-20">
+              <ContinueLearning
+                currentSlug={post.slug}
+                seriesSlug={post.series?.slug}
+                tags={post.tags}
+                category={post.category}
+              />
+            </div>
           </footer>
         </div>
 
-        {/* Desktop: sticky TOC */}
+        {/* Desktop: sticky TOC with active section highlighting */}
         {hasToc && (
           <aside
             className="hidden lg:block"
             aria-label="Table of contents"
           >
-            <nav className="sticky top-24 border-l-2 border-[var(--border)] pl-4">
-              <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
-                On this page
-              </p>
-              <ul className="space-y-1.5 text-sm text-[var(--muted)]">
-                {toc.map((entry) => (
-                  <li
-                    key={entry.id}
-                    style={{ paddingLeft: `${(entry.level - 1) * 0.75}rem` }}
-                  >
-                    <a
-                      href={`#${entry.id}`}
-                      className="hover:text-[var(--foreground)]"
-                    >
-                      {entry.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            <TocSidebar toc={toc} />
           </aside>
         )}
       </div>

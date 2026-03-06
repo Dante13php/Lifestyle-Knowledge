@@ -32,9 +32,9 @@ export type Post = PostFrontmatter & {
   slug: string;
 };
 
-/** TOC entry from ## or ### in markdown; id matches MDXComponents headingId. */
+/** TOC entry from ## in markdown only; id matches MDXComponents headingId. */
 export type TocEntry = {
-  level: 2 | 3;
+  level: 2;
   text: string;
   id: string;
 };
@@ -143,10 +143,10 @@ function headingIdFromText(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
-const H2_H3_REGEX = /^(#{2,3})\s+(.+)$/gm;
+const H2_REGEX = /^##\s+(.+)$/gm;
 const WPM = 215;
 
-/** Build-time: post + TOC (h2/h3 only) + reading time. No heavy deps. */
+/** Build-time: post + TOC (H2 only) + reading time. No heavy deps. */
 export function getPostDetailsBySlug(slug: string): {
   post: Post;
   toc: TocEntry[];
@@ -173,11 +173,10 @@ export function getPostDetailsBySlug(slug: string): {
 
   const toc: TocEntry[] = [];
   let match: RegExpExecArray | null;
-  H2_H3_REGEX.lastIndex = 0;
-  while ((match = H2_H3_REGEX.exec(body)) !== null) {
-    const level = match[1].length as 2 | 3;
-    const text = match[2].trim();
-    toc.push({ level, text, id: headingIdFromText(text) });
+  H2_REGEX.lastIndex = 0;
+  while ((match = H2_REGEX.exec(body)) !== null) {
+    const text = match[1].trim();
+    toc.push({ level: 2, text, id: headingIdFromText(text) });
   }
 
   const wordCount = body.split(/\s+/).filter(Boolean).length;

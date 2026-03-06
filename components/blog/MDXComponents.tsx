@@ -20,7 +20,7 @@ function headingId(children: React.ReactNode): string {
     .replace(/^-|-$/g, "");
 }
 
-const anchorOffset = "scroll-mt-[5.5rem]"; // TOC + sticky header
+const anchorOffset = "scroll-mt-[9rem]"; // well above sticky header blur
 
 export const mdxArticleComponents: MDXComponents = {
   h2: ({ children, ...props }) => {

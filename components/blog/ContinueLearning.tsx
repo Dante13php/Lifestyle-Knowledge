@@ -19,27 +19,56 @@ function Card({
   title,
   excerpt,
   label,
+  variant = "default",
 }: {
   href: string;
   title: string;
   excerpt: string;
   label?: string;
+  variant?: "default" | "compact" | "nav" | "navNext";
 }) {
+  const isCompact = variant === "compact";
+  const isNav = variant === "nav" || variant === "navNext";
+  const isNavNext = variant === "navNext";
   return (
     <Link
       href={href}
-      className="group block rounded-2xl border border-[var(--border)] bg-[var(--surface-2)]/50 p-4 transition-colors hover:border-[var(--border)] hover:bg-[var(--surface-2)]/70"
+      className={`group block transition-colors ${
+        isNav
+          ? isNavNext
+            ? "rounded-lg border border-[var(--border)] border-l-[3px] border-l-[var(--accent)] bg-[var(--surface)]/70 py-5 px-5 hover:bg-[var(--surface)]/90 sm:py-6 sm:px-6"
+            : "rounded-r-lg border border-[var(--border)] border-l-[3px] border-l-[var(--accent)] bg-[var(--surface)]/60 py-4 px-4 hover:bg-[var(--surface)]/80"
+          : `rounded-2xl border border-[var(--border)] bg-[var(--surface-2)]/50 hover:border-[var(--border)] hover:bg-[var(--surface-2)]/70 ${
+              isCompact ? "p-3" : "p-5"
+            }`
+      }`}
     >
       {label && (
         <span className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
           {label}
         </span>
       )}
-      <span className="font-medium text-[var(--foreground)] underline-offset-2 group-hover:underline">
+      <span
+        className={`font-medium text-[var(--foreground)] underline-offset-2 group-hover:underline inline-flex flex-wrap items-baseline gap-2 ${
+          isCompact
+            ? "text-sm"
+            : isNavNext
+              ? "text-xl font-semibold sm:text-2xl"
+              : "text-base"
+        } ${isNavNext ? "w-fit" : ""}`}
+      >
         {title}
+        <span
+          className={`shrink-0 transition-transform group-hover:translate-x-0.5 ${
+            isNav ? "text-[var(--accent)]" : "text-[var(--muted)]"
+          }`}
+          aria-hidden
+        >
+          →
+        </span>
       </span>
-      {excerpt && (
-        <p className="mt-1.5 line-clamp-2 text-sm text-[var(--muted)]">
+      {excerpt && !isCompact && (
+        <p className="mt-1.5 line-clamp-2 text-sm text-[var(--muted)] sm:mt-2">
           {excerpt}
         </p>
       )}
@@ -64,66 +93,58 @@ export function ContinueLearning({
     tags,
   });
 
-  const prevPost =
-    seriesNav?.prevPost != null ? getPostBySlug(seriesNav.prevPost.slug) : null;
   const nextPost =
     seriesNav?.nextPost != null ? getPostBySlug(seriesNav.nextPost.slug) : null;
-  const hasSeriesCards = !!(prevPost || nextPost);
   const hasRelated = related.length > 0;
 
-  if (!hasSeriesCards && !hasRelated) return null;
+  if (!nextPost && !hasRelated) return null;
+
+  const sectionHeading = nextPost ? "Next step" : "More to explore";
+  const nextStepNumber = seriesNav ? seriesNav.index + 1 : null;
+  const showStepBreadcrumb =
+    nextPost && seriesNav != null && nextStepNumber != null && nextStepNumber <= seriesNav.total;
 
   return (
-    <section className="mt-10" aria-label="Continue learning">
-      <h2 className="font-heading text-lg text-[var(--foreground)]">
-        Continue learning
-      </h2>
+    <nav
+      className="mx-auto max-w-xl font-body"
+      aria-label="Next step navigation"
+    >
+      <div className="text-center">
+        <h2 className="font-heading text-lg font-medium text-[var(--foreground)]">
+          {sectionHeading}
+        </h2>
+      </div>
 
-      <div
-        className={
-          hasSeriesCards
-            ? "mt-6 grid gap-6 md:grid-cols-2"
-            : "mt-6 grid gap-6"
-        }
-      >
-        {hasSeriesCards && (
-          <div className="flex flex-col gap-4">
-            {prevPost && (
-              <Card
-                href={`/blog/${prevPost.slug}`}
-                title={prevPost.title}
-                excerpt={prevPost.description}
-                label="Previous in series"
-              />
+      <div className="mt-12">
+        {nextPost && (
+          <div className="flex flex-col items-center">
+            {showStepBreadcrumb && seriesNav && nextStepNumber != null && (
+              <p className="mb-3 text-sm text-[var(--muted)]">
+                Step {nextStepNumber} of {seriesNav.total}
+              </p>
             )}
-            {nextPost && (
-              <Card
-                href={`/blog/${nextPost.slug}`}
-                title={nextPost.title}
-                excerpt={nextPost.description}
-                label="Next in series"
-              />
-            )}
+            <Card
+              href={`/blog/${nextPost.slug}`}
+              title={nextPost.title}
+              excerpt={nextPost.description}
+              variant="navNext"
+            />
           </div>
         )}
 
-        <div
-          className={
-            hasSeriesCards
-              ? "grid gap-4 sm:grid-cols-2"
-              : "grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-          }
-        >
-          {related.map((p: Post) => (
-            <Card
-              key={p.slug}
-              href={`/blog/${p.slug}`}
-              title={p.title}
-              excerpt={p.description}
-            />
-          ))}
-        </div>
+        {!nextPost && hasRelated && (
+          <div className="grid gap-4 sm:grid-cols-2">
+            {related.slice(0, 4).map((p: Post) => (
+              <Card
+                key={p.slug}
+                href={`/blog/${p.slug}`}
+                title={p.title}
+                excerpt={p.description}
+              />
+            ))}
+          </div>
+        )}
       </div>
-    </section>
+    </nav>
   );
 }
