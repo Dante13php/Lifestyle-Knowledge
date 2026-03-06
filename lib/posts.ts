@@ -199,12 +199,13 @@ const TOP_RELATED = 3;
 
 /**
  * Related posts: by "manual" uses frontmatter related: [slug1, slug2]; by "tags"
- * finds posts with overlapping tags, sorted by shared tag count, top 3.
+ * finds posts with overlapping tags, sorted by shared tag count.
  */
 export function getRelatedPosts(
   slug: string,
-  options: { by: "tags" | "manual" }
+  options: { by: "tags" | "manual"; limit?: number }
 ): Post[] {
+  const limit = options.limit ?? TOP_RELATED;
   if (options.by === "manual") {
     const filePath = path.join(POSTS_DIR, `${slug}.mdx`);
     if (!fs.existsSync(filePath)) return [];
@@ -218,7 +219,7 @@ export function getRelatedPosts(
       const p = getPostBySlug(s);
       if (p && !p.draft) posts.push(p);
     }
-    return posts.slice(0, TOP_RELATED);
+    return posts.slice(0, limit);
   }
 
   const current = getPostBySlug(slug);
@@ -230,7 +231,47 @@ export function getRelatedPosts(
     score: p.tags.filter((t) => tagSet.has(t)).length,
   }));
   withScore.sort((a, b) => b.score - a.score);
-  return withScore.slice(0, TOP_RELATED).map((x) => x.post);
+  return withScore.slice(0, limit).map((x) => x.post);
+}
+
+/**
+ * Related posts for "Continue learning" footer: manual related first, then
+ * by tags + same category, excluding given slugs. Fills to `limit` with
+ * latest by date if needed.
+ */
+export function getRelatedForContinueLearning(
+  slug: string,
+  options: {
+    limit: number;
+    excludeSlugs?: string[];
+    category: string;
+    tags: string[];
+  }
+): Post[] {
+  const { limit, excludeSlugs = [], category, tags } = options;
+  const exclude = new Set([slug, ...excludeSlugs]);
+
+  const manual = getRelatedPosts(slug, { by: "manual", limit });
+  const manualFiltered = manual.filter((p) => !exclude.has(p.slug));
+  if (manualFiltered.length > 0) {
+    const take = Math.min(limit, manualFiltered.length);
+    return manualFiltered.slice(0, take);
+  }
+
+  const others = getAllPosts().filter((p) => !exclude.has(p.slug));
+  const tagSet = new Set(tags);
+  const scored = others.map((p) => ({
+    post: p,
+    score:
+      p.tags.filter((t) => tagSet.has(t)).length +
+      (p.category === category ? 10 : 0),
+  }));
+  scored.sort((a, b) => b.score - a.score);
+  const byRelevance = scored.map((x) => x.post).slice(0, limit);
+  if (byRelevance.length >= limit) return byRelevance;
+  const have = new Set(byRelevance.map((p) => p.slug));
+  const rest = others.filter((p) => !have.has(p.slug)).slice(0, limit - byRelevance.length);
+  return [...byRelevance, ...rest];
 }
 
 /** Minimal post info for series prev/next links. */

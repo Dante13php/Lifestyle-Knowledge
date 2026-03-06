@@ -1,5 +1,8 @@
 import Link from "next/link";
 import type { Post, SeriesNav } from "@/lib/posts";
+import { SeriesNav as SeriesNavBlock } from "@/components/blog/SeriesNav";
+import { ContinueLearning } from "@/components/blog/ContinueLearning";
+import { ReadingProgressBar } from "@/components/blog/ProgressBar";
 
 export type TocEntry = {
   id: string;
@@ -18,8 +21,6 @@ type ArticleLayoutProps = {
   toc: TocEntry[];
   /** When post is part of a series. */
   seriesNav?: SeriesNav;
-  /** Related posts or other posts in series for "More articles". */
-  relatedPosts?: Post[];
 };
 
 function formatDate(iso: string) {
@@ -30,13 +31,14 @@ function formatDate(iso: string) {
   });
 }
 
-export function ArticleLayout({ post, children, toc, seriesNav, relatedPosts }: ArticleLayoutProps) {
+export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutProps) {
   const hasToc = toc.length > 0;
-  const hasRelated = relatedPosts && relatedPosts.length > 0;
   const hasSeries = !!seriesNav;
 
   return (
-    <article className="mx-auto max-w-6xl px-6 py-12 sm:py-16">
+    <>
+      <ReadingProgressBar />
+      <article className="mx-auto max-w-6xl px-6 py-12 sm:py-16">
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"
@@ -63,7 +65,7 @@ export function ArticleLayout({ post, children, toc, seriesNav, relatedPosts }: 
 
       {/* ArticleHeader: H1, intro, meta */}
       <header className="mb-10">
-        <h1 className="text-[var(--foreground)] font-heading">
+        <h1 className="font-heading text-3xl font-semibold tracking-tight text-[var(--foreground)] sm:text-4xl">
           {post.title}
         </h1>
         <p className="mt-4 text-lg text-[var(--text-body)]">
@@ -95,20 +97,11 @@ export function ArticleLayout({ post, children, toc, seriesNav, relatedPosts }: 
         </div>
 
         {hasSeries && (
-          <div className="mt-6 rounded-lg border border-[var(--border)] bg-[var(--surface-1)] px-4 py-3 text-sm">
-            <p className="font-medium text-[var(--foreground)]">
-              Part of the Productivity System
-            </p>
-            <p className="mt-1 text-[var(--muted)]">
-              Part {seriesNav.index} of {seriesNav.total}
-            </p>
-            <Link
-              href={`/blog/series/${seriesNav.seriesSlug}`}
-              className="mt-2 inline-block text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
-            >
-              Series hub
-            </Link>
-          </div>
+          <SeriesNavBlock
+            seriesSlug={seriesNav.seriesSlug}
+            currentSlug={post.slug}
+            seriesTitle={seriesNav.seriesTitle}
+          />
         )}
       </header>
 
@@ -149,41 +142,24 @@ export function ArticleLayout({ post, children, toc, seriesNav, relatedPosts }: 
             </details>
           )}
 
-          {/* Content */}
-          <div className="prose prose-neutral max-w-none font-body text-[var(--text-body)]">
+          {/* Content: reading width, vertical rhythm, clear H2/H3 hierarchy */}
+          <div
+            className={[
+              "article-content max-w-[70ch] font-body text-[var(--text-body)]",
+              "prose prose-neutral max-w-none",
+              "prose-p:mb-6 prose-p:leading-[1.625]",
+              "prose-h2:mb-4 prose-h2:mt-12 prose-h2:font-heading prose-h2:text-2xl prose-h2:font-semibold prose-h2:tracking-tight prose-h2:text-[var(--foreground)]",
+              "prose-h3:mb-3 prose-h3:mt-6 prose-h3:font-heading prose-h3:text-lg prose-h3:font-medium prose-h3:tracking-tight prose-h3:text-[var(--foreground)]",
+              "prose-h4:mb-2 prose-h4:mt-6 prose-h4:text-base prose-h4:font-medium",
+              "prose-ul:my-4 prose-ol:my-4 prose-li:my-1",
+              "prose-blockquote:my-6 prose-pre:my-6 prose-table:my-6",
+            ].join(" ")}
+          >
             {children}
           </div>
 
           {/* End block */}
           <footer className="mt-14 border-t border-[var(--border)] pt-10">
-            {hasSeries && seriesNav && (seriesNav.prevPost || seriesNav.nextPost) && (
-              <nav
-                className="mb-10 flex flex-wrap items-center justify-between gap-4"
-                aria-label="Series navigation"
-              >
-                {seriesNav.prevPost ? (
-                  <Link
-                    href={`/blog/${seriesNav.prevPost.slug}`}
-                    className="text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
-                  >
-                    ← Previous in series
-                  </Link>
-                ) : (
-                  <span />
-                )}
-                {seriesNav.nextPost ? (
-                  <Link
-                    href={`/blog/${seriesNav.nextPost.slug}`}
-                    className="text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
-                  >
-                    Next in series →
-                  </Link>
-                ) : (
-                  <span />
-                )}
-              </nav>
-            )}
-
             {post.takeaways && post.takeaways.length > 0 && (
               <section className="mb-10" aria-label="Key takeaways">
                 <h2 className="font-heading text-lg text-[var(--foreground)]">
@@ -197,25 +173,12 @@ export function ArticleLayout({ post, children, toc, seriesNav, relatedPosts }: 
               </section>
             )}
 
-            {hasRelated && (
-              <section aria-label="Related articles">
-                <h2 className="font-heading text-lg text-[var(--foreground)]">
-                  More articles
-                </h2>
-                <ul className="mt-3 space-y-2 text-[var(--text-body)]">
-                  {relatedPosts!.map((p) => (
-                    <li key={p.slug}>
-                      <Link
-                        href={`/blog/${p.slug}`}
-                        className="text-[var(--accent)] underline underline-offset-2 hover:text-[var(--accent-hover)]"
-                      >
-                        {p.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
+            <ContinueLearning
+              currentSlug={post.slug}
+              seriesSlug={post.series?.slug}
+              tags={post.tags}
+              category={post.category}
+            />
           </footer>
         </div>
 
@@ -249,5 +212,6 @@ export function ArticleLayout({ post, children, toc, seriesNav, relatedPosts }: 
         )}
       </div>
     </article>
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import type { MDXComponents } from "mdx/types";
+import { mdxBlocks } from "@/components/blog/blocks";
 
 /** Slug for heading IDs (TOC + anchor offset). */
 function getHeadingText(node: React.ReactNode): string {
@@ -47,7 +48,7 @@ export const mdxArticleComponents: MDXComponents = {
     );
   },
   p: ({ children, ...props }) => (
-    <p className="leading-[1.625]" {...props}>
+    <p {...props}>
       {children}
     </p>
   ),
@@ -133,7 +134,7 @@ export const mdxArticleComponents: MDXComponents = {
       {children}
     </td>
   ),
-  // Callout: placeholder for later; can be filled from MDX
+  ...mdxBlocks,
   aside: ({ children, className, ...props }) => (
     <aside
       className={`my-6 border-l-2 border-[var(--border)] pl-4 text-sm text-[var(--muted)] ${className ?? ""}`}
