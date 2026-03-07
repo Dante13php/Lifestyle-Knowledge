@@ -30,14 +30,34 @@ function Card({
   const isCompact = variant === "compact";
   const isNav = variant === "nav" || variant === "navNext";
   const isNavNext = variant === "navNext";
+
+  if (isNavNext) {
+    return (
+      <Link
+        href={href}
+        className="group block rounded-lg border border-[var(--border)] border-l-2 border-l-[var(--accent)]/60 bg-[var(--surface)]/70 py-5 pl-5 pr-5 hover:bg-[var(--surface)]/90 sm:py-6 sm:pl-6 sm:pr-6 transition-colors text-left w-full max-w-[40rem] mx-auto"
+      >
+        <span className="block font-heading text-xl font-medium tracking-tight text-[var(--foreground)] sm:text-2xl group-hover:underline underline-offset-2">
+          {title}
+        </span>
+        <span className="mt-1 block text-sm text-[var(--muted)]" aria-hidden>
+          Read next →
+        </span>
+        {excerpt && (
+          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--muted)]">
+            {excerpt}
+          </p>
+        )}
+      </Link>
+    );
+  }
+
   return (
     <Link
       href={href}
       className={`group block transition-colors ${
         isNav
-          ? isNavNext
-            ? "rounded-lg border border-[var(--border)] border-l-[3px] border-l-[var(--accent)] bg-[var(--surface)]/70 py-5 px-5 hover:bg-[var(--surface)]/90 sm:py-6 sm:px-6"
-            : "rounded-r-lg border border-[var(--border)] border-l-[3px] border-l-[var(--accent)] bg-[var(--surface)]/60 py-4 px-4 hover:bg-[var(--surface)]/80"
+          ? "rounded-r-lg border border-[var(--border)] border-l-[3px] border-l-[var(--accent)] bg-[var(--surface)]/60 py-4 px-4 hover:bg-[var(--surface)]/80"
           : `rounded-2xl border border-[var(--border)] bg-[var(--surface-2)]/50 hover:border-[var(--border)] hover:bg-[var(--surface-2)]/70 ${
               isCompact ? "p-3" : "p-5"
             }`
@@ -50,12 +70,8 @@ function Card({
       )}
       <span
         className={`font-medium text-[var(--foreground)] underline-offset-2 group-hover:underline inline-flex flex-wrap items-baseline gap-2 ${
-          isCompact
-            ? "text-sm"
-            : isNavNext
-              ? "text-xl sm:text-2xl"
-              : "text-base"
-        } ${isNavNext ? "w-fit" : ""}`}
+          isCompact ? "text-sm" : "text-base"
+        }`}
       >
         {title}
         <span className="shrink-0 text-[var(--muted)]" aria-hidden>
@@ -95,13 +111,10 @@ export function ContinueLearning({
   if (!nextPost && !hasRelated) return null;
 
   const sectionHeading = nextPost ? "Next step" : "More to explore";
-  const nextStepNumber = seriesNav ? seriesNav.index + 1 : null;
-  const showStepBreadcrumb =
-    nextPost && seriesNav != null && nextStepNumber != null && nextStepNumber <= seriesNav.total;
 
   return (
     <nav
-      className="mx-auto max-w-xl font-body"
+      className="mx-auto max-w-2xl font-body"
       aria-label="Next step navigation"
     >
       <div className="text-center">
@@ -112,12 +125,7 @@ export function ContinueLearning({
 
       <div className="mt-12">
         {nextPost && (
-          <div className="flex flex-col items-center">
-            {showStepBreadcrumb && seriesNav && nextStepNumber != null && (
-              <p className="mb-3 text-sm text-[var(--muted)]">
-                Step {nextStepNumber} of {seriesNav.total}
-              </p>
-            )}
+          <div className="flex flex-col items-center w-full">
             <Card
               href={`/blog/${nextPost.slug}`}
               title={nextPost.title}

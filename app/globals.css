@@ -587,10 +587,10 @@ button {
   --article-heading-bottom-sm: 0.375rem;
 }
 
-/* ——— Paragraphs: tight flow (p + p = 12px gap) ——— */
+/* ——— Paragraphs: continuous flow (p + p = 8px gap) ——— */
 .article-content p {
   margin-top: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   line-height: 1.7;
 }
 .article-content p:last-child {
@@ -649,19 +649,25 @@ button {
   margin-top: var(--article-heading-top-sm);
 }
 
-/* First paragraph or section-lead block after H2: same lead styling, tight margin below */
-.article-content h2 + p,
-.article-content h2 + .section-lead {
-  font-size: 18px;
-  line-height: 1.6;
-  color: var(--text-strong);
+/* First paragraph after H2: normal body styling, tight connection (no accidental lead) */
+.article-content h2 + p {
   margin-top: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
+
+/* SectionLead: slightly larger intro line, normal weight and body color */
+.article-content h2 + .section-lead,
 .article-content .section-lead {
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.6;
-  color: var(--text-strong);
+  font-weight: 400;
+  color: var(--text-body);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+.article-content .section-lead p {
+  font-weight: inherit;
+  color: inherit;
 }
 
 /* ——— H3: subsection, less space above than h2, tight below (override prose) ——— */
@@ -723,10 +729,10 @@ button {
   margin-bottom: 1rem;
 }
 
-/* Section lead block immediately after h2: keep tight connection (override block margin) */
+/* Section lead immediately after h2: tight connection (override generic block margin) */
 .article-content h2 + .section-lead {
   margin-top: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 /* ——— Section diagram: visual break, same as block spacing ——— */
@@ -747,7 +753,7 @@ button {
   .article-content h2 + p,
   .article-content h2 + .section-lead,
   .article-content .section-lead {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
   .article-content ul,
   .article-content ol {
