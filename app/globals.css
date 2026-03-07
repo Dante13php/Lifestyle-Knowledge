@@ -38,6 +38,9 @@
   --border-muted: rgba(23, 22, 19, 0.14);
 
   --accent-hover: #5C6A3F;
+  --olive-600: #3C5028; /* darker olive for progress bar, emphasis */
+  --olive-700: #2F4020; /* CTA default */
+  --olive-900: #1E2814; /* CTA hover */
 
   --hero-gradient-start: var(--highlight);
   --header-footer-bg: var(--surface-2);
@@ -97,6 +100,9 @@
   --accent: #96AA66;
   --accent-2: #C27A58;
   --accent-hover: #A9BC73;
+  --olive-600: #7A8F4D;
+  --olive-700: #8FA35C;
+  --olive-900: #A9BC73;
   --highlight: rgba(230, 234, 216, 0.45);
   --on-accent: #151911;
 

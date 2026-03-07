@@ -6,150 +6,181 @@ type SeriesNavProps = {
   currentSlug: string;
   /** Display title for the series; fallback "Series" if omitted. */
   seriesTitle?: string;
+  /** Optional short description under the series title, e.g. "A 3-part series about…" */
+  seriesDescription?: string;
+  /** Optional meta line for the current article, e.g. "11 min read". */
+  currentPostMeta?: string;
 };
 
-export function SeriesNav({ seriesSlug, currentSlug, seriesTitle }: SeriesNavProps) {
+/** TOC-like link: no underline, subtle background on hover/focus, rounded, transition background-color and color. */
+const linkBase =
+  "block no-underline rounded-lg transition-[background-color,color] duration-200 outline-none hover:no-underline focus:no-underline active:no-underline focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface-2)]";
+
+export function SeriesNav({
+  seriesSlug,
+  currentSlug,
+  seriesTitle,
+  seriesDescription,
+  currentPostMeta,
+}: SeriesNavProps) {
   const posts = getSeriesPosts(seriesSlug);
   const currentIndex = posts.findIndex((p) => p.slug === currentSlug);
   const title = seriesTitle ?? "Series";
-  const progress =
-    currentIndex >= 0 ? `Part ${currentIndex + 1} of ${posts.length}` : "";
-  const progressPercent =
-    posts.length > 0 && currentIndex >= 0
-      ? ((currentIndex + 1) / posts.length) * 100
-      : 0;
-  const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
+  const currentPost = currentIndex >= 0 ? posts[currentIndex] : null;
   const nextPost =
     currentIndex >= 0 && currentIndex < posts.length - 1
       ? posts[currentIndex + 1]
       : null;
+  const laterPosts =
+    currentIndex >= 0 && currentIndex < posts.length - 1
+      ? posts.slice(currentIndex + 2)
+      : [];
 
   if (posts.length === 0) return null;
 
+  const partLabel = `Part ${currentIndex + 1} of ${posts.length}`;
+  const percentComplete = Math.round(
+    ((currentIndex + 1) / posts.length) * 100
+  );
+  const progressText = `${partLabel} • ${percentComplete}% complete`;
+  const description =
+    seriesDescription ?? `A ${posts.length}-part series`;
+
   return (
     <nav
-      className="mt-6 rounded-lg border border-[var(--border)] bg-[var(--surface-2)]/60 px-4 py-4"
+      className="mt-6 rounded-xl border border-[var(--border)] bg-[color-mix(in_srgb,var(--surface-2)_90%,var(--highlight))] px-5 py-5 sm:px-6 sm:py-6"
       aria-label="Series navigation"
     >
-      <p className="font-medium text-[var(--foreground)]">{title}</p>
-      {progress && (
-        <div className="mt-1.5 flex flex-col gap-1.5">
-          <p className="text-sm text-[var(--muted)]">{progress}</p>
-          <div
-            className="h-1 w-full overflow-hidden rounded-full bg-[var(--border-subtle)]"
-            role="progressbar"
-            aria-valuenow={currentIndex + 1}
-            aria-valuemin={1}
-            aria-valuemax={posts.length}
-            aria-label={progress}
-          >
-            <div
-              className="h-full rounded-full bg-[var(--accent)] transition-[width] duration-300"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-        </div>
-      )}
-      <ol
-        className="relative mt-5 list-none pl-0 text-sm"
-        role="list"
-        style={{ paddingLeft: "18px" }}
-      >
-        {/* Vertical timeline */}
+      {/* 1. Series header */}
+      <header className="mb-6">
+        <h2 className="font-heading text-lg font-semibold tracking-tight text-[var(--foreground)]">
+          {title}
+        </h2>
+        <p className="mt-1 text-sm text-[var(--muted)]">{description}</p>
+        <p className="mt-3 text-xs font-medium text-[var(--muted)]">
+          {progressText}
+        </p>
         <div
-          className="absolute left-0 top-0 bottom-0 w-[2px] rounded-full bg-[var(--border-muted)]"
-          aria-hidden
-        />
-        {posts.map((p, index) => {
-          const isCurrent = p.slug === currentSlug;
-          const isNext =
-            currentIndex >= 0 && index === currentIndex + 1;
-          return (
-            <li
-              key={p.slug}
-              aria-current={isCurrent ? "step" : undefined}
-              className="relative flex items-center gap-3 py-2.5"
-              style={{ paddingTop: 10, paddingBottom: 10 }}
-            >
-              {/* Circle indicator: filled for current, outline for others — flex child so it aligns with text */}
-              <span
-                className="z-[1] flex w-[18px] shrink-0 -ml-[18px] items-center justify-center"
-                aria-hidden
-              >
-                <span
-                  className={`h-[10px] w-[10px] rounded-full border-2 transition-colors ${
-                    isCurrent
-                      ? "border-[var(--accent)] bg-[var(--accent)]"
-                      : "border-[var(--border-muted)] bg-[var(--surface-2)]"
-                  }`}
-                />
+          className="mt-3 mb-5 h-[6px] w-full overflow-hidden rounded-[999px] bg-[var(--border-muted)]"
+          role="progressbar"
+          aria-valuenow={currentIndex + 1}
+          aria-valuemin={1}
+          aria-valuemax={posts.length}
+          aria-label={progressText}
+        >
+          <div
+            className="h-full rounded-[999px] bg-[var(--olive-600)] transition-[width] duration-300"
+            style={{
+              width: `${((currentIndex + 1) / posts.length) * 100}%`,
+            }}
+          />
+        </div>
+      </header>
+
+      {/* 2. Desktop: 2-column grid, equal height cards */}
+      <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_1fr] lg:items-stretch lg:gap-8">
+        {/* Current article — left column; stretches to match Next */}
+        {currentPost && (
+          <div className="flex min-h-0 flex-col lg:min-w-0" aria-current="step">
+            <div className="min-h-0 flex-1 rounded-xl border border-[var(--border-muted)] bg-[rgba(0,0,0,0.02)] px-4 py-4 sm:px-5 sm:py-5">
+              <span className="inline-block rounded-md bg-[var(--border-subtle)] px-2 py-0.5 text-[11px] font-medium uppercase tracking-wider text-[var(--muted)]">
+                Current article
               </span>
-              <div
-                className={`min-w-0 flex-1 rounded-lg transition-colors ${
-                  isCurrent
-                    ? "bg-[rgba(60,80,40,0.06)] p-3.5"
-                    : "rounded-lg py-0.5 pr-2 hover:bg-[color-mix(in_srgb,var(--surface-2)_50%,transparent)]"
-                }`}
-              >
-                {isCurrent ? (
-                  <div className="pl-2">
-                    <span className="font-semibold text-[var(--foreground)]">
-                      {p.title}
-                    </span>
-                    <p className="mt-0.5 text-xs text-[var(--muted)]">
-                      Current article
-                    </p>
-                  </div>
-                ) : (
-                  <Link
-                    href={`/blog/${p.slug}`}
-                    className="block rounded-lg py-1 -my-1 pl-2 no-underline transition-colors hover:text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2 focus:ring-offset-[var(--surface-2)]"
-                  >
-                    {isNext && (
-                      <span className="mb-0.5 block text-xs font-medium uppercase tracking-wider text-[var(--accent)]">
-                        Next in series
-                      </span>
-                    )}
-                    <span className="font-medium text-[var(--foreground)]">
-                      {p.title}
-                    </span>
-                    <p className="mt-0.5 text-xs text-[var(--muted)]">
-                      Continue →
-                    </p>
-                  </Link>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ol>
-      {(prevPost || nextPost) && (
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--border)] pt-4 text-sm">
-          {prevPost ? (
-            <Link
-              href={`/blog/${prevPost.slug}`}
-              className="rounded-lg py-1 px-2 text-[var(--accent)] no-underline transition-colors hover:bg-[color-mix(in_srgb,var(--surface-2)_50%,transparent)] hover:text-[var(--accent-hover)]"
-            >
-              ← Previous in series
-            </Link>
-          ) : (
-            <span />
-          )}
-          {nextPost ? (
+              <p className="mt-2 font-semibold text-[var(--foreground)] text-sm">
+                {currentPost.title}
+              </p>
+              {(currentPost.description || currentPost.title) && (
+                <p className="mt-2 line-clamp-2 text-sm text-[var(--muted)]">
+                  {currentPost.description ||
+                    "You are reading this article in the series."}
+                </p>
+              )}
+              {currentPostMeta && (
+                <p className="mt-2 text-xs text-[var(--muted)]">
+                  {currentPostMeta}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Next article — primary CTA */}
+        {nextPost && (
+          <div className="flex min-h-0 flex-col lg:min-w-0">
             <Link
               href={`/blog/${nextPost.slug}`}
-              className="block rounded-lg py-1 px-2 text-right text-[var(--accent)] no-underline transition-colors hover:bg-[color-mix(in_srgb,var(--surface-2)_50%,transparent)] hover:text-[var(--accent-hover)]"
+              className={`group ${linkBase} flex min-h-0 flex-1 flex-col rounded-xl border border-[rgba(60,80,40,0.18)] bg-[rgba(60,80,40,0.06)] p-5 sm:p-6 transition-[background-color] duration-[120ms] ease-[ease] hover:bg-[rgba(60,80,40,0.10)] focus-visible:ring-offset-[color-mix(in_srgb,var(--surface-2)_90%,var(--highlight))]`}
             >
-              <span className="text-xs text-[var(--muted)]">
-                Continue the series →
+              <span className="block text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+                Next in series
               </span>
-              <span className="mt-0.5 block font-medium text-[var(--foreground)]">
+              <span className="mt-2 block font-heading text-xl font-semibold tracking-tight text-[var(--foreground)] sm:text-[1.25rem]">
                 {nextPost.title}
               </span>
+              {(nextPost.description || nextPost.title) && (
+                <p className="mt-2 line-clamp-2 text-sm text-[var(--muted)]">
+                  {nextPost.description ||
+                    `Continue to the next part of this series.`}
+                </p>
+              )}
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--olive-700)] no-underline transition-colors duration-200 group-hover:text-[var(--olive-900)]">
+                Continue reading
+                <span
+                  aria-hidden
+                  className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                >
+                  →
+                </span>
+              </span>
             </Link>
-          ) : (
-            <span />
-          )}
+          </div>
+        )}
+      </div>
+
+      {/* 3. Later articles — index, title, short description */}
+      {laterPosts.length > 0 && (
+        <div className="mt-8 border-t border-[var(--border)] pt-6">
+          <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+            Later in series
+          </p>
+          <ol className="list-none space-y-1.5 pl-0 text-sm text-[var(--muted)]" role="list">
+            {laterPosts.map((p, i) => {
+              const partNum = currentIndex + 3 + i;
+              return (
+                <li key={p.slug}>
+                  <Link
+                    href={`/blog/${p.slug}`}
+                    className={`group ${linkBase} flex cursor-pointer items-center gap-3 rounded-lg py-[10px] pl-3 pr-3 -ml-3 no-underline transition-[background-color,color] duration-[120ms] ease-[ease] hover:bg-[rgba(60,80,40,0.05)] hover:no-underline`}
+                  >
+                    <span
+                      className="w-5 shrink-0 text-right text-xs tabular-nums"
+                      aria-hidden
+                    >
+                      {partNum}
+                    </span>
+                    <div className="min-w-0 flex-1 max-w-[640px]">
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="font-medium transition-colors duration-[120ms] ease-[ease] group-hover:text-[var(--text)]">
+                          {p.title}
+                        </span>
+                        <span
+                          aria-hidden
+                          className="inline-block shrink-0 text-[var(--muted)] opacity-0 transition-[opacity,transform] duration-200 ease-out group-hover:translate-x-0.5 group-hover:opacity-100"
+                        >
+                          →
+                        </span>
+                      </div>
+                      {p.description && (
+                        <p className="mt-0.5 line-clamp-1 text-sm opacity-90">
+                          {p.description}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       )}
     </nav>

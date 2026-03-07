@@ -96,6 +96,9 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
             seriesSlug={seriesNav.seriesSlug}
             currentSlug={post.slug}
             seriesTitle={seriesNav.seriesTitle}
+            currentPostMeta={
+              post.readingTime ? `${post.readingTime} read` : undefined
+            }
           />
         )}
       </header>
