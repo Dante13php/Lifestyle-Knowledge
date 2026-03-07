@@ -35,6 +35,7 @@
 
   --border-subtle: rgba(23, 22, 19, 0.06);
   --border-visible: rgba(23, 22, 19, 0.12);
+  --border-muted: rgba(23, 22, 19, 0.14);
 
   --accent-hover: #5C6A3F;
 
@@ -90,6 +91,7 @@
   --border: rgba(239, 229, 210, 0.22);
   --border-subtle: rgba(239, 229, 210, 0.12);
   --border-visible: rgba(239, 229, 210, 0.28);
+  --border-muted: rgba(239, 229, 210, 0.18);
 
   /* Accent: slightly desaturated for rails & details */
   --accent: #96AA66;

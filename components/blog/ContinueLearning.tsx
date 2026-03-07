@@ -53,17 +53,12 @@ function Card({
           isCompact
             ? "text-sm"
             : isNavNext
-              ? "text-xl font-semibold sm:text-2xl"
+              ? "text-xl sm:text-2xl"
               : "text-base"
         } ${isNavNext ? "w-fit" : ""}`}
       >
         {title}
-        <span
-          className={`shrink-0 transition-transform group-hover:translate-x-0.5 ${
-            isNav ? "text-[var(--accent)]" : "text-[var(--muted)]"
-          }`}
-          aria-hidden
-        >
+        <span className="shrink-0 text-[var(--muted)]" aria-hidden>
           →
         </span>
       </span>

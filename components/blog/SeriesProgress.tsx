@@ -14,7 +14,6 @@ export function SeriesProgress({
 }: SeriesProgressProps) {
   const posts = getSeriesPosts(seriesSlug);
   const currentIndex = posts.findIndex((p) => p.slug === currentSlug);
-  const nextIndex = currentIndex >= 0 && currentIndex < posts.length - 1 ? currentIndex + 1 : null;
 
   if (posts.length === 0) return null;
 
@@ -33,7 +32,7 @@ export function SeriesProgress({
         {posts.map((p: Post, index: number) => {
           const step = index + 1;
           const isCurrent = p.slug === currentSlug;
-          const isNext = nextIndex !== null && index === nextIndex;
+          const isUpcoming = currentIndex >= 0 && index > currentIndex;
 
           if (isCurrent) {
             return (
@@ -56,25 +55,6 @@ export function SeriesProgress({
             );
           }
 
-          if (isNext) {
-            return (
-              <li key={p.slug} className="flex items-baseline gap-3">
-                <span className="shrink-0 w-6 text-right tabular-nums text-[var(--muted)]">
-                  {step}
-                </span>
-                <Link
-                  href={`/blog/${p.slug}`}
-                  className="inline-flex items-center gap-2 font-medium text-[var(--foreground)] underline-offset-2 hover:underline group"
-                >
-                  {p.title}
-                  <span className="text-[var(--accent)] text-sm group-hover:translate-x-0.5 transition-transform">
-                    Read next →
-                  </span>
-                </Link>
-              </li>
-            );
-          }
-
           return (
             <li key={p.slug} className="flex items-baseline gap-3">
               <span className="shrink-0 w-6 text-right tabular-nums text-[var(--muted)]">
@@ -82,9 +62,14 @@ export function SeriesProgress({
               </span>
               <Link
                 href={`/blog/${p.slug}`}
-                className="hover:text-[var(--foreground)]"
+                className="group inline-flex items-center gap-2 font-medium text-[var(--foreground)] underline-offset-2 hover:underline"
               >
                 {p.title}
+                {isUpcoming && (
+                  <span className="text-[var(--accent)] text-sm">
+                    Read next →
+                  </span>
+                )}
               </Link>
             </li>
           );

@@ -84,18 +84,6 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
           {post.readingTime && (
             <span>{post.readingTime} read</span>
           )}
-          {post.tags.length > 0 && (
-            <span className="flex flex-wrap gap-1.5">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded bg-[var(--surface-2)] px-2 py-0.5 text-[var(--muted)]"
-                >
-                  {tag}
-                </span>
-              ))}
-            </span>
-          )}
         </div>
         {hasSeries && (
           <p className="mt-3 inline-flex items-center rounded border border-[var(--border)] bg-[var(--surface-2)]/60 px-2.5 py-1 text-xs font-medium text-[var(--muted)]">
