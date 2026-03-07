@@ -19,9 +19,6 @@ This document defines the preferred structure for all productivity (and editoria
 - **Every H2 followed by a SectionLead**  
   Immediately after each `##` heading, add a `<SectionLead>`: one or two sentences that summarize what the section is about. This creates a predictable rhythm and helps skimmers.
 
-- **Visual rhythm breaks**  
-  Every few paragraphs (e.g. every 2–3 sections), add a `<SectionDivider />` so the page doesn’t feel like one long block. Don’t overdo it; use it to separate logical chunks.
-
 ---
 
 ## 3. Editorial blocks (use selectively)
@@ -37,7 +34,6 @@ Use these components to add variety and emphasis. **Do not stack them all at onc
 | **Example** | Concrete scenario, before/after, or short illustration. |
 | **Checklist** | Short list of steps or criteria (with optional title). |
 | **PullQuote** | A memorable quote or closing emphasis (optional `author` / `source`). |
-| **SectionDivider** | Visual break between large sections. |
 
 - Prefer **one or two block types per section**, not all of them.
 - End the article with a short **conclusion** and, if it fits, a **PullQuote** or one strong closing line before the ContinueLearning block (which is rendered by the layout).
@@ -67,7 +63,6 @@ Use these components to add variety and emphasis. **Do not stack them all at onc
 - [ ] Intro paragraph under the title
 - [ ] Early KeyIdea
 - [ ] Every H2 has a SectionLead right after it
-- [ ] At least one SectionDivider for rhythm (every few sections)
 - [ ] At least one of: Highlight, Tip, Example, Checklist—used where they add value, not all in one place
 - [ ] Short conclusion before the end
 - [ ] Optional PullQuote or closing emphasis before ContinueLearning

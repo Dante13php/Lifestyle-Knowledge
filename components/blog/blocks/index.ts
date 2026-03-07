@@ -6,7 +6,6 @@ export { Example } from "./Example";
 export { PullQuote } from "./PullQuote";
 export { Checklist } from "./Checklist";
 export { SectionLead } from "./SectionLead";
-export { SectionDivider } from "./SectionDivider";
 export { Highlight } from "./Highlight";
 
 import { SectionDiagram } from "../SectionDiagram";
@@ -18,7 +17,6 @@ import { Example } from "./Example";
 import { PullQuote } from "./PullQuote";
 import { Checklist } from "./Checklist";
 import { SectionLead } from "./SectionLead";
-import { SectionDivider } from "./SectionDivider";
 import { Highlight } from "./Highlight";
 
 /** MDX component map for article UX blocks. Reuse in MDXComponents. */
@@ -31,7 +29,6 @@ export const mdxBlocks = {
   PullQuote,
   Checklist,
   SectionLead,
-  SectionDivider,
   Highlight,
   SectionDiagram,
 } as const;

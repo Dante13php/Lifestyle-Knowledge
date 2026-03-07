@@ -569,20 +569,20 @@ button {
 }
 
 /* ============================================
-   Article content — vertical rhythm & spacing scale
-   Single source for all article spacing. Prose margins are zeroed in tailwind.config.js.
-   Scale: 0.375rem (6px) | 0.5rem (8px) | 0.75rem (12px) | 1rem (16px) | 1.5rem (24px) | 2rem (32px) | 2.5rem (40px) | 3rem (48px)
-   Goal: continuous editorial flow, clear hierarchy, no double spacing.
-   Editorial rhythm: more space above headings, less below (heading stays connected to content).
+   Article content — single vertical rhythm system
+   All article flow spacing is controlled here only. Prose (Tailwind Typography)
+   margins are zeroed in tailwind.config.js; do not re-apply margin via prose-*
+   utilities on the article wrapper (blockquote, pre, hr, headings).
+   Scale: 0.375rem | 0.5rem | 0.75rem | 1rem | 1.5rem | 2rem | 2.5rem | 3rem
+   Rule: every section start (h2/h3) gets the same space above it regardless
+   of what precedes it (paragraph, hr, custom block). Sibling selectors only
+   adjust the h2 top border (hide after divider) and re-assert the same margin.
    ============================================ */
 
-/* ——— Editorial rhythm tokens (tune in one place) ——— */
+/* ——— Rhythm tokens: one place to tune section spacing ——— */
 .article-content {
-  /* Same space above every section heading (h2/h3) so divider vs no-divider looks identical */
-  --article-heading-top: 3rem;
-  --article-heading-top-sm: 2.25rem;
-  --article-heading-after-break: 3rem;
-  --article-heading-after-break-sm: 2.25rem;
+  --article-heading-top: 3rem;      /* space above every h2 section start */
+  --article-heading-top-sm: 2.25rem; /* space above every h3 subsection */
   --article-heading-bottom: 0.5rem;
   --article-heading-bottom-sm: 0.375rem;
 }
@@ -597,7 +597,8 @@ button {
   margin-bottom: 0;
 }
 
-/* ——— H2: section break above, tight connection to first paragraph below ——— */
+/* ——— H2: same space above every section start; tight below (override prose) ——— */
+.article-content.prose h2,
 .article-content h2 {
   margin-top: var(--article-heading-top);
   margin-bottom: var(--article-heading-bottom);
@@ -608,17 +609,11 @@ button {
 }
 
 /*
- * After break (divider / block / callout / quote / diagram) → heading
- * Same margin as default h2/h3 so spacing is identical with or without a divider.
- * Divider→h2: prose top border off so it doesn't double with the hr.
+ * After break (block / callout / quote / diagram) → heading.
+ * Same margin as default so spacing is identical with or without a block.
+ * Only job: (1) hide h2 top border so it doesn't double with hr,
  * Prose h2 border is disabled for these so the line doesn’t double up.
  */
-.article-content hr + h2,
-.article-content .section-divider + h2 {
-  border-top-width: 0;
-}
-.article-content hr + h2,
-.article-content .section-divider + h2,
 .article-content .tip + h2,
 .article-content .example + h2,
 .article-content .highlight + h2,
@@ -634,10 +629,8 @@ button {
 .article-content ol + h2,
 .article-content pre + h2,
 .article-content .overflow-x-auto + h2 {
-  margin-top: var(--article-heading-after-break);
+  margin-top: var(--article-heading-top);
 }
-.article-content hr + h3,
-.article-content .section-divider + h3,
 .article-content .tip + h3,
 .article-content .example + h3,
 .article-content .highlight + h3,
@@ -653,7 +646,7 @@ button {
 .article-content ol + h3,
 .article-content pre + h3,
 .article-content .overflow-x-auto + h3 {
-  margin-top: var(--article-heading-after-break-sm);
+  margin-top: var(--article-heading-top-sm);
 }
 
 /* First paragraph or section-lead block after H2: same lead styling, tight margin below */
@@ -671,7 +664,8 @@ button {
   color: var(--text-strong);
 }
 
-/* ——— H3: subsection, less space above than h2, tight below ——— */
+/* ——— H3: subsection, less space above than h2, tight below (override prose) ——— */
+.article-content.prose h3,
 .article-content h3 {
   margin-top: var(--article-heading-top-sm);
   margin-bottom: var(--article-heading-bottom-sm);
@@ -698,11 +692,13 @@ button {
   margin-bottom: 0.5rem;
 }
 
-/* ——— Blockquote, pre, table wrapper: deliberate block spacing ——— */
+/* ——— Blockquote, pre, table wrapper (override prose so article owns spacing) ——— */
+.article-content.prose blockquote,
 .article-content blockquote {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
+.article-content.prose pre,
 .article-content pre {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -740,31 +736,11 @@ button {
   width: 100%;
 }
 
-/* ——— HR / section divider ——— */
-.article-content hr,
-.article-content .section-divider {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  width: 100%;
-  border: none;
-  border-top: 1px solid var(--border);
-}
-
-.section-divider {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  width: 100%;
-  border: none;
-  border-top: 1px solid var(--border);
-}
-
 /* ——— Responsive: slightly tighter on small viewports ——— */
 @media (max-width: 640px) {
   .article-content {
     --article-heading-top: 2.5rem;
     --article-heading-top-sm: 2rem;
-    --article-heading-after-break: 2.5rem;
-    --article-heading-after-break-sm: 2rem;
     --article-heading-bottom: 0.5rem;
     --article-heading-bottom-sm: 0.25rem;
   }
@@ -790,11 +766,6 @@ button {
     margin-bottom: 0.75rem;
   }
   .article-content .section-diagram {
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem;
-  }
-  .article-content hr,
-  .article-content .section-divider {
     margin-top: 1.25rem;
     margin-bottom: 1.25rem;
   }

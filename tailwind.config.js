@@ -122,12 +122,6 @@ module.exports = {
               padding: "0",
               fontSize: "0.875rem",
             },
-            hr: {
-              marginTop: "0",
-              marginBottom: "0",
-              borderColor: "var(--border)",
-              borderTopWidth: "1px",
-            },
             "thead th": {
               borderBottomColor: "var(--border)",
               color: "var(--muted)",

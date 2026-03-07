@@ -145,10 +145,9 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
               "article-content max-w-[68ch] font-body text-[var(--text-body)]",
               "prose prose-neutral max-w-none",
               "prose-p:leading-[1.625] prose-p:first-of-type:text-lg prose-p:first-of-type:leading-[1.6] prose-p:first-of-type:text-[var(--foreground)]",
-              "prose-h2:font-heading prose-h2:text-2xl prose-h2:font-semibold prose-h2:tracking-tight prose-h2:text-[var(--foreground)] prose-h2:border-t prose-h2:border-[var(--border)] prose-h2:first-of-type:border-0 prose-h2:first-of-type:pt-0",
+              "prose-h2:font-heading prose-h2:text-2xl prose-h2:font-semibold prose-h2:tracking-tight prose-h2:text-[var(--foreground)]",
               "prose-h3:font-heading prose-h3:text-lg prose-h3:font-medium prose-h3:tracking-tight prose-h3:text-[var(--foreground)]",
               "prose-h4:text-base prose-h4:font-medium prose-li:leading-[1.6]",
-              "prose-blockquote:mt-0 prose-blockquote:mb-0 prose-pre:mt-0 prose-pre:mb-0",
             ].join(" ")}
           >
             {children}

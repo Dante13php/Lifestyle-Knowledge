@@ -69,9 +69,7 @@ export const mdxArticleComponents: MDXComponents = {
       {children}
     </blockquote>
   ),
-  hr: () => (
-    <hr className="border-[var(--border)] border-t" aria-hidden />
-  ),
+  hr: () => null,
   code: ({ children, ...props }) => (
     <code
       className="rounded bg-[var(--surface-2)] px-1.5 py-0.5 font-normal text-[var(--muted)] [font-size:0.9em]"
