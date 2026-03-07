@@ -73,7 +73,7 @@ export function ScrollToEndOrTop() {
     <button
       type="button"
       onClick={handleClick}
-      className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border-visible)] bg-[var(--background-card)] text-[var(--text-body)] shadow-sm hover:border-[var(--accent)]/30 hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
+      className="fixed bottom-4 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-[var(--border-visible)] bg-[var(--background-card)] text-[var(--text-body)] shadow-sm hover:border-[var(--accent)]/30 hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] sm:bottom-6 sm:right-6 sm:h-11 sm:w-11"
       aria-label={atBottom ? "Скрол до начало на страницата" : "Скрол до края на страницата"}
     >
       {atBottom ? <IconUp /> : <IconDown />}

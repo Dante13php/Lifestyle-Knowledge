@@ -19,10 +19,10 @@ export function SeriesProgress({
 
   return (
     <section
-      className="border-t border-[var(--border)] pt-10 mt-14"
+      className="mt-10 border-t border-[var(--border)] pt-8 sm:mt-14 sm:pt-10"
       aria-label="Series progress"
     >
-      <h2 className="font-heading text-lg font-medium text-[var(--foreground)]">
+      <h2 className="font-heading text-base font-medium text-[var(--foreground)] sm:text-lg">
         {seriesTitle}
       </h2>
       <ol
@@ -39,18 +39,20 @@ export function SeriesProgress({
               <li
                 key={p.slug}
                 aria-current="step"
-                className="flex items-baseline gap-3"
+                className="flex items-start gap-3 opacity-90"
               >
                 <span className="shrink-0 w-6 text-right tabular-nums text-[var(--muted)]">
                   {step}
                 </span>
-                <span className="inline-flex items-center gap-2 text-[var(--foreground)]">
-                  <span className="text-[var(--accent)]" aria-hidden>✓</span>
-                  <span>{p.title}</span>
-                  <span className="text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+                <div className="min-w-0 flex-1">
+                  <div className="inline-flex items-center gap-2 text-[var(--muted)]">
+                    <span className="text-[var(--accent)]" aria-hidden>✓</span>
+                    <span>{p.title}</span>
+                  </div>
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--muted)] sm:text-[11px]">
                     Completed
-                  </span>
-                </span>
+                  </p>
+                </div>
               </li>
             );
           }

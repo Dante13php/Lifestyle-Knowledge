@@ -159,7 +159,7 @@ export function TocSidebar({ toc }: TocSidebarProps) {
   }, [toc]);
 
   return (
-    <nav className="sticky top-[120px] border-l-2 border-[var(--border)] pl-4">
+    <nav className="sticky top-[100px] min-w-0 border-l-2 border-[var(--border)] pl-3 sm:top-[120px] sm:pl-4">
       <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
         On this page
       </p>
@@ -174,11 +174,12 @@ export function TocSidebar({ toc }: TocSidebarProps) {
               <a
                 href={`#${entry.id}`}
                 onClick={(e) => handleTocClick(e, entry.id)}
-                className={`flex items-center gap-2 -ml-4 rounded-r border-l-2 py-1 pl-4 pr-2 transition-colors hover:text-[var(--foreground)] ${
-                  isActive
-                    ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--surface-2)_88%,black)] font-medium text-[var(--foreground)]"
-                    : "border-transparent"
-                }`}
+                className={
+                  "flex min-w-0 items-center gap-2 -ml-4 rounded-[6px] border-l-2 py-1 pr-2 transition-[background,border-color,color,padding-left] duration-150 ease-out " +
+                  (isActive
+                    ? "border-l-[3px] border-l-[rgba(60,80,40,0.55)] bg-[rgba(60,80,40,0.08)] pl-[15px] font-medium text-[var(--text-strong)]"
+                    : "border-transparent pl-4 text-[var(--muted)] hover:bg-[rgba(60,80,40,0.06)] hover:border-l-[rgba(60,80,40,0.45)] hover:text-[var(--text-strong)]")
+                }
               >
                 <span
                   aria-hidden
@@ -188,7 +189,7 @@ export function TocSidebar({ toc }: TocSidebarProps) {
                       : "h-1.5 w-1.5 bg-[var(--muted)]/50"
                   }`}
                 />
-                <span>{entry.text}</span>
+                <span className="min-w-0 truncate">{entry.text}</span>
               </a>
             </li>
           );

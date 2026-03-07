@@ -8,7 +8,7 @@ export function PullQuote({ children, author, source }: PullQuoteProps) {
   const hasAttribution = author ?? source;
 
   return (
-    <figure className="my-8 not-prose">
+    <figure className="pull-quote not-prose">
       <blockquote className="border-l-[3px] border-[var(--accent)] pl-4 font-[var(--font-heading)] italic text-[var(--muted)]">
         {children}
       </blockquote>

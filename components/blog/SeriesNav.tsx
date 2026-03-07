@@ -27,6 +27,8 @@ export function SeriesNav({
   const currentIndex = posts.findIndex((p) => p.slug === currentSlug);
   const title = seriesTitle ?? "Series";
   const currentPost = currentIndex >= 0 ? posts[currentIndex] : null;
+  const prevPost =
+    currentIndex > 0 ? posts[currentIndex - 1] : null;
   const nextPost =
     currentIndex >= 0 && currentIndex < posts.length - 1
       ? posts[currentIndex + 1]
@@ -77,9 +79,49 @@ export function SeriesNav({
         </div>
       </header>
 
-      {/* 2. Desktop: 2-column grid, equal height cards */}
-      <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_1fr] lg:items-stretch lg:gap-8">
-        {/* Current article — left column; stretches to match Next */}
+      {/* 2. Desktop: 2- or 3-column grid (Prev | Current | Next) */}
+      <div
+        className={`flex flex-col gap-6 lg:grid lg:items-stretch lg:gap-8 ${
+          prevPost && nextPost
+            ? "lg:grid-cols-[1fr_1fr_1fr]"
+            : prevPost || nextPost
+              ? "lg:grid-cols-[1fr_1fr]"
+              : ""
+        }`}
+      >
+        {/* Previous article — when not on part 1 */}
+        {prevPost && (
+          <div className="flex min-h-0 flex-col lg:min-w-0">
+            <Link
+              href={`/blog/${prevPost.slug}`}
+              className={`group ${linkBase} flex min-h-0 flex-1 flex-col rounded-xl border border-[var(--border-muted)] bg-[rgba(0,0,0,0.02)] p-5 sm:p-6 transition-[background-color] duration-[120ms] ease-[ease] hover:bg-[rgba(0,0,0,0.04)] focus-visible:ring-offset-[color-mix(in_srgb,var(--surface-2)_90%,var(--highlight))]`}
+            >
+              <span className="block text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+                Previous in series
+              </span>
+              <span className="mt-2 block font-heading text-xl font-semibold tracking-tight text-[var(--foreground)] sm:text-[1.25rem]">
+                {prevPost.title}
+              </span>
+              {(prevPost.description || prevPost.title) && (
+                <p className="mt-2 line-clamp-2 text-sm text-[var(--muted)]">
+                  {prevPost.description ||
+                    "Go back to the previous part of this series."}
+                </p>
+              )}
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--muted)] no-underline transition-colors duration-200 group-hover:text-[var(--foreground)]">
+                <span
+                  aria-hidden
+                  className="inline-block transition-transform duration-200 ease-out group-hover:-translate-x-0.5"
+                >
+                  ←
+                </span>
+                Back
+              </span>
+            </Link>
+          </div>
+        )}
+
+        {/* Current article */}
         {currentPost && (
           <div className="flex min-h-0 flex-col lg:min-w-0" aria-current="step">
             <div className="min-h-0 flex-1 rounded-xl border border-[var(--border-muted)] bg-[rgba(0,0,0,0.02)] px-4 py-4 sm:px-5 sm:py-5">
@@ -104,7 +146,7 @@ export function SeriesNav({
           </div>
         )}
 
-        {/* Next article — primary CTA */}
+        {/* Next article */}
         {nextPost && (
           <div className="flex min-h-0 flex-col lg:min-w-0">
             <Link
@@ -158,7 +200,7 @@ export function SeriesNav({
                     >
                       {partNum}
                     </span>
-                    <div className="min-w-0 flex-1 max-w-[640px]">
+                    <div className="min-w-0 flex-1 max-w-full">
                       <div className="flex items-baseline gap-1.5">
                         <span className="font-medium transition-colors duration-[120ms] ease-[ease] group-hover:text-[var(--text)]">
                           {p.title}

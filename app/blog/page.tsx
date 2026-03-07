@@ -30,7 +30,7 @@ export default function BlogPage() {
             <li key={post.slug} className="flex min-h-0">
               <Link
                 href={`/blog/${post.slug}`}
-                className="group flex w-full min-h-[240px] flex-col rounded-xl border border-[var(--border)] bg-[var(--background)] p-6 transition-[border-color] hover:border-[var(--muted)]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+                className="group flex w-full min-h-[200px] flex-col rounded-xl border border-[var(--border)] bg-[var(--background)] p-5 transition-[border-color] hover:border-[var(--muted)]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 sm:min-h-[240px] sm:p-6"
               >
                 <span className="text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
                   {post.category}

@@ -9,6 +9,7 @@
   --surface-2: #F2EBDD; /* алтернативна повърхност */
 
   --text: #171613;
+  --text-strong: #171613; /* body emphasis / section leads */
   --muted: #5B564D; /* вторичен текст */
 
   --border: #E3DACB;
@@ -88,6 +89,7 @@
 
   /* Text: off-white primary, muted with opacity */
   --text: #E6DDCC;
+  --text-strong: #E6DDCC;
   --muted: rgba(230, 221, 204, 0.7);
 
   /* Border: softer, lower-contrast light */
@@ -233,12 +235,12 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Base: Inter everywhere by default */
+/* Base: Inter everywhere by default; fluid font-size for responsive readability */
 body {
   font-family: var(--font-body), sans-serif;
   background-color: var(--background);
   color: var(--text-body);
-  font-size: 18px;
+  font-size: clamp(16px, 0.5rem + 1vw, 18px);
   line-height: 1.65;
   letter-spacing: -0.005em;
   text-rendering: optimizeLegibility;
@@ -301,7 +303,7 @@ h3 {
 }
 
 h4 {
-  font-size: 18px;
+  font-size: clamp(1rem, 0.875rem + 0.5vw, 1.125rem);
   line-height: 1.3;
   font-weight: 600;
   margin-bottom: 0.4em;
@@ -310,7 +312,7 @@ h4 {
 /* Lead paragraph under hero: body font, constrained width, spacing */
 .lead-hero {
   font-family: var(--font-body), sans-serif;
-  font-size: 1.25rem;
+  font-size: clamp(1.125rem, 1.25rem + 0.25vw, 1.375rem);
   line-height: 1.5;
   color: var(--text-body);
   max-width: 42ch;
@@ -564,6 +566,238 @@ button {
   margin-bottom: 0;
   font-size: 1.125rem;
   max-width: 48ch;
+}
+
+/* ============================================
+   Article content — vertical rhythm & spacing scale
+   Single source for all article spacing. Prose margins are zeroed in tailwind.config.js.
+   Scale: 0.375rem (6px) | 0.5rem (8px) | 0.75rem (12px) | 1rem (16px) | 1.5rem (24px) | 2rem (32px) | 2.5rem (40px) | 3rem (48px)
+   Goal: continuous editorial flow, clear hierarchy, no double spacing.
+   Editorial rhythm: more space above headings, less below (heading stays connected to content).
+   ============================================ */
+
+/* ——— Editorial rhythm tokens (tune in one place) ——— */
+.article-content {
+  /* Same space above every section heading (h2/h3) so divider vs no-divider looks identical */
+  --article-heading-top: 3rem;
+  --article-heading-top-sm: 2.25rem;
+  --article-heading-after-break: 3rem;
+  --article-heading-after-break-sm: 2.25rem;
+  --article-heading-bottom: 0.5rem;
+  --article-heading-bottom-sm: 0.375rem;
+}
+
+/* ——— Paragraphs: tight flow (p + p = 12px gap) ——— */
+.article-content p {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+.article-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ——— H2: section break above, tight connection to first paragraph below ——— */
+.article-content h2 {
+  margin-top: var(--article-heading-top);
+  margin-bottom: var(--article-heading-bottom);
+  max-width: 100%;
+}
+.article-content h2:first-child {
+  margin-top: 0;
+}
+
+/*
+ * After break (divider / block / callout / quote / diagram) → heading
+ * Same margin as default h2/h3 so spacing is identical with or without a divider.
+ * Divider→h2: prose top border off so it doesn't double with the hr.
+ * Prose h2 border is disabled for these so the line doesn’t double up.
+ */
+.article-content hr + h2,
+.article-content .section-divider + h2 {
+  border-top-width: 0;
+}
+.article-content hr + h2,
+.article-content .section-divider + h2,
+.article-content .tip + h2,
+.article-content .example + h2,
+.article-content .highlight + h2,
+.article-content .key-insight + h2,
+.article-content .key-idea + h2,
+.article-content .checklist + h2,
+.article-content .principle + h2,
+.article-content .pull-quote + h2,
+.article-content blockquote + h2,
+.article-content .section-diagram + h2,
+.article-content aside + h2,
+.article-content ul + h2,
+.article-content ol + h2,
+.article-content pre + h2,
+.article-content .overflow-x-auto + h2 {
+  margin-top: var(--article-heading-after-break);
+}
+.article-content hr + h3,
+.article-content .section-divider + h3,
+.article-content .tip + h3,
+.article-content .example + h3,
+.article-content .highlight + h3,
+.article-content .key-insight + h3,
+.article-content .key-idea + h3,
+.article-content .checklist + h3,
+.article-content .principle + h3,
+.article-content .pull-quote + h3,
+.article-content blockquote + h3,
+.article-content .section-diagram + h3,
+.article-content aside + h3,
+.article-content ul + h3,
+.article-content ol + h3,
+.article-content pre + h3,
+.article-content .overflow-x-auto + h3 {
+  margin-top: var(--article-heading-after-break-sm);
+}
+
+/* First paragraph or section-lead block after H2: same lead styling, tight margin below */
+.article-content h2 + p,
+.article-content h2 + .section-lead {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-strong);
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+.article-content .section-lead {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-strong);
+}
+
+/* ——— H3: subsection, less space above than h2, tight below ——— */
+.article-content h3 {
+  margin-top: var(--article-heading-top-sm);
+  margin-bottom: var(--article-heading-bottom-sm);
+}
+
+/* ——— Lists: connected to preceding paragraph, consistent internal spacing ——— */
+.article-content ul,
+.article-content ol {
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+  padding-left: 20px;
+}
+.article-content ul {
+  list-style-type: disc;
+}
+.article-content li::marker {
+  color: var(--muted);
+}
+.article-content li {
+  margin: 0.375rem 0;
+}
+.article-content p:has(+ ul),
+.article-content p:has(+ ol) {
+  margin-bottom: 0.5rem;
+}
+
+/* ——— Blockquote, pre, table wrapper: deliberate block spacing ——— */
+.article-content blockquote {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.article-content pre {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.article-content > div.overflow-x-auto {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* ——— Editorial blocks & generic aside: one unit above/below ——— */
+.article-content aside,
+.article-content .tip,
+.article-content .example,
+.article-content .highlight,
+.article-content .key-insight,
+.article-content .key-idea,
+.article-content .checklist,
+.article-content .pull-quote,
+.article-content .section-lead,
+.article-content .principle {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Section lead block immediately after h2: keep tight connection (override block margin) */
+.article-content h2 + .section-lead {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+/* ——— Section diagram: visual break, same as block spacing ——— */
+.article-content .section-diagram {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+/* ——— HR / section divider ——— */
+.article-content hr,
+.article-content .section-divider {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+.section-divider {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+/* ——— Responsive: slightly tighter on small viewports ——— */
+@media (max-width: 640px) {
+  .article-content {
+    --article-heading-top: 2.5rem;
+    --article-heading-top-sm: 2rem;
+    --article-heading-after-break: 2.5rem;
+    --article-heading-after-break-sm: 2rem;
+    --article-heading-bottom: 0.5rem;
+    --article-heading-bottom-sm: 0.25rem;
+  }
+  .article-content h2 + p,
+  .article-content h2 + .section-lead,
+  .article-content .section-lead {
+    margin-bottom: 0.75rem;
+  }
+  .article-content ul,
+  .article-content ol {
+    padding-left: 18px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .article-content .tip,
+  .article-content .example,
+  .article-content .highlight,
+  .article-content .key-insight,
+  .article-content .key-idea,
+  .article-content .checklist,
+  .article-content .principle {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .article-content .section-diagram {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .article-content hr,
+  .article-content .section-divider {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

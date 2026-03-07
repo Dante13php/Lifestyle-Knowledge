@@ -20,7 +20,7 @@ function headingId(children: React.ReactNode): string {
     .replace(/^-|-$/g, "");
 }
 
-const anchorOffset = "scroll-mt-[9rem]"; // well above sticky header blur
+const anchorOffset = "scroll-mt-24 sm:scroll-mt-[7rem] lg:scroll-mt-[9rem]"; // above sticky header; responsive for TOC scroll
 
 export const mdxArticleComponents: MDXComponents = {
   h2: ({ children, ...props }) => {
@@ -70,7 +70,7 @@ export const mdxArticleComponents: MDXComponents = {
     </blockquote>
   ),
   hr: () => (
-    <hr className="my-10 border-[var(--border)] border-t" aria-hidden />
+    <hr className="border-[var(--border)] border-t" aria-hidden />
   ),
   code: ({ children, ...props }) => (
     <code
@@ -89,12 +89,12 @@ export const mdxArticleComponents: MDXComponents = {
     </pre>
   ),
   ul: ({ children, ...props }) => (
-    <ul className="my-5 list-disc pl-6" {...props}>
+    <ul className="list-disc pl-6" {...props}>
       {children}
     </ul>
   ),
   ol: ({ children, ...props }) => (
-    <ol className="my-5 list-decimal pl-6" {...props}>
+    <ol className="list-decimal pl-6" {...props}>
       {children}
     </ol>
   ),
@@ -104,7 +104,7 @@ export const mdxArticleComponents: MDXComponents = {
     </li>
   ),
   table: ({ children, ...props }) => (
-    <div className="my-6 overflow-x-auto">
+    <div className="overflow-x-auto">
       <table className="w-full border-collapse" {...props}>
         {children}
       </table>
@@ -137,7 +137,7 @@ export const mdxArticleComponents: MDXComponents = {
   ...mdxBlocks,
   aside: ({ children, className, ...props }) => (
     <aside
-      className={`my-6 border-l-2 border-[var(--border)] pl-4 text-sm text-[var(--muted)] ${className ?? ""}`}
+      className={`border-l-2 border-[var(--border)] pl-4 text-sm text-[var(--muted)] ${className ?? ""}`}
       {...props}
     >
       {children}

@@ -76,20 +76,19 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
         <p className="mt-5 max-w-[65ch] text-lg leading-relaxed text-[var(--text-body)]">
           {post.description}
         </p>
-        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[var(--muted)]">
-          <time dateTime={post.date}>{formatDate(post.date)}</time>
-          {post.updated && (
-            <span>Updated {formatDate(post.updated)}</span>
-          )}
-          {post.readingTime && (
-            <span>{post.readingTime} read</span>
-          )}
+        <div className="mt-5 flex flex-col items-start gap-y-3">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[var(--muted)]">
+            <time dateTime={post.date}>{formatDate(post.date)}</time>
+            {post.updated && (
+              <span>Updated {formatDate(post.updated)}</span>
+            )}
+            {post.readingTime && (
+              <span className="inline-flex items-center rounded-md bg-[var(--accent)]/10 px-2 py-0.5 text-sm font-medium text-[var(--foreground)]">
+                {post.readingTime} read
+              </span>
+            )}
+          </div>
         </div>
-        {hasSeries && (
-          <p className="mt-3 inline-flex items-center rounded border border-[var(--border)] bg-[var(--surface-2)]/60 px-2.5 py-1 text-xs font-medium text-[var(--muted)]">
-            {seriesNav?.seriesTitle ?? "Series"} · Part {seriesNav?.index ?? 1} of {seriesNav?.total ?? 1}
-          </p>
-        )}
 
         {hasSeries && (
           <SeriesNavBlock
@@ -145,12 +144,11 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
             className={[
               "article-content max-w-[68ch] font-body text-[var(--text-body)]",
               "prose prose-neutral max-w-none",
-              "prose-p:mb-5 prose-p:leading-[1.625] prose-p:first-of-type:text-lg prose-p:first-of-type:leading-[1.6] prose-p:first-of-type:text-[var(--foreground)]",
-              "prose-h2:mb-4 prose-h2:mt-14 prose-h2:pt-6 prose-h2:font-heading prose-h2:text-2xl prose-h2:font-semibold prose-h2:tracking-tight prose-h2:text-[var(--foreground)] prose-h2:border-t prose-h2:border-[var(--border)] prose-h2:first-of-type:mt-10 prose-h2:first-of-type:border-0 prose-h2:first-of-type:pt-0",
-              "prose-h3:mb-2 prose-h3:mt-7 prose-h3:font-heading prose-h3:text-lg prose-h3:font-medium prose-h3:tracking-tight prose-h3:text-[var(--foreground)]",
-              "prose-h4:mb-2 prose-h4:mt-5 prose-h4:text-base prose-h4:font-medium",
-              "prose-ul:my-4 prose-ol:my-4 prose-li:my-1.5 prose-li:leading-[1.6]",
-              "prose-blockquote:my-8 prose-pre:my-6 prose-table:my-6",
+              "prose-p:leading-[1.625] prose-p:first-of-type:text-lg prose-p:first-of-type:leading-[1.6] prose-p:first-of-type:text-[var(--foreground)]",
+              "prose-h2:font-heading prose-h2:text-2xl prose-h2:font-semibold prose-h2:tracking-tight prose-h2:text-[var(--foreground)] prose-h2:border-t prose-h2:border-[var(--border)] prose-h2:first-of-type:border-0 prose-h2:first-of-type:pt-0",
+              "prose-h3:font-heading prose-h3:text-lg prose-h3:font-medium prose-h3:tracking-tight prose-h3:text-[var(--foreground)]",
+              "prose-h4:text-base prose-h4:font-medium prose-li:leading-[1.6]",
+              "prose-blockquote:mt-0 prose-blockquote:mb-0 prose-pre:mt-0 prose-pre:mb-0",
             ].join(" ")}
           >
             {children}
@@ -196,7 +194,7 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
         {/* Desktop: sticky TOC with active section highlighting */}
         {hasToc && (
           <aside
-            className="hidden lg:block"
+            className="hidden min-w-0 lg:block"
             aria-label="Table of contents"
           >
             <TocSidebar toc={toc} />

@@ -9,6 +9,7 @@ export { SectionLead } from "./SectionLead";
 export { SectionDivider } from "./SectionDivider";
 export { Highlight } from "./Highlight";
 
+import { SectionDiagram } from "../SectionDiagram";
 import { KeyIdea } from "./KeyIdea";
 import { KeyInsight } from "./KeyInsight";
 import { Principle } from "./Principle";
@@ -32,4 +33,5 @@ export const mdxBlocks = {
   SectionLead,
   SectionDivider,
   Highlight,
+  SectionDiagram,
 } as const;

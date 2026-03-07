@@ -21,44 +21,45 @@ module.exports = {
             "--tw-prose-hr": "var(--border)",
             "--tw-prose-bullets": "var(--muted)",
             "--tw-prose-counters": "var(--muted)",
+            /* Vertical rhythm controlled by .article-content in globals.css — no prose margins */
             p: {
-              marginTop: "1.25rem",
-              marginBottom: "1.25rem",
+              marginTop: "0",
+              marginBottom: "0",
               lineHeight: "1.625",
             },
             "p + p": {
-              marginTop: "1.75rem",
+              marginTop: "0",
             },
-            "h2": {
+            h2: {
               fontFamily: "var(--font-heading), serif",
               fontSize: "2rem",
               lineHeight: "1.25",
               fontWeight: "500",
-              marginTop: "3rem",
-              marginBottom: "0.75rem",
-              paddingTop: "2rem",
-              borderTop: "1px solid var(--border)",
+              marginTop: "0",
+              marginBottom: "0",
+              paddingTop: "0",
+              borderTop: "none",
               color: "var(--muted)",
             },
             "h2:first-child": {
               marginTop: "0",
             },
-            "h3": {
+            h3: {
               fontFamily: "var(--font-heading), serif",
               fontSize: "1.5rem",
               lineHeight: "1.25",
               fontWeight: "400",
-              marginTop: "2.5rem",
-              marginBottom: "0.5rem",
+              marginTop: "0",
+              marginBottom: "0",
               color: "var(--muted)",
             },
-            "h4": {
+            h4: {
               fontFamily: "var(--font-heading), serif",
               fontSize: "1.25rem",
               lineHeight: "1.25",
               fontWeight: "400",
-              marginTop: "2rem",
-              marginBottom: "0.5rem",
+              marginTop: "0",
+              marginBottom: "0",
               color: "var(--muted)",
             },
             a: {
@@ -70,8 +71,8 @@ module.exports = {
               color: "var(--accent-hover)",
             },
             blockquote: {
-              marginTop: "1.75rem",
-              marginBottom: "1.75rem",
+              marginTop: "0",
+              marginBottom: "0",
               paddingLeft: "1rem",
               borderLeftWidth: "3px",
               borderLeftColor: "var(--border)",
@@ -88,8 +89,8 @@ module.exports = {
               content: "none",
             },
             "ul, ol": {
-              marginTop: "1.25rem",
-              marginBottom: "1.25rem",
+              marginTop: "0",
+              marginBottom: "0",
               paddingLeft: "1.5rem",
             },
             "li + li": {
@@ -108,6 +109,8 @@ module.exports = {
               fontWeight: "400",
             },
             "pre": {
+              marginTop: "0",
+              marginBottom: "0",
               backgroundColor: "var(--surface-2)",
               padding: "1rem 1.25rem",
               borderRadius: "0.5rem",
@@ -120,8 +123,8 @@ module.exports = {
               fontSize: "0.875rem",
             },
             hr: {
-              marginTop: "2.5rem",
-              marginBottom: "2.5rem",
+              marginTop: "0",
+              marginBottom: "0",
               borderColor: "var(--border)",
               borderTopWidth: "1px",
             },
