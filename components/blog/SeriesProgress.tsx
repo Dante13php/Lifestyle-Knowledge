@@ -19,14 +19,14 @@ export function SeriesProgress({
 
   return (
     <section
-      className="mt-10 border-t border-[var(--border)] pt-8 sm:mt-14 sm:pt-10"
+      className="mt-8 border-t border-[var(--border-default)] pt-6 sm:mt-10 sm:pt-8"
       aria-label="Series progress"
     >
-      <h2 className="font-heading text-base font-medium text-[var(--foreground)] sm:text-lg">
+      <h2 className="font-heading text-base font-medium text-[var(--text-primary)] sm:text-lg">
         {seriesTitle}
       </h2>
       <ol
-        className="mt-6 space-y-4 list-none pl-0 font-body text-[var(--text-body)]"
+        className="mt-4 space-y-3 list-none pl-0 font-body text-[var(--text-body)]"
         role="list"
       >
         {posts.map((p: Post, index: number) => {
@@ -41,15 +41,15 @@ export function SeriesProgress({
                 aria-current="step"
                 className="flex items-start gap-3 opacity-90"
               >
-                <span className="shrink-0 w-6 text-right tabular-nums text-[var(--muted)]">
+                <span className="shrink-0 w-6 text-right tabular-nums text-[var(--text-secondary)]">
                   {step}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <div className="inline-flex items-center gap-2 text-[var(--muted)]">
-                    <span className="text-[var(--accent)]" aria-hidden>✓</span>
+                  <div className="inline-flex items-center gap-2 text-[var(--text-secondary)]">
+                    <span className="text-[var(--accent-primary)]" aria-hidden>✓</span>
                     <span>{p.title}</span>
                   </div>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--muted)] sm:text-[11px]">
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)] sm:text-[11px]">
                     Completed
                   </p>
                 </div>
@@ -58,17 +58,17 @@ export function SeriesProgress({
           }
 
           return (
-            <li key={p.slug} className="flex items-baseline gap-3">
-              <span className="shrink-0 w-6 text-right tabular-nums text-[var(--muted)]">
-                {step}
-              </span>
+            <li key={p.slug}>
               <Link
                 href={`/blog/${p.slug}`}
-                className="group inline-flex items-center gap-2 font-medium text-[var(--foreground)] underline-offset-2 hover:underline"
+                className="group flex items-baseline gap-3 rounded-lg border-l-2 border-l-transparent py-2 pl-2 pr-3 -ml-2 font-medium text-[var(--text-primary)] no-underline transition-[background-color,border-color,color] duration-150 hover:bg-[var(--tinted-callout)] hover:border-l-[var(--accent-primary)] hover:text-[var(--accent-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
               >
-                {p.title}
+                <span className="shrink-0 w-6 text-right tabular-nums text-[var(--text-secondary)] transition-colors group-hover:text-[var(--accent-primary)]">
+                  {step}
+                </span>
+                <span className="min-w-0 flex-1">{p.title}</span>
                 {isUpcoming && (
-                  <span className="text-[var(--accent)] text-sm">
+                  <span className="text-[var(--accent-primary)] text-sm shrink-0 group-hover:text-[var(--accent-hover)] transition-colors">
                     Read next →
                   </span>
                 )}

@@ -1,32 +1,40 @@
 /**
- * Editorial framework diagram: ordered sequence of conceptual nodes connected by arrows.
- * Use in MDX as <SectionDiagram labels={["Clarity", "Focus", "Energy", "Systems", "Reflection"]} />.
- * Light, editorial feel — not a UI chip/tag component.
+ * Editorial framework diagram: ordered sequence of conceptual nodes.
+ * Use in MDX: <SectionDiagram items={["Clarity", "Focus", "Energy", "Systems", "Reflection"]} />
+ * or <SectionDiagram labels={["..."]} />. Light, knowledge-framework feel — not filter tags.
  */
 type SectionDiagramProps = {
-  labels: string[];
+  /** Framework steps (preferred). */
+  items?: string[];
+  /** Alias for items (backward compatible). */
+  labels?: string[];
 };
 
-export function SectionDiagram({ labels }: SectionDiagramProps) {
-  if (!labels?.length) return null;
+export function SectionDiagram({ items, labels }: SectionDiagramProps) {
+  const list = items?.length ? items : labels ?? [];
+  if (!list.length) return null;
 
   return (
     <figure
-      className="section-diagram flex w-full justify-center py-1"
-      aria-label={`Framework sequence: ${labels.join(", ")}`}
+      className="section-diagram not-prose w-full py-2 sm:py-3"
+      aria-label={`Framework: ${list.join(" → ")}`}
     >
-      <div className="flex w-full max-w-full flex-wrap items-center justify-center gap-x-4 gap-y-3 sm:gap-x-5 sm:gap-y-3">
-        {labels.map((label, i) => (
+      <div className="flex w-full max-w-full flex-wrap items-center justify-center gap-x-5 gap-y-4 sm:gap-x-6 sm:gap-y-4">
+        {list.map((label, i) => (
           <span key={i} className="contents">
             <span
-              className="inline-flex items-center rounded-md border border-[var(--border)] bg-[var(--surface)]/50 px-4 py-1.5 text-xs font-normal tracking-tight text-[var(--text-body)] sm:text-sm"
-              style={{ fontFamily: "var(--font-body)" }}
+              className="inline-flex items-center rounded-lg border px-5 py-2 text-sm font-normal tracking-tight text-[var(--text-primary)] sm:px-6 sm:py-2.5 sm:text-[0.9375rem]"
+              style={{
+                fontFamily: "var(--font-body)",
+                borderColor: "var(--border-subtle)",
+                backgroundColor: "var(--tinted-diagram)",
+              }}
             >
               {label}
             </span>
-            {i < labels.length - 1 && (
+            {i < list.length - 1 && (
               <span
-                className="inline-flex shrink-0 px-0.5 text-[var(--muted)] text-sm sm:px-1"
+                className="inline-flex shrink-0 px-1 text-[var(--text-secondary)] text-base sm:px-1.5"
                 aria-hidden
               >
                 →

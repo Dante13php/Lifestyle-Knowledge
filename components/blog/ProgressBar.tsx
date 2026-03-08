@@ -41,11 +41,11 @@ export function ReadingProgressBar() {
 
   return (
     <div
-      className="fixed left-0 right-0 top-0 z-50 h-[3px] bg-[var(--border)]"
+      className="fixed left-0 right-0 top-0 z-50 h-[3px] bg-[var(--border-default)]"
       aria-hidden
     >
       <div
-        className="h-full bg-[var(--accent)] transition-[transform] duration-150 ease-out"
+        className="h-full bg-[var(--accent-primary)] transition-[transform] duration-150 ease-out"
         style={{ transform: `scaleX(${progress})`, transformOrigin: "left" }}
       />
     </div>

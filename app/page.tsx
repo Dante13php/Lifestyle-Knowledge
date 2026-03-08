@@ -141,11 +141,11 @@ export default function Home() {
           <div className="relative mx-auto flex max-w-5xl flex-col text-center">
             <h1
               id="hero-heading"
-              className="display-hero text-balance mx-auto text-[var(--foreground)]"
+              className="display-hero text-balance mx-auto text-[var(--text-primary)]"
             >
               Systems over
               <br />
-              willpower<span className="text-[var(--accent)]">.</span>
+              willpower<span className="text-[var(--accent-primary)]">.</span>
             </h1>
             <p className="lead-hero text-center">
               Practical guides and honest recommendations for focus, organization,
@@ -154,19 +154,19 @@ export default function Home() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:mt-10 sm:gap-5" role="group" aria-label="Primary actions">
               <Link
                 href="/blog"
-                className="inline-flex items-center min-h-[48px] shrink-0 rounded-lg border border-[var(--accent-hover)] bg-[var(--accent-hover)] px-6 py-3 text-base font-medium text-[var(--background)] shadow-[0_2px_8px_rgba(30,26,24,0.12)] hover:bg-[var(--foreground)] hover:border-[var(--foreground)] hover:shadow-[0_4px_12px_rgba(30,26,24,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] transition-[box-shadow,border-color,background-color] duration-200"
+                className="inline-flex items-center min-h-[48px] shrink-0 rounded-lg border border-[var(--accent-hover)] bg-[var(--accent-hover)] px-6 py-3 text-base font-medium text-[var(--on-accent)] shadow-[0_2px_8px_rgba(30,26,24,0.12)] hover:bg-[var(--text-primary)] hover:border-[var(--text-primary)] hover:shadow-[0_4px_12px_rgba(30,26,24,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] transition-[box-shadow,border-color,background-color] duration-200"
               >
                 Read the blog
               </Link>
               <Link
                 href="/resources"
-                className="inline-flex items-center min-h-[48px] shrink-0 rounded-lg border border-[var(--accent)] bg-transparent px-6 py-3 text-base font-medium text-[var(--text-body)] hover:bg-[rgba(94,107,82,0.08)] hover:text-[var(--accent)] hover:border-[var(--accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] transition-colors duration-200"
+                className="inline-flex items-center min-h-[48px] shrink-0 rounded-lg border border-[var(--accent-primary)] bg-transparent px-6 py-3 text-base font-medium text-[var(--text-body)] hover:bg-[var(--tinted-callout)] hover:text-[var(--accent-primary)] hover:border-[var(--accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] transition-colors duration-200"
               >
                 Resources
               </Link>
             </div>
             <p
-              className="mt-6 text-xs font-medium uppercase tracking-[0.12em] text-[var(--muted)] opacity-80"
+              className="mt-6 text-xs font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)] opacity-80"
               role="status"
             >
               No hype. Practical. Updated regularly.
@@ -221,18 +221,18 @@ export default function Home() {
                   <li key={item.title} className="flex">
                     <Link
                       href="/blog"
-                      className={`card group ${railClass} transition-all duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface-2)] text-left p-6`}
+                      className={`card group ${railClass} transition-all duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background-tinted)] text-left p-6`}
                     >
                       <div className="relative z-10 flex flex-1 flex-col">
                         <span
-                          className="mb-2 inline-flex w-fit px-3 py-1 rounded-full text-xs font-medium text-[var(--muted)] border border-[var(--border)]"
+                          className="mb-2 inline-flex w-fit px-3 py-1 rounded-full text-xs font-medium text-[var(--text-secondary)] border border-[var(--border-default)]"
                         >
                           {item.category}
                         </span>
                         <h3 className="min-w-0 break-words font-body">
                           {isSingleWord && firstPart ? (
                             <>
-                                <span className="text-[var(--muted)]">
+                                <span className="text-[var(--text-secondary)]">
                                 {firstPart}{" "}
                               </span>
                               <span style={{ color: accentColor }}>
@@ -241,7 +241,7 @@ export default function Home() {
                             </>
                           ) : (
                             <>
-                              <span className="text-[var(--muted)]">
+                              <span className="text-[var(--text-secondary)]">
                                 {firstPart}{" "}
                               </span>
                               <span style={{ color: accentColor }}>
@@ -287,17 +287,17 @@ export default function Home() {
                 <li key={post.slug} className="flex min-h-0">
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="group relative flex w-full min-h-[280px] flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--background-card)] transition-all duration-200 hover:border-[var(--border-visible)] hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] p-7 sm:p-9 text-left"
+                    className="group relative flex w-full min-h-[280px] flex-col overflow-hidden rounded-3xl border border-[var(--border-default)] bg-[var(--background-elevated)] transition-all duration-200 hover:border-[var(--border-visible)] hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] p-7 sm:p-9 text-left"
                   >
-                    <span className="pointer-events-none absolute inset-0 bg-transparent transition-colors duration-200 group-hover:bg-[var(--foreground)]/[0.03]" aria-hidden />
+                    <span className="pointer-events-none absolute inset-0 bg-transparent transition-colors duration-200 group-hover:bg-[var(--tinted-related)]" aria-hidden />
                     <div className="relative z-10 flex min-h-0 flex-1 flex-col">
                       {post.category && (
-                        <span className="mt-6 mb-2 inline-flex w-fit px-3 py-1 rounded-full text-xs font-medium text-[var(--muted)] border border-[var(--border)]">
+                        <span className="mt-6 mb-2 inline-flex w-fit px-3 py-1 rounded-full text-xs font-medium text-[var(--text-secondary)] border border-[var(--border-default)]">
                           {post.category}
                         </span>
                       )}
                       <h3
-                        className={`text-[var(--foreground)] min-w-0 break-words line-clamp-2 ${!post.category ? "mt-6" : ""}`}
+                        className={`text-[var(--text-primary)] min-w-0 break-words line-clamp-2 group-hover:text-[var(--accent-primary)] transition-colors ${!post.category ? "mt-6" : ""}`}
                       >
                         {post.title}
                       </h3>
@@ -390,11 +390,11 @@ export default function Home() {
                 name="email"
                 autoComplete="email"
                 placeholder="you@example.com"
-                className="min-h-[48px] w-full rounded-lg border border-[var(--border-visible)] bg-[var(--background-card)] px-5 py-3.5 text-base text-[var(--foreground)] placeholder:text-[var(--muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] sm:w-80"
+                className="min-h-[48px] w-full rounded-lg border border-[var(--border-visible)] bg-[var(--background-elevated)] px-5 py-3.5 text-base text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] sm:w-80"
               />
               <button
                 type="submit"
-                className="min-h-[48px] shrink-0 rounded-lg border border-[var(--accent-hover)] bg-[var(--accent-hover)] px-6 py-3.5 text-base font-medium text-[var(--background)] transition-colors hover:bg-[var(--foreground)] hover:border-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
+                className="min-h-[48px] shrink-0 rounded-lg border border-[var(--accent-hover)] bg-[var(--accent-hover)] px-6 py-3.5 text-base font-medium text-[var(--on-accent)] transition-colors hover:bg-[var(--text-primary)] hover:border-[var(--text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
               >
                 Subscribe
               </button>

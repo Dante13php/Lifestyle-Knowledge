@@ -159,11 +159,11 @@ export function TocSidebar({ toc }: TocSidebarProps) {
   }, [toc]);
 
   return (
-    <nav className="sticky top-[100px] min-w-0 border-l-2 border-[var(--border)] pl-3 sm:top-[120px] sm:pl-4">
-      <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+    <nav className="sticky top-[100px] min-w-0 border-l-2 border-[var(--border-default)] pl-3 sm:top-[120px] sm:pl-4">
+      <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]">
         On this page
       </p>
-      <ul className="space-y-1.5 text-sm text-[var(--muted)]">
+      <ul className="space-y-1.5 text-sm text-[var(--text-secondary)]">
         {toc.map((entry) => {
           const isActive = activeId === entry.id;
           return (
@@ -177,16 +177,16 @@ export function TocSidebar({ toc }: TocSidebarProps) {
                 className={
                   "flex min-w-0 items-center gap-2 -ml-4 rounded-[6px] border-l-2 py-1 pr-2 transition-[background,border-color,color,padding-left] duration-150 ease-out " +
                   (isActive
-                    ? "border-l-[3px] border-l-[rgba(60,80,40,0.55)] bg-[rgba(60,80,40,0.08)] pl-[15px] font-medium text-[var(--text-strong)]"
-                    : "border-transparent pl-4 text-[var(--muted)] hover:bg-[rgba(60,80,40,0.06)] hover:border-l-[rgba(60,80,40,0.45)] hover:text-[var(--text-strong)]")
+                    ? "border-l-[3px] border-l-[var(--accent-primary)] bg-[var(--tinted-callout)] pl-[15px] font-medium text-[var(--text-primary)]"
+                    : "border-transparent pl-4 text-[var(--text-secondary)] hover:bg-[var(--tinted-callout)] hover:border-l-[var(--accent-primary)]/70 hover:text-[var(--text-primary)]")
                 }
               >
                 <span
                   aria-hidden
                   className={`shrink-0 rounded-full transition-colors ${
                     isActive
-                      ? "h-2 w-2 bg-[var(--accent)]"
-                      : "h-1.5 w-1.5 bg-[var(--muted)]/50"
+                      ? "h-2 w-2 bg-[var(--accent-primary)]"
+                      : "h-1.5 w-1.5 bg-[var(--text-secondary)]/50"
                   }`}
                 />
                 <span className="min-w-0 truncate">{entry.text}</span>

@@ -35,16 +35,17 @@ function Card({
     return (
       <Link
         href={href}
-        className="group block rounded-lg border border-[var(--border)] border-l-2 border-l-[var(--accent)]/60 bg-[var(--surface)]/70 py-5 pl-5 pr-5 hover:bg-[var(--surface)]/90 sm:py-6 sm:pl-6 sm:pr-6 transition-colors text-left w-full max-w-[40rem] mx-auto"
+        className="group block rounded-xl border border-[var(--border-subtle)] bg-[var(--tinted-related)] py-5 pl-5 pr-5 hover:bg-[var(--tinted-callout)] hover:border-[var(--border-default)] sm:py-6 sm:pl-6 sm:pr-6 transition-colors duration-200 text-left w-full max-w-[36rem] mx-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
+        style={{ borderLeftWidth: "3px", borderLeftColor: "var(--tinted-callout-border)" }}
       >
-        <span className="block font-heading text-xl font-medium tracking-tight text-[var(--foreground)] sm:text-2xl group-hover:underline underline-offset-2">
+        <span className="block font-heading text-xl font-medium tracking-tight text-[var(--text-primary)] sm:text-2xl group-hover:text-[var(--accent-primary)] underline-offset-2 transition-colors">
           {title}
         </span>
-        <span className="mt-1 block text-sm text-[var(--muted)]" aria-hidden>
+        <span className="mt-2 block text-sm text-[var(--text-secondary)]" aria-hidden>
           Read next →
         </span>
         {excerpt && (
-          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--muted)]">
+          <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-[var(--text-secondary)]">
             {excerpt}
           </p>
         )}
@@ -57,29 +58,27 @@ function Card({
       href={href}
       className={`group block transition-colors ${
         isNav
-          ? "rounded-r-lg border border-[var(--border)] border-l-[3px] border-l-[var(--accent)] bg-[var(--surface)]/60 py-4 px-4 hover:bg-[var(--surface)]/80"
-          : `rounded-2xl border border-[var(--border)] bg-[var(--surface-2)]/50 hover:border-[var(--border)] hover:bg-[var(--surface-2)]/70 ${
-              isCompact ? "p-3" : "p-5"
-            }`
+          ? "rounded-r-lg border border-[var(--border-default)] border-l-[3px] border-l-[var(--accent-primary)] bg-[var(--tinted-related)] py-4 px-4 hover:bg-[var(--tinted-callout)]"
+          : `rounded-2xl border border-[var(--border-default)] bg-[var(--surface)] hover:border-[var(--border-visible)] hover:bg-[var(--tinted-callout)] ${isCompact ? "p-3" : "p-5"}`
       }`}
     >
       {label && (
-        <span className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+        <span className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]">
           {label}
         </span>
       )}
       <span
-        className={`font-medium text-[var(--foreground)] underline-offset-2 group-hover:underline inline-flex flex-wrap items-baseline gap-2 ${
+        className={`font-medium text-[var(--text-primary)] underline-offset-2 group-hover:text-[var(--accent-primary)] group-hover:underline inline-flex flex-wrap items-baseline gap-2 transition-colors ${
           isCompact ? "text-sm" : "text-base"
         }`}
       >
         {title}
-        <span className="shrink-0 text-[var(--muted)]" aria-hidden>
+        <span className="shrink-0 text-[var(--text-secondary)]" aria-hidden>
           →
         </span>
       </span>
       {excerpt && !isCompact && (
-        <p className="mt-1.5 line-clamp-2 text-sm text-[var(--muted)] sm:mt-2">
+        <p className="mt-1.5 line-clamp-2 text-sm text-[var(--text-secondary)] sm:mt-2">
           {excerpt}
         </p>
       )}
@@ -118,7 +117,7 @@ export function ContinueLearning({
       aria-label="Next step navigation"
     >
       <div className="text-center">
-        <h2 className="font-heading text-lg font-medium text-[var(--foreground)]">
+        <h2 className="font-heading text-lg font-medium text-[var(--text-primary)]">
           {sectionHeading}
         </h2>
       </div>

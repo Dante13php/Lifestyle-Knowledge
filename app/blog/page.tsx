@@ -14,7 +14,7 @@ export default function BlogPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 sm:px-8 sm:py-20">
       <header className="mb-12">
-        <h1 className="text-[var(--foreground)]">
+        <h1 className="text-[var(--text-primary)]">
           Blog
         </h1>
         <p className="mt-4 text-lg text-[var(--text-body)]">
@@ -30,18 +30,18 @@ export default function BlogPage() {
             <li key={post.slug} className="flex min-h-0">
               <Link
                 href={`/blog/${post.slug}`}
-                className="group flex w-full min-h-[200px] flex-col rounded-xl border border-[var(--border)] bg-[var(--background)] p-5 transition-[border-color] hover:border-[var(--muted)]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 sm:min-h-[240px] sm:p-6"
+                className="group flex w-full min-h-[200px] flex-col rounded-xl border border-[var(--border-default)] bg-[var(--background-elevated)] p-5 transition-colors hover:border-[var(--border-visible)] hover:bg-[var(--tinted-related)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 sm:min-h-[240px] sm:p-6"
               >
-                <span className="text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+                <span className="text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]">
                   {post.category}
                 </span>
-                <h3 className="mt-3 text-[var(--foreground)] line-clamp-2 group-hover:text-[var(--accent)]">
+                <h3 className="mt-3 text-[var(--text-primary)] line-clamp-2 group-hover:text-[var(--accent-primary)] transition-colors">
                   {post.title}
                 </h3>
                 <p className="mt-2 flex-1 text-sm text-[var(--text-body)] line-clamp-2">
                   {post.description}
                 </p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent)]">
+                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent-primary)] group-hover:text-[var(--accent-hover)] transition-colors">
                   Read <span aria-hidden>→</span>
                 </span>
               </Link>

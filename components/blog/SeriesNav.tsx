@@ -14,7 +14,7 @@ type SeriesNavProps = {
 
 /** TOC-like link: no underline, subtle background on hover/focus, rounded, transition background-color and color. */
 const linkBase =
-  "block no-underline rounded-lg transition-[background-color,color] duration-200 outline-none hover:no-underline focus:no-underline active:no-underline focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface-2)]";
+  "block no-underline rounded-lg transition-[background-color,color] duration-200 outline-none hover:no-underline focus:no-underline active:no-underline focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background-tinted)]";
 
 export function SeriesNav({
   seriesSlug,
@@ -50,20 +50,21 @@ export function SeriesNav({
 
   return (
     <nav
-      className="mt-6 rounded-xl border border-[var(--border)] bg-[color-mix(in_srgb,var(--surface-2)_90%,var(--highlight))] px-5 py-5 sm:px-6 sm:py-6"
+      className="mt-4 rounded-xl border border-[var(--border-default)] px-4 py-4 sm:px-5 sm:py-5"
+      style={{ backgroundColor: 'var(--tinted-series)' }}
       aria-label="Series navigation"
     >
       {/* 1. Series header */}
-      <header className="mb-6">
-        <h2 className="font-heading text-lg font-semibold tracking-tight text-[var(--foreground)]">
+      <header className="mb-4">
+        <h2 className="font-heading text-lg font-semibold tracking-tight text-[var(--text-primary)]">
           {title}
         </h2>
-        <p className="mt-1 text-sm text-[var(--muted)]">{description}</p>
-        <p className="mt-3 text-xs font-medium text-[var(--muted)]">
+        <p className="mt-1 text-sm text-[var(--text-secondary)]">{description}</p>
+        <p className="mt-2 text-xs font-medium text-[var(--text-secondary)]">
           {progressText}
         </p>
-        <div
-          className="mt-3 mb-5 h-[6px] w-full overflow-hidden rounded-[999px] bg-[var(--border-muted)]"
+          <div
+          className="mt-2 mb-4 h-[6px] w-full overflow-hidden rounded-[999px] bg-[var(--border-subtle)]"
           role="progressbar"
           aria-valuenow={currentIndex + 1}
           aria-valuemin={1}
@@ -81,7 +82,7 @@ export function SeriesNav({
 
       {/* 2. Desktop: 2- or 3-column grid (Prev | Current | Next) */}
       <div
-        className={`flex flex-col gap-6 lg:grid lg:items-stretch lg:gap-8 ${
+        className={`flex flex-col gap-5 lg:grid lg:items-stretch lg:gap-6 ${
           prevPost && nextPost
             ? "lg:grid-cols-[1fr_1fr_1fr]"
             : prevPost || nextPost
@@ -94,21 +95,21 @@ export function SeriesNav({
           <div className="flex min-h-0 flex-col lg:min-w-0">
             <Link
               href={`/blog/${prevPost.slug}`}
-              className={`group ${linkBase} flex min-h-0 flex-1 flex-col rounded-xl border border-[var(--border-muted)] bg-[rgba(0,0,0,0.02)] p-5 sm:p-6 transition-[background-color] duration-[120ms] ease-[ease] hover:bg-[rgba(0,0,0,0.04)] focus-visible:ring-offset-[color-mix(in_srgb,var(--surface-2)_90%,var(--highlight))]`}
+              className={`group ${linkBase} flex min-h-0 flex-1 flex-col rounded-xl border border-[var(--border-subtle)] bg-[var(--background-elevated)] p-4 sm:p-5 transition-[background-color] duration-[120ms] ease-[ease] hover:bg-[var(--tinted-callout)] focus-visible:ring-offset-[var(--tinted-series)]`}
             >
-              <span className="block text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+              <span className="block text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]">
                 Previous in series
               </span>
-              <span className="mt-2 block font-heading text-xl font-semibold tracking-tight text-[var(--foreground)] sm:text-[1.25rem]">
+              <span className="mt-2 block font-heading text-xl font-semibold tracking-tight text-[var(--text-primary)] sm:text-[1.25rem] group-hover:text-[var(--accent-primary)] transition-colors">
                 {prevPost.title}
               </span>
               {(prevPost.description || prevPost.title) && (
-                <p className="mt-2 line-clamp-2 text-sm text-[var(--muted)]">
+                <p className="mt-2 line-clamp-2 text-sm text-[var(--text-secondary)]">
                   {prevPost.description ||
                     "Go back to the previous part of this series."}
                 </p>
               )}
-              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--muted)] no-underline transition-colors duration-200 group-hover:text-[var(--foreground)]">
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--text-secondary)] no-underline transition-colors duration-200 group-hover:text-[var(--accent-primary)]">
                 <span
                   aria-hidden
                   className="inline-block transition-transform duration-200 ease-out group-hover:-translate-x-0.5"
@@ -124,21 +125,21 @@ export function SeriesNav({
         {/* Current article */}
         {currentPost && (
           <div className="flex min-h-0 flex-col lg:min-w-0" aria-current="step">
-            <div className="min-h-0 flex-1 rounded-xl border border-[var(--border-muted)] bg-[rgba(0,0,0,0.02)] px-4 py-4 sm:px-5 sm:py-5">
-              <span className="inline-block rounded-md bg-[var(--border-subtle)] px-2 py-0.5 text-[11px] font-medium uppercase tracking-wider text-[var(--muted)]">
+            <div className="min-h-0 flex-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--background-elevated)] px-3 py-3 sm:px-4 sm:py-4">
+              <span className="inline-block rounded-md bg-[var(--tinted-callout)] px-2 py-0.5 text-[11px] font-medium uppercase tracking-wider text-[var(--text-secondary)]">
                 Current article
               </span>
-              <p className="mt-2 font-semibold text-[var(--foreground)] text-sm">
+              <p className="mt-2 font-semibold text-[var(--text-primary)] text-sm">
                 {currentPost.title}
               </p>
               {(currentPost.description || currentPost.title) && (
-                <p className="mt-2 line-clamp-2 text-sm text-[var(--muted)]">
+                <p className="mt-2 line-clamp-2 text-sm text-[var(--text-secondary)]">
                   {currentPost.description ||
                     "You are reading this article in the series."}
                 </p>
               )}
               {currentPostMeta && (
-                <p className="mt-2 text-xs text-[var(--muted)]">
+                <p className="mt-2 text-xs text-[var(--text-secondary)]">
                   {currentPostMeta}
                 </p>
               )}
@@ -151,21 +152,21 @@ export function SeriesNav({
           <div className="flex min-h-0 flex-col lg:min-w-0">
             <Link
               href={`/blog/${nextPost.slug}`}
-              className={`group ${linkBase} flex min-h-0 flex-1 flex-col rounded-xl border border-[rgba(60,80,40,0.18)] bg-[rgba(60,80,40,0.06)] p-5 sm:p-6 transition-[background-color] duration-[120ms] ease-[ease] hover:bg-[rgba(60,80,40,0.10)] focus-visible:ring-offset-[color-mix(in_srgb,var(--surface-2)_90%,var(--highlight))]`}
+              className={`group ${linkBase} flex min-h-0 flex-1 flex-col rounded-xl border border-[var(--tinted-callout-border)] bg-[var(--tinted-related)] p-4 sm:p-5 transition-[background-color] duration-[120ms] ease-[ease] hover:bg-[var(--tinted-callout)] focus-visible:ring-offset-[var(--tinted-series)]`}
             >
-              <span className="block text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+              <span className="block text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]">
                 Next in series
               </span>
-              <span className="mt-2 block font-heading text-xl font-semibold tracking-tight text-[var(--foreground)] sm:text-[1.25rem]">
+              <span className="mt-2 block font-heading text-xl font-semibold tracking-tight text-[var(--text-primary)] sm:text-[1.25rem] group-hover:text-[var(--accent-primary)] transition-colors">
                 {nextPost.title}
               </span>
               {(nextPost.description || nextPost.title) && (
-                <p className="mt-2 line-clamp-2 text-sm text-[var(--muted)]">
+                <p className="mt-2 line-clamp-2 text-sm text-[var(--text-secondary)]">
                   {nextPost.description ||
                     `Continue to the next part of this series.`}
                 </p>
               )}
-              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--olive-700)] no-underline transition-colors duration-200 group-hover:text-[var(--olive-900)]">
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent-primary)] no-underline transition-colors duration-200 group-hover:text-[var(--accent-hover)]">
                 Continue reading
                 <span
                   aria-hidden
@@ -181,33 +182,33 @@ export function SeriesNav({
 
       {/* 3. Later articles — index, title, short description */}
       {laterPosts.length > 0 && (
-        <div className="mt-8 border-t border-[var(--border)] pt-6">
-          <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+        <div className="mt-6 border-t border-[var(--border-default)] pt-4">
+          <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]">
             Later in series
           </p>
-          <ol className="list-none space-y-1.5 pl-0 text-sm text-[var(--muted)]" role="list">
+          <ol className="list-none space-y-1.5 pl-0 text-sm text-[var(--text-secondary)]" role="list">
             {laterPosts.map((p, i) => {
               const partNum = currentIndex + 3 + i;
               return (
                 <li key={p.slug}>
                   <Link
                     href={`/blog/${p.slug}`}
-                    className={`group ${linkBase} flex cursor-pointer items-center gap-3 rounded-lg py-[10px] pl-3 pr-3 -ml-3 no-underline transition-[background-color,color] duration-[120ms] ease-[ease] hover:bg-[rgba(60,80,40,0.05)] hover:no-underline`}
+                    className={`group ${linkBase} flex cursor-pointer items-center gap-3 rounded-lg border-l-2 border-l-transparent py-[10px] pl-3 pr-3 -ml-3 no-underline transition-[background-color,border-color,color] duration-[120ms] ease-[ease] hover:bg-[var(--tinted-callout)] hover:border-l-[var(--accent-primary)] hover:no-underline`}
                   >
                     <span
-                      className="w-5 shrink-0 text-right text-xs tabular-nums"
+                      className="w-5 shrink-0 text-right text-xs tabular-nums text-[var(--text-secondary)] transition-colors duration-[120ms] group-hover:text-[var(--accent-primary)]"
                       aria-hidden
                     >
                       {partNum}
                     </span>
                     <div className="min-w-0 flex-1 max-w-full">
                       <div className="flex items-baseline gap-1.5">
-                        <span className="font-medium transition-colors duration-[120ms] ease-[ease] group-hover:text-[var(--text)]">
+                        <span className="font-medium transition-colors duration-[120ms] ease-[ease] group-hover:text-[var(--accent-primary)]">
                           {p.title}
                         </span>
                         <span
                           aria-hidden
-                          className="inline-block shrink-0 text-[var(--muted)] opacity-0 transition-[opacity,transform] duration-200 ease-out group-hover:translate-x-0.5 group-hover:opacity-100"
+                          className="inline-block shrink-0 text-[var(--text-secondary)] opacity-0 transition-[opacity,transform] duration-200 ease-out group-hover:translate-x-0.5 group-hover:opacity-100"
                         >
                           →
                         </span>

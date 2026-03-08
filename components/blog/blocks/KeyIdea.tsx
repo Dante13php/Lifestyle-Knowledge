@@ -1,10 +1,11 @@
 export function KeyIdea({ children }: { children: React.ReactNode }) {
   return (
     <aside
-      className="key-idea rounded-2xl border border-[var(--border)] bg-[var(--surface-2)]/60 p-4 sm:px-5 sm:py-4"
+      className="key-idea rounded-2xl border p-4 sm:px-5 sm:py-4"
+      style={{ borderColor: 'var(--tinted-callout-border)', backgroundColor: 'var(--tinted-callout)' }}
       aria-label="Key idea"
     >
-      <div className="mb-3 flex items-center gap-2 text-sm font-medium text-[var(--accent)]">
+      <div className="mb-3 flex items-center gap-2 text-sm font-medium text-[var(--accent-primary)]">
         <span aria-hidden>💡</span>
         <span>Key Idea</span>
       </div>

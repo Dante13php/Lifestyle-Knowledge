@@ -3,68 +3,102 @@
 @config "../tailwind.config.js";
 
 :root {
-  /* Core design tokens */
-  --bg: #F6F1E8; /* основен фон, топъл off-white */
-  --surface: #FBF8F1; /* карти / панели */
-  --surface-2: #F2EBDD; /* алтернативна повърхност */
+  /* ========== Semantic color system ==========
+   * Roles: background, surface, border, text-primary, text-muted, accent-primary, accent-secondary, accent-soft.
+   * Base remains neutral; color is restrained and intentional.
+   */
 
-  --text: #171613;
-  --text-strong: #171613; /* body emphasis / section leads */
-  --muted: #5B564D; /* вторичен текст */
+  /* —— Backgrounds —— */
+  --background: #F7F5F1;           /* page base */
+  --surface: #EFECE6;             /* cards, blocks, raised surfaces */
+  --background-elevated: var(--surface);
+  --background-tinted: #F3F1ED;   /* alternate surface, subtle warmth */
 
-  --border: #E3DACB;
+  /* —— Soft surface (slightly raised, minimal contrast) —— */
+  --surface-soft: #F3F1ED;
 
-  --accent: #6F7C4A; /* muted olive */
-  --accent-2: #B46A4D; /* clay / terracotta */
-  --highlight: #E6EAD8; /* pale olive tint */
+  /* —— Tinted surfaces (soft, low-contrast) —— */
+  --tinted-callout: rgba(94, 107, 60, 0.07);      /* very soft olive: tips, insights, principles */
+  --tinted-callout-border: rgba(94, 107, 60, 0.22);
+  --tinted-takeaway: rgba(201, 122, 64, 0.07);    /* subtle secondary accent: key takeaways */
+  --tinted-related: rgba(94, 107, 60, 0.05);      /* next step card soft tint */
+  --tinted-diagram: rgba(239, 236, 230, 0.95);    /* framework diagram nodes */
+  --tinted-series: color-mix(in srgb, var(--background-tinted) 90%, var(--accent-soft));
 
-  /* Text on accent surfaces (buttons, pills) */
-  --on-accent: #FBF8F1;
+  /* —— Text —— */
+  --text-primary: #2E2E2E;
+  --text-secondary: #6B6B6B;
+  --text-muted: var(--text-secondary);
 
-  /* Soft, layered shadow for surfaces */
+  /* —— Borders —— */
+  --border-subtle: #E2DED7;
+  --border-default: #DDD9D2;
+  --border-visible: rgba(46, 46, 46, 0.12);
+
+  /* —— Accents (muted olive primary, secondary terracotta) —— */
+  --accent-primary: #5E6B3C;
+  --accent-secondary: #C97A40;
+  --accent-soft: #E6E9DE;         /* pale olive, soft highlights (e.g. nav active bg) */
+  --accent-hover: #4D5930;        /* darker olive for hover/active */
+
+  /* Text on accent (buttons, pills) */
+  --on-accent: #F7F5F1;
+
+  /* —— Shadows —— */
   --shadow: 0 18px 45px rgba(23, 22, 19, 0.18), 0 4px 12px rgba(23, 22, 19, 0.06);
   --shadow-soft: var(--shadow);
 
-  /* Legacy aliases mapped to tokens (compat) */
-  --background: var(--bg);
-  --background-alt: var(--surface-2);
+  /* —— Legacy / compat (map to semantic) —— */
+  --bg: var(--background);
+  --surface-2: var(--background-tinted);
+  --text: var(--text-primary);
+  --text-strong: var(--text-primary);
+  --muted: var(--text-secondary);
+  --border: var(--border-default);
+  --accent: var(--accent-primary);
+  --accent-2: var(--accent-secondary);
+  --highlight: var(--accent-soft);
+  --background-alt: var(--background-tinted);
   --background-card: var(--surface);
-
-  --foreground: var(--muted);
-  --text-body: var(--muted);
-  --text-body-muted: var(--muted);
-
-  --border-subtle: rgba(23, 22, 19, 0.06);
-  --border-visible: rgba(23, 22, 19, 0.12);
-  --border-muted: rgba(23, 22, 19, 0.14);
-
-  --accent-hover: #5C6A3F;
-  --olive-600: #3C5028; /* darker olive for progress bar, emphasis */
-  --olive-700: #2F4020; /* CTA default */
-  --olive-900: #1E2814; /* CTA hover */
-
-  --hero-gradient-start: var(--highlight);
-  --header-footer-bg: var(--surface-2);
-  --section-olive-bg: #D2D8CA;
-
-  /* Card: semi-transparent surface for glass effect */
-  --surface-rgba: rgba(251, 248, 241, 0.88);
+  --foreground: var(--text-primary);
+  --text-body: var(--text-secondary);
+  --text-body-muted: var(--text-secondary);
+  --border-muted: rgba(46, 46, 46, 0.14);
+  --olive-600: #3C5028;
+  --olive-700: #2F4020;
+  --olive-900: #1E2814;
+  --hero-gradient-start: var(--accent-soft);
+  --header-footer-bg: var(--background-tinted);
+  --section-olive-bg: color-mix(in srgb, var(--accent-soft) 70%, var(--background-tinted));
+  --surface-rgba: rgba(239, 236, 230, 0.88);
 
   color-scheme: light;
 }
 
 @theme inline {
-  --color-background: var(--bg);
-  --color-background-alt: var(--surface-2);
-  --color-background-card: var(--surface);
-  --color-foreground: var(--muted);
-  --color-text-body: var(--text);
-  --color-text-body-muted: var(--muted);
-  --color-border: var(--border);
-  --color-border-visible: var(--border-visible);
-  --color-accent: var(--accent);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-background-elevated: var(--background-elevated);
+  --color-background-tinted: var(--background-tinted);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-soft: var(--accent-soft);
   --color-accent-hover: var(--accent-hover);
-  --color-muted: var(--muted);
+  --color-surface-soft: var(--surface-soft);
+  /* Legacy */
+  --color-background-alt: var(--background-tinted);
+  --color-background-card: var(--surface);
+  --color-foreground: var(--text-primary);
+  --color-text-body: var(--text-secondary);
+  --color-border: var(--border-default);
+  --color-border-visible: var(--border-visible);
+  --color-accent: var(--accent-primary);
+  --color-muted: var(--text-muted);
   --color-hero-gradient-start: var(--hero-gradient-start);
   --color-header-footer-bg: var(--header-footer-bg);
   --color-section-olive-bg: var(--section-olive-bg);
@@ -81,67 +115,87 @@
 .theme-dark {
   color-scheme: dark;
 
-  /* Surfaces: dark “glass” layers */
-  --bg: #181D13;
+  --background: #181D13;
   --surface: #202618;
-  --surface-2: #252B1C;
-  --surface-rgba: rgba(25, 30, 21, 0.96);
+  --background-elevated: var(--surface);
+  --background-tinted: #252B1C;
+  --surface-soft: #252B1C;
+  --tinted-callout: rgba(150, 170, 102, 0.12);
+  --tinted-callout-border: rgba(150, 170, 102, 0.35);
+  --tinted-takeaway: rgba(201, 122, 64, 0.12);
+  --tinted-related: rgba(150, 170, 102, 0.1);
+  --tinted-diagram: rgba(37, 43, 28, 0.8);
+  --tinted-series: color-mix(in srgb, var(--background-tinted) 92%, rgba(150, 170, 102, 0.15));
 
-  /* Text: off-white primary, muted with opacity */
-  --text: #E6DDCC;
-  --text-strong: #E6DDCC;
-  --muted: rgba(230, 221, 204, 0.7);
-
-  /* Border: softer, lower-contrast light */
-  --border: rgba(239, 229, 210, 0.22);
+  --text-primary: #E6DDCC;
+  --text-secondary: rgba(230, 221, 204, 0.7);
+  --text-muted: var(--text-secondary);
   --border-subtle: rgba(239, 229, 210, 0.12);
+  --border-default: rgba(239, 229, 210, 0.22);
   --border-visible: rgba(239, 229, 210, 0.28);
-  --border-muted: rgba(239, 229, 210, 0.18);
 
-  /* Accent: slightly desaturated for rails & details */
-  --accent: #96AA66;
-  --accent-2: #C27A58;
-  --accent-hover: #A9BC73;
+  --accent-primary: #8A9B5C;
+  --accent-secondary: #D4895C;
+  --accent-soft: rgba(230, 233, 222, 0.4);
+  --accent-hover: #9BAE6B;
+  --on-accent: #151911;
+
+  --bg: var(--background);
+  --surface-2: var(--background-tinted);
+  --surface-rgba: rgba(25, 30, 21, 0.96);
+  --text: var(--text-primary);
+  --text-strong: var(--text-primary);
+  --muted: var(--text-secondary);
+  --border: var(--border-default);
+  --border-muted: rgba(239, 229, 210, 0.18);
+  --accent: var(--accent-primary);
+  --accent-2: var(--accent-secondary);
+  --highlight: var(--accent-soft);
+  --foreground: var(--text-primary);
+  --text-body: var(--text-secondary);
+
   --olive-600: #7A8F4D;
   --olive-700: #8FA35C;
   --olive-900: #A9BC73;
-  --highlight: rgba(230, 234, 216, 0.45);
-  --on-accent: #151911;
 
-  /* Legacy aliases */
-  --background: var(--bg);
-  --background-alt: var(--surface-2);
-  --background-card: var(--surface);
-  --foreground: var(--muted);
-  --text-body: var(--text);
-  --text-body-muted: var(--muted);
-
-  background-color: var(--bg);
+  background-color: var(--background);
   color: var(--text-body);
 }
 
 @utility bg-app {
-  background-color: var(--bg);
+  background-color: var(--background);
 }
 
 @utility bg-surface {
   background-color: var(--surface);
 }
 
+@utility bg-elevated {
+  background-color: var(--background-elevated);
+}
+
+@utility bg-tinted {
+  background-color: var(--background-tinted);
+}
+
 @utility bg-surface-2 {
-  background-color: var(--surface-2);
+  background-color: var(--background-tinted);
 }
 
 @utility text-ink {
-  color: var(--muted);
+  color: var(--text-secondary);
 }
 
 @utility text-muted {
-  color: var(--muted);
+  color: var(--text-secondary);
+}
+
+@utility text-primary {
+  color: var(--text-primary);
 }
 
 @utility border-subtle {
-  border-color: var(--border);
+  border-color: var(--border-subtle);
 }
 
 @utility shadow-soft {
@@ -153,17 +207,17 @@
    Use .card + .card-rail-accent | .card-rail-accent-2 | .card-rail-highlight
    ============================================ */
 .card {
-  --card-rail: var(--accent);
+  --card-rail: var(--accent-primary);
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 0;
   overflow: hidden;
-  border-radius: 1rem; /* rounded-2xl */
-  border: 1px solid var(--border);
-  background: rgba(251, 248, 241, 0.8); /* very light surface, no strong color block */
-  box-shadow: 0 8px 24px rgba(23, 22, 19, 0.06);
+  border-radius: 1rem;
+  border: 1px solid var(--border-default);
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(46, 46, 46, 0.05);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 @supports (backdrop-filter: blur(10px)) {
@@ -173,7 +227,7 @@
 }
 .card:hover {
   border-color: var(--border-visible);
-  box-shadow: 0 10px 32px rgba(23, 22, 19, 0.08);
+  box-shadow: 0 10px 32px rgba(46, 46, 46, 0.06);
   transform: translateY(-1px);
 }
 .card::before {
@@ -188,10 +242,10 @@
   pointer-events: none;
 }
 .card-rail-accent {
-  --card-rail: var(--accent);
+  --card-rail: var(--accent-primary);
 }
 .card-rail-accent-2 {
-  --card-rail: var(--accent-2);
+  --card-rail: var(--accent-secondary);
 }
 /* Tools card: darker rail so it’s visible on light background */
 .card-rail-highlight {
@@ -252,7 +306,7 @@ body {
    ============================================ */
 h1, h2, h3, h4 {
   font-family: var(--font-heading), serif;
-  color: var(--foreground);
+  color: var(--text-primary);
   text-rendering: optimizeLegibility;
   font-variant-ligatures: common-ligatures;
 }
@@ -329,7 +383,7 @@ h4 {
   line-height: 1.55;
   font-weight: 500;
   letter-spacing: -0.01em;
-  color: var(--text);
+  color: var(--text-primary);
   margin: 0;
   max-width: 48ch;
 }
@@ -339,19 +393,19 @@ h4 {
   margin-right: auto;
 }
 
-/* Lead bubble: rounded, glassmorphism, greenish tint */
+/* Lead bubble: rounded, glassmorphism, warm tint */
 .lead-bubble {
   border-radius: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(218, 214, 200, 0.55);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 6px 20px rgba(23, 22, 19, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 20px rgba(46, 46, 46, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Paragraph rhythm */
 p {
-  margin-bottom: 1.2em;
+  margin-bottom: 1rem;
 }
 p:last-child {
   margin-bottom: 0;
@@ -389,11 +443,14 @@ a:has(.link-pill):hover {
   align-items: center;
   gap: 0.5rem;
   width: fit-content;
-  color: var(--accent);
+  color: var(--accent-primary);
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
-  transition: text-decoration-color 0.2s ease;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+.link-pill:hover {
+  color: var(--accent-hover);
 }
 .link-pill:hover {
   text-decoration: none;
@@ -440,22 +497,22 @@ a:has(.link-pill):hover {
     /* Muted olive lift, very soft, top-left */
     radial-gradient(
       ellipse 180% 140% at 6% -10%,
-      rgba(111, 124, 74, 0.045) 0%,
-      rgba(111, 124, 74, 0.022) 32%,
+      rgba(94, 107, 60, 0.04) 0%,
+      rgba(94, 107, 60, 0.02) 32%,
       transparent 70%
     ),
     /* Neutral warm depth through center */
     radial-gradient(
       ellipse 220% 180% at 50% 40%,
-      rgba(188, 167, 137, 0.035) 0%,
-      rgba(188, 167, 137, 0.02) 35%,
+      rgba(188, 167, 137, 0.03) 0%,
+      rgba(188, 167, 137, 0.015) 35%,
       transparent 78%
     ),
-    /* Clay accent, grounded bottom-right */
+    /* Secondary accent, grounded bottom-right */
     radial-gradient(
       ellipse 210% 170% at 110% 110%,
-      rgba(180, 106, 77, 0.04) 0%,
-      rgba(180, 106, 77, 0.018) 30%,
+      rgba(201, 122, 64, 0.035) 0%,
+      rgba(201, 122, 64, 0.015) 30%,
       transparent 75%
     );
   background-repeat: no-repeat;
@@ -478,10 +535,10 @@ a:has(.link-pill):hover {
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--muted);
-  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
   border-radius: 9999px;
-  background: var(--surface-2);
+  background: var(--background-tinted);
   font-family: var(--font-body), sans-serif;
 }
 
@@ -490,7 +547,7 @@ a:has(.link-pill):hover {
 }
 
 ::selection {
-  background: rgba(94, 107, 82, 0.2);
+  background: color-mix(in srgb, var(--accent-primary) 22%, transparent);
 }
 
 [id],
@@ -501,7 +558,7 @@ a:has(.link-pill):hover {
 a,
 button {
   touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(94, 107, 82, 0.12);
+  -webkit-tap-highlight-color: color-mix(in srgb, var(--accent-primary) 18%, transparent);
 }
 
 /* Nav: Inter (body), weight 500, tighter leading */
@@ -516,32 +573,32 @@ button {
   letter-spacing: -0.01em;
   border-radius: 9999px;
   border-bottom: 2px solid transparent;
-  color: var(--foreground);
+  color: var(--text-primary);
   font-family: var(--font-body), sans-serif;
   transition: color 0.2s ease, border-bottom-color 0.2s ease, background-color 0.2s ease;
 }
 .nav-link:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
   text-decoration: none;
 }
 .nav-link:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--accent);
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--accent-primary);
 }
 .nav-link--active {
-  background-color: var(--highlight);
-  color: var(--accent);
+  background-color: var(--accent-soft);
+  color: var(--accent-primary);
 }
 .nav-link--active:hover {
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--accent-primary);
 }
 .nav-link--muted {
-  color: var(--muted);
+  color: var(--text-secondary);
 }
 .nav-link--muted:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
 }
 
 /* Section header block: kicker + H2 + optional lead */
@@ -581,17 +638,17 @@ button {
 
 /* ——— Rhythm tokens: one place to tune section spacing ——— */
 .article-content {
-  --article-heading-top: 3rem;      /* space above every h2 section start */
-  --article-heading-top-sm: 2.25rem; /* space above every h3 subsection */
-  --article-heading-bottom: 0.5rem;
-  --article-heading-bottom-sm: 0.375rem;
+  --article-heading-top: 2.5rem;   /* space above every h2 section start */
+  --article-heading-top-sm: 1.8rem; /* space above every h3 subsection */
+  --article-heading-bottom: 0.8rem;
+  --article-heading-bottom-sm: 0.6rem;
 }
 
-/* ——— Paragraphs: continuous flow (p + p = 8px gap) ——— */
+/* ——— Paragraphs: continuous flow (1rem between paragraphs), readability ≥1.65 ——— */
 .article-content p {
   margin-top: 0;
-  margin-bottom: 0.5rem;
-  line-height: 1.7;
+  margin-bottom: 1rem;
+  line-height: 1.65;
 }
 .article-content p:last-child {
   margin-bottom: 0;
@@ -619,12 +676,15 @@ button {
 .article-content .highlight + h2,
 .article-content .key-insight + h2,
 .article-content .key-idea + h2,
+.article-content .insight-block + h2,
 .article-content .checklist + h2,
 .article-content .principle + h2,
 .article-content .pull-quote + h2,
+.article-content .section-intro + h2,
 .article-content blockquote + h2,
 .article-content .section-diagram + h2,
 .article-content aside + h2,
+.article-content .related-articles + h2,
 .article-content ul + h2,
 .article-content ol + h2,
 .article-content pre + h2,
@@ -636,12 +696,15 @@ button {
 .article-content .highlight + h3,
 .article-content .key-insight + h3,
 .article-content .key-idea + h3,
+.article-content .insight-block + h3,
 .article-content .checklist + h3,
 .article-content .principle + h3,
 .article-content .pull-quote + h3,
+.article-content .section-intro + h3,
 .article-content blockquote + h3,
 .article-content .section-diagram + h3,
 .article-content aside + h3,
+.article-content .related-articles + h3,
 .article-content ul + h3,
 .article-content ol + h3,
 .article-content pre + h3,
@@ -652,7 +715,7 @@ button {
 /* First paragraph after H2: normal body styling, tight connection (no accidental lead) */
 .article-content h2 + p {
   margin-top: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 /* SectionLead: slightly larger intro line, normal weight and body color */
@@ -661,9 +724,9 @@ button {
   font-size: 1.125rem;
   line-height: 1.6;
   font-weight: 400;
-  color: var(--text-body);
+  color: var(--text-secondary);
   margin-top: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 .article-content .section-lead p {
   font-weight: inherit;
@@ -688,14 +751,14 @@ button {
   list-style-type: disc;
 }
 .article-content li::marker {
-  color: var(--muted);
+  color: var(--text-secondary);
 }
 .article-content li {
   margin: 0.375rem 0;
 }
 .article-content p:has(+ ul),
 .article-content p:has(+ ol) {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 /* ——— Blockquote, pre, table wrapper (override prose so article owns spacing) ——— */
@@ -721,18 +784,25 @@ button {
 .article-content .highlight,
 .article-content .key-insight,
 .article-content .key-idea,
+.article-content .insight-block,
 .article-content .checklist,
 .article-content .pull-quote,
+.article-content .section-intro,
 .article-content .section-lead,
-.article-content .principle {
+.article-content .principle,
+.article-content .related-articles {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
-/* Section lead immediately after h2: tight connection (override generic block margin) */
-.article-content h2 + .section-lead {
+/* Section lead / section intro immediately after h2: tight connection */
+.article-content h2 + .section-lead,
+.article-content h2 + .section-intro {
   margin-top: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.article-content h2 + .section-intro .section-lead {
+  margin-bottom: 0;
 }
 
 /* ——— Section diagram: visual break, same as block spacing ——— */
@@ -745,15 +815,15 @@ button {
 /* ——— Responsive: slightly tighter on small viewports ——— */
 @media (max-width: 640px) {
   .article-content {
-    --article-heading-top: 2.5rem;
-    --article-heading-top-sm: 2rem;
-    --article-heading-bottom: 0.5rem;
-    --article-heading-bottom-sm: 0.25rem;
+    --article-heading-top: 2rem;
+    --article-heading-top-sm: 1.5rem;
+    --article-heading-bottom: 0.8rem;
+    --article-heading-bottom-sm: 0.5rem;
   }
   .article-content h2 + p,
   .article-content h2 + .section-lead,
   .article-content .section-lead {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
   .article-content ul,
   .article-content ol {
@@ -766,8 +836,11 @@ button {
   .article-content .highlight,
   .article-content .key-insight,
   .article-content .key-idea,
+  .article-content .insight-block,
   .article-content .checklist,
-  .article-content .principle {
+  .article-content .principle,
+  .article-content .section-intro,
+  .article-content .related-articles {
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
   }
