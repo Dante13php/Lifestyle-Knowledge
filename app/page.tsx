@@ -181,48 +181,49 @@ export default function Home() {
 
         {/* 3. Topics — What We Cover */}
         <section className="border-t border-subtle" aria-labelledby="cover-heading">
-          <div className="mx-auto max-w-5xl px-6 py-16 sm:px-8 sm:py-20 lg:py-24">
-            <header className="section-header">
-              <div className="flex flex-col items-center">
-                <h2 id="cover-heading" className="text-center">
-                  What we cover
-                </h2>
-                <p className="section-lead text-muted text-center">
-                  A clear map of systems, tools, and workflows — so you can start fast.
-                </p>
-              </div>
-            </header>
-            <ul
-              className="grid grid-cols-1 gap-6 md:grid-cols-2 items-stretch"
-              role="list"
-            >
-              {whatWeCover.map((item, i) => {
-                const railClass =
-                  i % 3 === 0
-                    ? "card-rail-accent"
-                    : i % 3 === 1
-                      ? "card-rail-accent-2"
-                      : "card-rail-highlight";
-                const words = item.title.split(/\s+/);
-                const isSingleWord = words.length === 1;
-                const singleWordPrefixes: Record<number, string> = {
-                  2: "Better",
-                  3: "Smart",
-                };
-                const firstPart = isSingleWord
-                  ? singleWordPrefixes[i] ?? ""
-                  : words[0];
-                const secondPart = isSingleWord
-                  ? item.title
-                  : words.slice(1).join(" ");
-                const accentColor =
-                  i % 2 === 1 ? "var(--accent-2)" : "var(--accent)";
-                return (
-                  <li key={item.title} className="flex">
-                    <Link
-                      href="/blog"
-                      className={`card group ${railClass} transition-all duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background-tinted)] text-left p-6`}
-                    >
+          <div className="mx-auto max-w-[1100px] px-6 py-14 sm:px-8">
+            <div className="section-box">
+              <header className="section-header">
+                <div className="flex flex-col items-center">
+                  <h2 id="cover-heading" className="text-center">
+                    What we cover
+                  </h2>
+                  <p className="section-lead text-muted text-center">
+                    A clear map of systems, tools, and workflows — so you can start fast.
+                  </p>
+                </div>
+              </header>
+              <ul
+                className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+                role="list"
+              >
+                {whatWeCover.map((item, i) => {
+                  const railClass =
+                    i % 3 === 0
+                      ? "card-rail-accent"
+                      : i % 3 === 1
+                        ? "card-rail-accent-2"
+                        : "card-rail-highlight";
+                  const words = item.title.split(/\s+/);
+                  const isSingleWord = words.length === 1;
+                  const singleWordPrefixes: Record<number, string> = {
+                    2: "Better",
+                    3: "Smart",
+                  };
+                  const firstPart = isSingleWord
+                    ? singleWordPrefixes[i] ?? ""
+                    : words[0];
+                  const secondPart = isSingleWord
+                    ? item.title
+                    : words.slice(1).join(" ");
+                  const accentColor =
+                    i % 2 === 1 ? "var(--accent-2)" : "var(--accent)";
+                  return (
+                    <li key={item.title} className="flex">
+                      <Link
+                        href="/blog"
+                        className={`card group ${railClass} transition-all duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background-tinted)] text-left p-5`}
+                      >
                       <div className="relative z-10 flex flex-1 flex-col">
                         <span
                           className="mb-2 inline-flex w-fit px-3 py-1 rounded-full text-xs font-medium text-[var(--text-secondary)] border border-[var(--border-default)]"
@@ -263,48 +264,50 @@ export default function Home() {
                 );
               })}
             </ul>
+            </div>
           </div>
         </section>
 
         {/* 4. Latest Articles */}
         <section className="border-t border-subtle" aria-labelledby="latest-heading">
-          <div className="mx-auto max-w-5xl px-6 py-16 sm:px-8 sm:py-20 lg:py-24">
-            <header className="section-header">
-              <div className="flex flex-col items-center">
-                <h2 id="latest-heading" className="text-center">
-                  Latest articles
-                </h2>
-                <p className="section-lead text-muted text-center">
-                  Fresh guides and how-tos so you can act on what matters.
-                </p>
-              </div>
-            </header>
-            <ul
-              className="grid grid-cols-1 gap-6 lg:grid-cols-3 items-stretch"
-              role="list"
-            >
-              {latestPosts.map((post) => (
-                <li key={post.slug} className="flex min-h-0">
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="group relative flex w-full min-h-[280px] flex-col overflow-hidden rounded-3xl border border-[var(--border-default)] bg-[var(--background-elevated)] transition-all duration-200 hover:border-[var(--border-visible)] hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] p-7 sm:p-9 text-left"
-                  >
+          <div className="mx-auto max-w-[1100px] px-6 py-14 sm:px-8">
+            <div className="section-box">
+              <header className="section-header">
+                <div className="flex flex-col items-center">
+                  <h2 id="latest-heading" className="text-center">
+                    Latest articles
+                  </h2>
+                  <p className="section-lead text-muted text-center">
+                    Fresh guides and how-tos so you can act on what matters.
+                  </p>
+                </div>
+              </header>
+              <ul
+                className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+                role="list"
+              >
+                {latestPosts.map((post) => (
+                  <li key={post.slug} className="flex min-h-0">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="group relative flex w-full min-h-0 flex-col overflow-hidden rounded-3xl border border-[var(--border-default)] bg-[var(--background-elevated)] transition-all duration-200 hover:border-[var(--border-visible)] hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] p-5 sm:p-7 text-left"
+                    >
                     <span className="pointer-events-none absolute inset-0 bg-transparent transition-colors duration-200 group-hover:bg-[var(--tinted-related)]" aria-hidden />
                     <div className="relative z-10 flex min-h-0 flex-1 flex-col">
                       {post.category && (
-                        <span className="mt-6 mb-2 inline-flex w-fit px-3 py-1 rounded-full text-xs font-medium text-[var(--text-secondary)] border border-[var(--border-default)]">
+                        <span className="mt-0 mb-2 inline-flex w-fit px-3 py-1 rounded-full text-xs font-medium text-[var(--text-secondary)] border border-[var(--border-default)]">
                           {post.category}
                         </span>
                       )}
                       <h3
-                        className={`text-[var(--text-primary)] min-w-0 break-words line-clamp-2 group-hover:text-[var(--accent-primary)] transition-colors ${!post.category ? "mt-6" : ""}`}
+                        className={`text-[var(--text-primary)] min-w-0 break-words line-clamp-2 group-hover:text-[var(--accent-primary)] transition-colors ${!post.category ? "mt-0" : ""}`}
                       >
                         {post.title}
                       </h3>
                       <p className="mt-3 flex-1 text-[16px] sm:text-[17px] leading-[1.8] text-[var(--text-body)] line-clamp-2">
                         {post.excerpt}
                       </p>
-                      <span className="mt-6 link-pill w-fit" aria-hidden>
+                      <span className="mt-4 link-pill w-fit" aria-hidden>
                         <span>Read</span>
                         <span className="link-pill-arrow">→</span>
                       </span>
@@ -312,16 +315,17 @@ export default function Home() {
                   </Link>
                 </li>
               ))}
-            </ul>
-            <p className="mt-8 text-center">
-              <Link
-                href="/blog"
-                className="nav-link nav-link--muted gap-1.5"
-              >
-                View all articles
-                <span aria-hidden>→</span>
-              </Link>
-            </p>
+              </ul>
+              <p className="mt-6 text-center">
+                <Link
+                  href="/blog"
+                  className="nav-link nav-link--muted gap-1.5"
+                >
+                  View all articles
+                  <span aria-hidden>→</span>
+                </Link>
+              </p>
+            </div>
           </div>
         </section>
 
@@ -330,8 +334,9 @@ export default function Home() {
           className="border-t border-subtle"
           aria-labelledby="philosophy-heading"
         >
-          <div className="mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20 lg:py-24">
-            <header className="section-header">
+          <div className="mx-auto max-w-[1100px] px-6 py-14 sm:px-8">
+            <div className="section-box">
+              <header className="section-header">
               <div className="flex flex-col items-center">
                 <h2 id="philosophy-heading" className="text-center">
                   Our philosophy
@@ -343,7 +348,7 @@ export default function Home() {
                 </div>
               </div>
             </header>
-            <div className="mx-auto max-w-[72ch] space-y-8 text-lg text-[var(--text-body)] leading-relaxed text-center">
+            <div className="mx-auto max-w-[72ch] space-y-6 text-lg text-[var(--text-body)] leading-relaxed text-center">
               <p>
                 Productivity isn’t about doing more in less time. It’s about
                 doing what matters with clarity and calm. We focus on systems
@@ -356,6 +361,7 @@ export default function Home() {
                 clearly and work well.
               </p>
             </div>
+            </div>
           </div>
         </section>
 
@@ -364,23 +370,24 @@ export default function Home() {
           className="border-t border-subtle"
           aria-labelledby="newsletter-heading"
         >
-          <div className="mx-auto max-w-2xl px-6 py-16 text-center sm:px-8 sm:py-20 lg:py-24">
+          <div className="mx-auto max-w-[1100px] px-6 py-14 sm:px-8">
+            <div className="section-box max-w-2xl mx-auto text-center">
             <header className="section-header">
-              <div className="flex flex-col items-center">
-                <h2 id="newsletter-heading" className="text-center">
-                  Stay in touch
-                </h2>
-                <p className="section-lead text-muted text-center">
-                  One thoughtful email per week. No spam.
-                </p>
-              </div>
-            </header>
-            <form
-              action="#"
-              method="post"
-              className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center"
-              aria-label="Newsletter signup"
-            >
+                <div className="flex flex-col items-center">
+                  <h2 id="newsletter-heading" className="text-center">
+                    Stay in touch
+                  </h2>
+                  <p className="section-lead text-muted text-center">
+                    One thoughtful email per week. No spam.
+                  </p>
+                </div>
+              </header>
+              <form
+                action="#"
+                method="post"
+                className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center"
+                aria-label="Newsletter signup"
+              >
               <label htmlFor="newsletter-email" className="sr-only">
                 Email address
               </label>
@@ -393,12 +400,13 @@ export default function Home() {
                 className="min-h-[48px] w-full rounded-lg border border-[var(--border-visible)] bg-[var(--background-elevated)] px-5 py-3.5 text-base text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] sm:w-80"
               />
               <button
-                type="submit"
-                className="min-h-[48px] shrink-0 rounded-lg border border-[var(--accent-hover)] bg-[var(--accent-hover)] px-6 py-3.5 text-base font-medium text-[var(--on-accent)] transition-colors hover:bg-[var(--text-primary)] hover:border-[var(--text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
-              >
-                Subscribe
-              </button>
-            </form>
+                  type="submit"
+                  className="min-h-[48px] shrink-0 rounded-lg border border-[var(--accent-hover)] bg-[var(--accent-hover)] px-6 py-3.5 text-base font-medium text-[var(--on-accent)] transition-colors hover:bg-[var(--text-primary)] hover:border-[var(--text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
+                >
+                  Subscribe
+                </button>
+              </form>
+            </div>
           </div>
         </section>
 

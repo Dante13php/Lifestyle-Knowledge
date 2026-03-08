@@ -4,6 +4,7 @@ import { SeriesNav as SeriesNavBlock } from "@/components/blog/SeriesNav";
 import { SeriesProgress } from "@/components/blog/SeriesProgress";
 import { ContinueLearning } from "@/components/blog/ContinueLearning";
 import { RelatedArticles } from "@/components/blog/RelatedArticles";
+import { KeyTakeaways } from "@/components/blog/KeyTakeaways";
 import { ReadingProgressBar } from "@/components/blog/ProgressBar";
 import { TocSidebar } from "@/components/blog/TocSidebar";
 
@@ -157,20 +158,7 @@ export function ArticleLayout({ post, children, toc, seriesNav }: ArticleLayoutP
           {/* End block */}
           <footer className="mt-10 border-t border-[var(--border-default)] pt-8">
             {post.takeaways && post.takeaways.length > 0 && (
-              <section
-                className="mb-8 rounded-lg border px-6 py-6 sm:px-8 sm:py-8"
-                style={{ borderColor: 'var(--tinted-callout-border)', backgroundColor: 'var(--tinted-takeaway)' }}
-                aria-label="Key takeaways"
-              >
-                <h2 className="mb-5 text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)]">
-                  What to remember
-                </h2>
-                <ul className="grid list-none grid-cols-1 gap-x-8 gap-y-4 pl-0 text-[var(--text-body)] md:grid-cols-2 [&>li]:flex [&>li]:items-start [&>li]:gap-3 [&>li]:leading-[1.6] [&>li]:before:mt-1 [&>li]:before:shrink-0 [&>li]:before:font-body [&>li]:before:text-[var(--accent-primary)] [&>li]:before:content-['✓']">
-                  {post.takeaways.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
+              <KeyTakeaways items={post.takeaways} className="mb-8" />
             )}
 
             {hasSeries && seriesNav && (

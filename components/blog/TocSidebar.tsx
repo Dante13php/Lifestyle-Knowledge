@@ -60,6 +60,8 @@ export function TocSidebar({ toc }: TocSidebarProps) {
   const tocIds = idsFromToc(toc);
   const [activeId, setActiveId] = useState<string | null>(null);
 
+  const activeIndex = activeId ? toc.findIndex((e) => e.id === activeId) : -1;
+
   function handleTocClick(e: React.MouseEvent<HTMLAnchorElement>, targetId: string) {
     const target = document.getElementById(targetId);
     const article = document.querySelector("article");
@@ -67,7 +69,6 @@ export function TocSidebar({ toc }: TocSidebarProps) {
     e.preventDefault();
     const targetTop = target.getBoundingClientRect().top + window.scrollY;
     const articleTop = article.getBoundingClientRect().top + window.scrollY;
-    // Heading at SCROLL_OFFSET_PX from top; never scroll past article top - HEADER_SAFE_PX (keeps h1 visible)
     const scrollY = Math.max(articleTop - HEADER_SAFE_PX, targetTop - SCROLL_OFFSET_PX);
     window.scrollTo({ top: scrollY, behavior: "smooth" });
     window.history.replaceState(undefined, "", `#${targetId}`);
@@ -88,11 +89,11 @@ export function TocSidebar({ toc }: TocSidebarProps) {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, [toc]);
 
-  // Initial sync: set active section from scroll once layout is ready (fixes wrong highlight on load)
+  // Initial sync: set active section from scroll once layout is ready
   useEffect(() => {
     if (toc.length === 0) return;
     const ids = tocIds;
-    if (getHashId(ids)) return; // hash wins
+    if (getHashId(ids)) return;
 
     const run = () => {
       const id = getActiveIdFromScroll(ids);
@@ -136,7 +137,6 @@ export function TocSidebar({ toc }: TocSidebarProps) {
           if (bestId) setActiveId(bestId);
           return;
         }
-        // If current hash points to a section in or near view, keep it active (fixes short sections)
         const hashId = getHashId(ids);
         if (hashId) {
           const el = document.getElementById(hashId);
@@ -148,7 +148,6 @@ export function TocSidebar({ toc }: TocSidebarProps) {
             }
           }
         }
-        // No section in observer zone: use scroll-based logic (intro / between / past end)
         setActiveId(getActiveIdFromScroll(ids));
       },
       { root: null, rootMargin: ROOT_MARGIN, threshold: 0 }
@@ -159,13 +158,32 @@ export function TocSidebar({ toc }: TocSidebarProps) {
   }, [toc]);
 
   return (
-    <nav className="sticky top-[100px] min-w-0 border-l-2 border-[var(--border-default)] pl-3 sm:top-[120px] sm:pl-4">
-      <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]">
+    <nav
+      className="toc-sidebar sticky top-[100px] min-w-0 border-l border-[var(--border-subtle)] pl-3 sm:top-[120px] sm:pl-4"
+      aria-label="On this page"
+    >
+      <p className="mb-3 text-[11px] font-medium uppercase tracking-wider text-[var(--text-secondary)]">
         On this page
       </p>
-      <ul className="space-y-1.5 text-sm text-[var(--text-secondary)]">
-        {toc.map((entry) => {
+      <ul className="space-y-0.5 text-[13px] leading-snug text-[var(--text-secondary)]">
+        {toc.map((entry, index) => {
           const isActive = activeId === entry.id;
+          const isCompleted = activeIndex >= 0 && index < activeIndex;
+
+          let linkClass =
+            "toc-link flex min-w-0 items-center gap-2.5 -ml-4 rounded-md border-l-2 py-1.5 pr-2 pl-4 transition-[background-color,border-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] ";
+
+          if (isActive) {
+            linkClass +=
+              "border-l-[var(--accent-primary)] bg-[var(--tinted-callout)] text-[var(--accent-primary)] font-medium ";
+          } else if (isCompleted) {
+            linkClass +=
+              "border-transparent text-[var(--text-secondary)] hover:bg-[var(--background-tinted)] hover:text-[var(--text-primary)] ";
+          } else {
+            linkClass +=
+              "border-transparent text-[var(--text-secondary)] hover:bg-[var(--tinted-callout)] hover:border-l-[var(--accent-primary)]/60 hover:text-[var(--text-primary)] ";
+          }
+
           return (
             <li
               key={entry.id}
@@ -174,21 +192,25 @@ export function TocSidebar({ toc }: TocSidebarProps) {
               <a
                 href={`#${entry.id}`}
                 onClick={(e) => handleTocClick(e, entry.id)}
-                className={
-                  "flex min-w-0 items-center gap-2 -ml-4 rounded-[6px] border-l-2 py-1 pr-2 transition-[background,border-color,color,padding-left] duration-150 ease-out " +
-                  (isActive
-                    ? "border-l-[3px] border-l-[var(--accent-primary)] bg-[var(--tinted-callout)] pl-[15px] font-medium text-[var(--text-primary)]"
-                    : "border-transparent pl-4 text-[var(--text-secondary)] hover:bg-[var(--tinted-callout)] hover:border-l-[var(--accent-primary)]/70 hover:text-[var(--text-primary)]")
-                }
+                className={linkClass}
               >
-                <span
-                  aria-hidden
-                  className={`shrink-0 rounded-full transition-colors ${
-                    isActive
-                      ? "h-2 w-2 bg-[var(--accent-primary)]"
-                      : "h-1.5 w-1.5 bg-[var(--text-secondary)]/50"
-                  }`}
-                />
+                {isCompleted ? (
+                  <span
+                    className="toc-completed shrink-0 text-[10px] font-bold text-[var(--accent-primary)]/70"
+                    aria-hidden
+                  >
+                    ✓
+                  </span>
+                ) : (
+                  <span
+                    aria-hidden
+                    className={`shrink-0 rounded-full transition-colors ${
+                      isActive
+                        ? "h-2 w-2 bg-[var(--accent-primary)]"
+                        : "h-1.5 w-1.5 bg-[var(--text-secondary)]/40"
+                    }`}
+                  />
+                )}
                 <span className="min-w-0 truncate">{entry.text}</span>
               </a>
             </li>
