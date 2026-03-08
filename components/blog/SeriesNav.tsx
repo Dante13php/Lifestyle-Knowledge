@@ -95,7 +95,7 @@ export function SeriesNav({
           <div className="flex min-h-0 flex-col lg:min-w-0">
             <Link
               href={`/blog/${prevPost.slug}`}
-              className={`group ${linkBase} flex min-h-0 flex-1 flex-col rounded-xl border border-[var(--border-subtle)] bg-[var(--background-elevated)] p-4 sm:p-5 transition-[background-color] duration-[120ms] ease-[ease] hover:bg-[var(--tinted-callout)] focus-visible:ring-offset-[var(--tinted-series)]`}
+              className={`group ${linkBase} flex min-h-0 flex-1 flex-col rounded-xl border border-[var(--tinted-callout-border)] bg-[var(--tinted-related)] p-4 sm:p-5 transition-[background-color] duration-[120ms] ease-[ease] hover:bg-[var(--tinted-callout)] focus-visible:ring-offset-[var(--tinted-series)]`}
             >
               <span className="block text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]">
                 Previous in series
@@ -122,12 +122,12 @@ export function SeriesNav({
           </div>
         )}
 
-        {/* Current article */}
+        {/* Current article — visually distinct as "you are here" */}
         {currentPost && (
           <div className="flex min-h-0 flex-col lg:min-w-0" aria-current="step">
-            <div className="min-h-0 flex-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--background-elevated)] px-3 py-3 sm:px-4 sm:py-4">
-              <span className="inline-block rounded-md bg-[var(--tinted-callout)] px-2 py-0.5 text-[11px] font-medium uppercase tracking-wider text-[var(--text-secondary)]">
-                Current article
+            <div className="min-h-0 flex-1 rounded-xl border-2 border-[var(--accent-primary)] bg-[var(--tinted-callout)] px-3 py-3 sm:px-4 sm:py-4 shadow-[0_0_0_1px_var(--accent-soft)]">
+              <span className="inline-block rounded-md bg-[var(--accent-primary)] px-2 py-0.5 text-[11px] font-medium uppercase tracking-wider text-[var(--surface)]">
+                You are here
               </span>
               <p className="mt-2 font-semibold text-[var(--text-primary)] text-sm">
                 {currentPost.title}

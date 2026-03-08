@@ -20,49 +20,49 @@ type StartHereProps = {
 
 export function StartHere({ section, cards }: StartHereProps) {
   return (
-    <div className="mx-auto max-w-[1100px] px-6 py-14 sm:px-8">
+    <div className="mx-auto max-w-[1280px] px-6 sm:px-8 section-padding">
       <div className="section-box">
         <div className="flex flex-col gap-4">
-          {/* Center: kicker + section title */}
           <header className="section-header flex flex-col items-center text-center">
-            <span className="section-kicker mb-1.5 block" aria-hidden="true">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent-primary)]/70" aria-hidden="true" />
-              {section.label}
-            </span>
+            <span className="section-kicker" aria-hidden="true">{section.label}</span>
             <h2 id="start-heading" className="text-center !mt-0 mb-0">{section.heading}</h2>
           </header>
 
-          {/* Three cards in a row */}
           <ul
-            className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+            className="grid grid-cols-1 gap-[24px] sm:grid-cols-2 lg:grid-cols-3 items-stretch"
             role="list"
           >
             {cards.map((card) => {
               const railClass =
-                card.category === "Getting started"
-                  ? "card-rail-accent"
+                card.category === "Tools"
+                  ? "card-rail-accent-2"
                   : card.category === "Systems"
-                    ? "card-rail-accent-2"
-                    : "card-rail-highlight";
+                    ? "card-rail-accent"
+                    : "card-rail-workflows";
+              const labelClass =
+                card.category === "Tools"
+                  ? "card-label--tools"
+                  : card.category === "Systems"
+                    ? "card-label--systems"
+                    : "card-label--workflows";
 
               return (
                 <li key={card.title} className="flex min-h-0">
                   <Link
                     href={card.href}
-                    className={`card group ${railClass} w-full h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] p-3 sm:p-4 lg:p-4 text-left flex flex-col`}
+                    className={`card card--home group ${railClass} w-full h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] p-5 sm:p-6 text-left flex flex-col`}
                   >
                       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-                        <p className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.12em] text-[var(--card-rail)]">
-                          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--card-rail)] opacity-70" aria-hidden="true" />
+                        <span className={`${labelClass} inline-flex w-fit px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-[0.08em]`}>
                           {card.category}
-                        </p>
-                        <h3 className="mt-3 font-body text-[var(--text-primary)] min-w-0 break-words">
+                        </span>
+                        <h3 className="mt-4 font-body text-lg font-semibold text-[var(--text-primary)] min-w-0 break-words">
                           {card.title}
                         </h3>
-                        <p className="mt-2 flex-1 text-[16px] sm:text-[17px] leading-[1.8] text-[var(--text-body)]">
+                        <p className="mt-3 flex-1 text-[17px] leading-[1.7] text-[var(--text-body)]">
                           {card.description}
                         </p>
-                        <span className="mt-4 link-pill w-fit shrink-0" aria-hidden>
+                        <span className="mt-5 link-pill w-fit shrink-0" aria-hidden>
                           <span>Read</span>
                           <span className="link-pill-arrow">→</span>
                         </span>

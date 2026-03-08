@@ -9,40 +9,40 @@
    */
 
   /* —— Backgrounds —— */
-  --background: #F7F5F1;           /* page base */
-  --surface: #EFECE6;             /* cards, blocks, raised surfaces */
+  --background: #F2F3EE;           /* page base — matches header feel, warm off-white */
+  --surface: #FFFFFF;             /* cards */
   --background-elevated: var(--surface);
-  --background-tinted: #F3F1ED;   /* alternate surface, subtle warmth */
+  --background-tinted: #F2F3EE;   /* section boxes, header/footer tone */
 
   /* —— Soft surface (slightly raised, minimal contrast) —— */
-  --surface-soft: #F3F1ED;
+  --surface-soft: #F2F3EE;
 
   /* —— Tinted surfaces (soft, low-contrast) —— */
-  --tinted-callout: rgba(94, 107, 60, 0.07);      /* very soft olive: tips, insights, principles */
-  --tinted-callout-border: rgba(94, 107, 60, 0.22);
-  --tinted-takeaway: rgba(201, 122, 64, 0.07);    /* subtle secondary accent: key takeaways */
-  --tinted-related: rgba(94, 107, 60, 0.05);      /* next step card soft tint */
-  --tinted-diagram: rgba(239, 236, 230, 0.95);    /* framework diagram nodes */
+  --tinted-callout: rgba(85, 107, 79, 0.07);
+  --tinted-callout-border: rgba(85, 107, 79, 0.22);
+  --tinted-takeaway: rgba(198, 122, 58, 0.07);
+  --tinted-related: rgba(85, 107, 79, 0.05);
+  --tinted-diagram: rgba(242, 243, 238, 0.95);
   --tinted-series: color-mix(in srgb, var(--background-tinted) 90%, var(--accent-soft));
 
   /* —— Text —— */
-  --text-primary: #2E2E2E;
+  --text-primary: #2B2B2B;
   --text-secondary: #6B6B6B;
   --text-muted: var(--text-secondary);
 
   /* —— Borders —— */
-  --border-subtle: #E2DED7;
-  --border-default: #DDD9D2;
-  --border-visible: rgba(46, 46, 46, 0.12);
+  --border-subtle: #E5E5E2;
+  --border-default: #E0E0DD;
+  --border-visible: rgba(0, 0, 0, 0.08);
 
-  /* —— Accents (muted olive primary, secondary terracotta) —— */
-  --accent-primary: #5E6B3C;
-  --accent-secondary: #C97A40;
-  --accent-soft: #E6E9DE;         /* pale olive, soft highlights (e.g. nav active bg) */
-  --accent-hover: #4D5930;        /* darker olive for hover/active */
+  /* —— Accents (muted olive primary, warm orange secondary) —— */
+  --accent-primary: #556B4F;
+  --accent-secondary: #C67A3A;
+  --accent-soft: #E8EBE4;
+  --accent-hover: #485A43;
 
   /* Text on accent (buttons, pills) */
-  --on-accent: #F7F5F1;
+  --on-accent: #FAFAF7;
 
   /* —— Shadows —— */
   --shadow: 0 18px 45px rgba(23, 22, 19, 0.18), 0 4px 12px rgba(23, 22, 19, 0.06);
@@ -68,6 +68,11 @@
   --olive-700: #2F4020;
   --olive-900: #1E2814;
   --hero-gradient-start: var(--accent-soft);
+  /* Homepage section alternating backgrounds */
+  --section-bg-warm: #F2F3EE;
+  --section-bg-base: #F2F3EE;
+  --section-bg-olive: #F2F3EE;
+  --hero-gradient: radial-gradient(circle at 20% 30%, rgba(85, 107, 79, 0.10), transparent 45%), radial-gradient(circle at 80% 40%, rgba(198, 122, 58, 0.08), transparent 40%), #F2F3EE;
   --header-footer-bg: var(--background-tinted);
   --section-olive-bg: color-mix(in srgb, var(--accent-soft) 70%, var(--background-tinted));
   --surface-rgba: rgba(239, 236, 230, 0.88);
@@ -160,10 +165,70 @@
 
   background-color: var(--background);
   color: var(--text-body);
+
+  --section-bg-warm: #1e2219;
+  --section-bg-base: #252b1c;
+  --section-bg-olive: #202618;
+}
+
+[data-theme="dark"] .hero-gradient,
+.theme-dark .hero-gradient {
+  --hero-gradient: radial-gradient(circle at 20% 20%, rgba(138, 155, 92, 0.06), transparent 42%), radial-gradient(circle at 80% 40%, rgba(180, 165, 130, 0.04), transparent 42%), var(--background);
 }
 
 @utility bg-app {
   background-color: var(--background);
+}
+
+/* Hero section: extremely subtle gradient for visual life, editorial feel */
+.hero-gradient {
+  background: var(--hero-gradient);
+}
+
+/* Hero decorative shapes: soft blurred circles, far behind content */
+.hero-shapes {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-shape {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(100px);
+}
+
+.hero-shape--olive {
+  background: rgba(85, 107, 79, 0.07);
+  top: -15%;
+  left: -8%;
+}
+
+.hero-shape--beige {
+  background: rgba(198, 122, 58, 0.06);
+  bottom: -20%;
+  right: -5%;
+}
+
+/* Homepage section backgrounds: alternating soft tones */
+.section-bg-warm {
+  background-color: transparent;
+}
+.section-bg-base {
+  background-color: transparent;
+}
+.section-bg-olive {
+  background-color: transparent;
+}
+
+/* Homepage section vertical spacing */
+.section-padding {
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
 
 @utility bg-surface {
@@ -214,11 +279,11 @@
   width: 100%;
   min-height: 0;
   overflow: hidden;
-  border-radius: 1rem;
-  border: 1px solid var(--border-default);
-  background: var(--surface);
-  box-shadow: 0 8px 24px rgba(46, 46, 46, 0.05);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
 }
 @supports (backdrop-filter: blur(10px)) {
   .card {
@@ -226,9 +291,8 @@
   }
 }
 .card:hover {
-  border-color: var(--border-visible);
-  box-shadow: 0 10px 32px rgba(46, 46, 46, 0.06);
-  transform: translateY(-1px);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
 }
 .card::before {
   content: "";
@@ -236,28 +300,41 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 4px;
-  border-radius: 1rem 0 0 1rem;
+  width: 3px;
+  border-radius: 14px 0 0 14px;
   background: var(--card-rail);
   pointer-events: none;
 }
 .card-rail-accent {
-  --card-rail: var(--accent-primary);
+  --card-rail: #556B4F;
+  background: rgba(85, 107, 79, 0.06);
 }
 .card-rail-accent-2 {
-  --card-rail: var(--accent-secondary);
+  --card-rail: #C67A3A;
+  background: rgba(198, 122, 58, 0.06);
 }
 /* Tools card: darker rail so it’s visible on light background */
+/* Workflows: desaturated olive accent + subtle desaturated olive tint */
+.card-rail-workflows {
+  --card-rail: #6B7A58;
+  background: rgba(107, 122, 88, 0.05);
+}
+/* Comparisons: warm orange (same as Tools) */
 .card-rail-highlight {
-  --card-rail: #9A8E6F;
+  --card-rail: #C67A3A;
+  background: rgba(198, 122, 58, 0.06);
 }
 
-/* Dark zone: cards should feel muted/editorial, not neon */
+/* Dark: cards keep elevation with dark-appropriate shadow */
 [data-theme="dark"] .card,
 .theme-dark .card {
-  border-color: var(--border-subtle);
-  background: rgba(25, 30, 21, 0.9);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.32);
+  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--surface);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+[data-theme="dark"] .card:hover,
+.theme-dark .card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 [data-theme="dark"] .card-rail-accent,
@@ -272,7 +349,131 @@
 
 [data-theme="dark"] .card-rail-highlight,
 .theme-dark .card-rail-highlight {
-  --card-rail: rgba(180, 170, 130, 0.75);
+  --card-rail: rgba(194, 122, 88, 0.75);
+}
+[data-theme="dark"] .card-rail-workflows,
+.theme-dark .card-rail-workflows {
+  --card-rail: rgba(150, 170, 120, 0.7);
+  background: rgba(107, 122, 88, 0.08);
+}
+
+[data-theme="dark"] .card-category,
+.theme-dark .card-category,
+[data-theme="dark"] .card--home,
+.theme-dark .card--home,
+[data-theme="dark"] .card-article,
+.theme-dark .card-article {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--surface);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+[data-theme="dark"] .card-category:hover,
+.theme-dark .card-category:hover,
+[data-theme="dark"] .card--home:hover,
+.theme-dark .card--home:hover,
+[data-theme="dark"] .card-article:hover,
+.theme-dark .card-article:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Homepage category cards: larger entry points, elevation + hover */
+.card-category {
+  --card-rail: #556B4F;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 280px;
+  padding: 28px 32px;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+}
+.card-category:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
+}
+.card-category::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 14px 0 0 14px;
+  background: var(--card-rail);
+  pointer-events: none;
+}
+.card-category.card-rail-accent { --card-rail: #556B4F; background: rgba(85, 107, 79, 0.06); }
+.card-category.card-rail-accent-2 { --card-rail: #C67A3A; background: rgba(198, 122, 58, 0.06); }
+.card-category.card-rail-workflows { --card-rail: #6B7A58; background: rgba(107, 122, 88, 0.05); }
+.card-category.card-rail-highlight { --card-rail: #C67A3A; background: rgba(198, 122, 58, 0.06); }
+
+/* Homepage Start Here cards (tint from .card-rail-* ) */
+.card--home {
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+}
+.card--home.card-rail-accent { background: rgba(85, 107, 79, 0.06); }
+.card--home.card-rail-accent-2 { background: rgba(198, 122, 58, 0.06); }
+.card--home.card-rail-workflows { background: rgba(107, 122, 88, 0.05); }
+.card--home:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
+}
+.card--home::before {
+  width: 3px;
+  border-radius: 14px 0 0 14px;
+}
+
+/* Homepage Latest articles cards */
+.card-article {
+  --card-rail: #556B4F;
+  position: relative;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+.card-article::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 14px 0 0 14px;
+  background: var(--card-rail);
+  pointer-events: none;
+}
+.card-article:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
+}
+.card-article.card-rail-accent { --card-rail: #556B4F; background: rgba(85, 107, 79, 0.06); }
+.card-article.card-rail-accent-2 { --card-rail: #C67A3A; background: rgba(198, 122, 58, 0.06); }
+.card-article.card-rail-workflows { --card-rail: #6B7A58; background: rgba(107, 122, 88, 0.05); }
+
+/* Card category labels: tinted backgrounds by type */
+.card-label--systems {
+  background: rgba(85, 107, 79, 0.12);
+  color: #556B4F;
+  border: none;
+}
+.card-label--tools {
+  background: rgba(198, 122, 58, 0.12);
+  color: #C67A3A;
+  border: none;
+}
+.card-label--workflows {
+  background: rgba(107, 122, 88, 0.12);
+  color: #6B7A58;
+  border: none;
 }
 
 /* Typography utilities: use when you need to force body or heading font */
@@ -292,7 +493,7 @@ html {
 /* Base: Inter everywhere by default; fluid font-size for responsive readability */
 body {
   font-family: var(--font-body), sans-serif;
-  background-color: var(--background);
+  background-color: transparent;
   color: var(--text-body);
   font-size: clamp(16px, 0.5rem + 1vw, 18px);
   line-height: 1.65;
@@ -325,11 +526,11 @@ h1 {
 .display-hero {
   font-family: var(--font-heading), serif !important;
   font-weight: 600 !important;
-  font-size: clamp(56px, 6vw, 80px) !important;
-  line-height: 1.02 !important;
-  letter-spacing: -0.03em !important;
-  max-width: 18ch;
-  margin-bottom: 0.35em;
+  font-size: clamp(3rem, 5vw, 4rem) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.02em !important;
+  max-width: none; /* constrained by wrapper */
+  margin-bottom: 0;
 }
 
 /* H2: section titles — clear top spacing, no decorative line */
@@ -366,14 +567,15 @@ h4 {
 /* Lead paragraph under hero: body font, constrained width, spacing */
 .lead-hero {
   font-family: var(--font-body), sans-serif;
-  font-size: clamp(1.125rem, 1.25rem + 0.25vw, 1.375rem);
+  font-size: 1.1rem;
   line-height: 1.5;
   color: var(--text-body);
-  max-width: 42ch;
+  max-width: 640px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 1.25em;
   margin-bottom: 0;
+  opacity: 0.8;
 }
 
 /* Lead: subtitle line (Inter, premium, not a heading) */
@@ -486,36 +688,13 @@ a:has(.link-pill):hover {
   transform: scaleX(1);
 }
 
-/* Global backdrop: single radial-ink wash on warm off-white, shared by header/content/footer */
+/* Global backdrop: same warm gradient as hero — used across entire site */
 .app-backdrop {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-color: var(--bg);
-  background-image:
-    /* Muted olive lift, very soft, top-left */
-    radial-gradient(
-      ellipse 180% 140% at 6% -10%,
-      rgba(94, 107, 60, 0.04) 0%,
-      rgba(94, 107, 60, 0.02) 32%,
-      transparent 70%
-    ),
-    /* Neutral warm depth through center */
-    radial-gradient(
-      ellipse 220% 180% at 50% 40%,
-      rgba(188, 167, 137, 0.03) 0%,
-      rgba(188, 167, 137, 0.015) 35%,
-      transparent 78%
-    ),
-    /* Secondary accent, grounded bottom-right */
-    radial-gradient(
-      ellipse 210% 170% at 110% 110%,
-      rgba(201, 122, 64, 0.035) 0%,
-      rgba(201, 122, 64, 0.015) 30%,
-      transparent 75%
-    );
-  background-repeat: no-repeat;
+  background: var(--hero-gradient);
 }
 
 .app-shell {
@@ -524,21 +703,14 @@ a:has(.link-pill):hover {
   min-height: 100vh;
 }
 
-/* Section kicker: small label above H2 (not a heading) */
+/* Section kicker: small label above H2 (homepage section headers) */
 .section-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: fit-content;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
+  display: inline-block;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-secondary);
-  border: 1px solid var(--border-default);
-  border-radius: 9999px;
-  background: var(--background-tinted);
   font-family: var(--font-body), sans-serif;
 }
 
@@ -604,7 +776,7 @@ button {
 /* Section header block: kicker + H2 + optional lead */
 .section-header {
   text-align: center;
-  margin-bottom: 2rem; /* 32px — tighter title spacing for editorial density */
+  margin-bottom: 2rem;
 }
 @media (min-width: 640px) {
   .section-header {
@@ -612,17 +784,21 @@ button {
   }
 }
 
-/* Homepage: subtle section container for visual grouping */
+/* Homepage: section container + stronger heading hierarchy */
 .section-box {
   border-radius: 16px;
   padding: 40px;
-  background: var(--background-tinted);
+  background: transparent;
+}
+.section-box .section-header h2 {
+  font-size: 2.2rem;
+  margin-top: 0;
 }
 .section-header h2 {
   margin-top: 0;
 }
 .section-header .section-kicker {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 .section-header .lead-hero,
 .section-header .section-lead {

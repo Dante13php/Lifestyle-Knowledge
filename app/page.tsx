@@ -135,23 +135,27 @@ export default function Home() {
       <div className="min-h-screen">
         {/* 1. Hero */}
         <section
-          className="relative overflow-hidden px-6 pt-20 pb-16 sm:px-8 sm:pt-24 sm:pb-20 lg:pt-32 lg:pb-24"
+          className="hero-gradient relative flex min-h-[52vh] flex-col justify-center overflow-hidden px-6 py-12 sm:px-8 sm:py-14"
           aria-labelledby="hero-heading"
         >
-          <div className="relative mx-auto flex max-w-5xl flex-col text-center">
+          <div className="hero-shapes" aria-hidden="true">
+            <span className="hero-shape hero-shape--olive" />
+            <span className="hero-shape hero-shape--beige" />
+          </div>
+          <div className="relative z-10 mx-auto flex w-full max-w-[640px] flex-col items-center text-center">
             <h1
               id="hero-heading"
-              className="display-hero text-balance mx-auto text-[var(--text-primary)]"
+              className="display-hero text-balance text-[var(--text-primary)]"
             >
               Systems over
               <br />
-              willpower<span className="text-[var(--accent-primary)]">.</span>
+              <span className="font-semibold text-[#556B4F]">willpower</span><span className="text-[var(--accent-primary)]">.</span>
             </h1>
-            <p className="lead-hero text-center">
+            <p className="lead-hero mt-5 text-[var(--text-body)]">
               Practical guides and honest recommendations for focus, organization,
               and tools that actually work.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:mt-10 sm:gap-5" role="group" aria-label="Primary actions">
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-4 sm:mt-11 sm:gap-5" role="group" aria-label="Primary actions">
               <Link
                 href="/blog"
                 className="inline-flex items-center min-h-[48px] shrink-0 rounded-lg border border-[var(--accent-hover)] bg-[var(--accent-hover)] px-6 py-3 text-base font-medium text-[var(--on-accent)] shadow-[0_2px_8px_rgba(30,26,24,0.12)] hover:bg-[var(--text-primary)] hover:border-[var(--text-primary)] hover:shadow-[0_4px_12px_rgba(30,26,24,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] transition-[box-shadow,border-color,background-color] duration-200"
@@ -166,7 +170,7 @@ export default function Home() {
               </Link>
             </div>
             <p
-              className="mt-6 text-xs font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)] opacity-80"
+              className="mt-8 text-xs font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)] opacity-80"
               role="status"
             >
               No hype. Practical. Updated regularly.
@@ -175,16 +179,17 @@ export default function Home() {
         </section>
 
         {/* 2. Start Here */}
-        <section className="border-t border-subtle" aria-labelledby="start-heading">
+        <section className="section-bg-base border-t border-subtle" aria-labelledby="start-heading">
           <StartHere section={startHereSection} cards={startHereCards} />
         </section>
 
-        {/* 3. Topics — What We Cover */}
-        <section className="border-t border-subtle" aria-labelledby="cover-heading">
-          <div className="mx-auto max-w-[1100px] px-6 py-14 sm:px-8">
+        {/* 3. Core topics — What We Cover */}
+        <section className="section-bg-olive border-t border-subtle section-padding" aria-labelledby="cover-heading">
+          <div className="mx-auto max-w-[1440px] px-6 sm:px-8">
             <div className="section-box">
               <header className="section-header">
                 <div className="flex flex-col items-center">
+                  <span className="section-kicker" aria-hidden="true">Topics</span>
                   <h2 id="cover-heading" className="text-center">
                     What we cover
                   </h2>
@@ -194,16 +199,22 @@ export default function Home() {
                 </div>
               </header>
               <ul
-                className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+                className="grid grid-cols-1 gap-[24px] sm:grid-cols-2 lg:grid-cols-4 items-stretch"
                 role="list"
               >
                 {whatWeCover.map((item, i) => {
                   const railClass =
-                    i % 3 === 0
+                    item.category === "Systems"
                       ? "card-rail-accent"
-                      : i % 3 === 1
+                      : item.category === "Tools" || item.category === "Comparisons"
                         ? "card-rail-accent-2"
-                        : "card-rail-highlight";
+                        : "card-rail-workflows";
+                  const labelClass =
+                    item.category === "Systems"
+                      ? "card-label--systems"
+                      : item.category === "Tools" || item.category === "Comparisons"
+                        ? "card-label--tools"
+                        : "card-label--workflows";
                   const words = item.title.split(/\s+/);
                   const isSingleWord = words.length === 1;
                   const singleWordPrefixes: Record<number, string> = {
@@ -217,63 +228,66 @@ export default function Home() {
                     ? item.title
                     : words.slice(1).join(" ");
                   const accentColor =
-                    i % 2 === 1 ? "var(--accent-2)" : "var(--accent)";
+                    railClass === "card-rail-accent-2"
+                      ? "var(--accent-2)"
+                      : "var(--accent)";
                   return (
-                    <li key={item.title} className="flex">
+                    <li key={item.title} className="flex min-h-0">
                       <Link
                         href="/blog"
-                        className={`card group ${railClass} transition-all duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background-tinted)] text-left p-5`}
+                        className={`card-category group ${railClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background-tinted)] text-left`}
                       >
-                      <div className="relative z-10 flex flex-1 flex-col">
-                        <span
-                          className="mb-2 inline-flex w-fit px-3 py-1 rounded-full text-xs font-medium text-[var(--text-secondary)] border border-[var(--border-default)]"
-                        >
-                          {item.category}
-                        </span>
-                        <h3 className="min-w-0 break-words font-body">
-                          {isSingleWord && firstPart ? (
-                            <>
+                        <div className="relative z-10 flex flex-1 flex-col">
+                          <span
+                            className={`${labelClass} mb-3 inline-flex w-fit px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-[0.08em]`}
+                          >
+                            {item.category}
+                          </span>
+                          <h3 className="min-w-0 break-words font-body text-xl sm:text-2xl font-semibold leading-tight text-[var(--text-primary)]">
+                            {isSingleWord && firstPart ? (
+                              <>
                                 <span className="text-[var(--text-secondary)]">
-                                {firstPart}{" "}
-                              </span>
-                              <span style={{ color: accentColor }}>
-                                {secondPart.toLowerCase()}
-                              </span>
-                            </>
-                          ) : (
-                            <>
-                              <span className="text-[var(--text-secondary)]">
-                                {firstPart}{" "}
-                              </span>
-                              <span style={{ color: accentColor }}>
-                                {secondPart}
-                              </span>
-                            </>
-                          )}
-                        </h3>
-                        <p className="mt-2.5 text-[16px] sm:text-[17px] leading-[1.8] text-[var(--text-body)] max-w-[44ch]">
-                          {item.description}
-                        </p>
-                        <span className="mt-3 link-pill w-fit" aria-hidden>
-                          <span>Read</span>
-                          <span className="link-pill-arrow">→</span>
-                        </span>
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+                                  {firstPart}{" "}
+                                </span>
+                                <span style={{ color: accentColor }}>
+                                  {secondPart.toLowerCase()}
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <span className="text-[var(--text-secondary)]">
+                                  {firstPart}{" "}
+                                </span>
+                                <span style={{ color: accentColor }}>
+                                  {secondPart}
+                                </span>
+                              </>
+                            )}
+                          </h3>
+                          <p className="mt-4 text-[17px] leading-[1.7] text-[var(--text-body)] max-w-[44ch]">
+                            {item.description}
+                          </p>
+                          <span className="mt-6 link-pill w-fit" aria-hidden>
+                            <span>Read</span>
+                            <span className="link-pill-arrow">→</span>
+                          </span>
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           </div>
         </section>
 
         {/* 4. Latest Articles */}
-        <section className="border-t border-subtle" aria-labelledby="latest-heading">
-          <div className="mx-auto max-w-[1100px] px-6 py-14 sm:px-8">
+        <section className="section-bg-base border-t border-subtle section-padding" aria-labelledby="latest-heading">
+          <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
             <div className="section-box">
               <header className="section-header">
                 <div className="flex flex-col items-center">
+                  <span className="section-kicker" aria-hidden="true">Reading</span>
                   <h2 id="latest-heading" className="text-center">
                     Latest articles
                   </h2>
@@ -283,38 +297,51 @@ export default function Home() {
                 </div>
               </header>
               <ul
-                className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+                className="grid grid-cols-1 gap-[24px] sm:grid-cols-2 lg:grid-cols-3 items-stretch"
                 role="list"
               >
-                {latestPosts.map((post) => (
+                {latestPosts.map((post) => {
+                  const articleRailClass =
+                    post.category === "Tools"
+                      ? "card-rail-accent-2"
+                      : post.category === "Systems"
+                        ? "card-rail-accent"
+                        : "card-rail-workflows";
+                  const articleLabelClass =
+                    post.category === "Tools"
+                      ? "card-label--tools"
+                      : post.category === "Systems"
+                        ? "card-label--systems"
+                        : "card-label--workflows";
+                  return (
                   <li key={post.slug} className="flex min-h-0">
                     <Link
                       href={`/blog/${post.slug}`}
-                      className="group relative flex w-full min-h-0 flex-col overflow-hidden rounded-3xl border border-[var(--border-default)] bg-[var(--background-elevated)] transition-all duration-200 hover:border-[var(--border-visible)] hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] p-5 sm:p-7 text-left"
+                      className={`card-article ${articleRailClass} group relative flex w-full min-h-0 flex-col overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] p-6 sm:p-8 text-left`}
                     >
-                    <span className="pointer-events-none absolute inset-0 bg-transparent transition-colors duration-200 group-hover:bg-[var(--tinted-related)]" aria-hidden />
-                    <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-                      {post.category && (
-                        <span className="mt-0 mb-2 inline-flex w-fit px-3 py-1 rounded-full text-xs font-medium text-[var(--text-secondary)] border border-[var(--border-default)]">
-                          {post.category}
+                      <div className="relative z-10 flex min-h-0 flex-1 flex-col">
+                        {post.category && (
+                          <span className={`${articleLabelClass} mt-0 mb-3 inline-flex w-fit px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-[0.08em]`}>
+                            {post.category}
+                          </span>
+                        )}
+                        <h3
+                          className={`font-body font-semibold text-[var(--text-primary)] min-w-0 break-words line-clamp-2 group-hover:text-[var(--accent-primary)] transition-colors text-lg sm:text-xl ${!post.category ? "mt-0" : ""}`}
+                        >
+                          {post.title}
+                        </h3>
+                        <p className="mt-4 flex-1 text-[17px] leading-[1.7] text-[var(--text-body)] line-clamp-2">
+                          {post.excerpt}
+                        </p>
+                        <span className="mt-6 link-pill w-fit" aria-hidden>
+                          <span>Read</span>
+                          <span className="link-pill-arrow">→</span>
                         </span>
-                      )}
-                      <h3
-                        className={`text-[var(--text-primary)] min-w-0 break-words line-clamp-2 group-hover:text-[var(--accent-primary)] transition-colors ${!post.category ? "mt-0" : ""}`}
-                      >
-                        {post.title}
-                      </h3>
-                      <p className="mt-3 flex-1 text-[16px] sm:text-[17px] leading-[1.8] text-[var(--text-body)] line-clamp-2">
-                        {post.excerpt}
-                      </p>
-                      <span className="mt-4 link-pill w-fit" aria-hidden>
-                        <span>Read</span>
-                        <span className="link-pill-arrow">→</span>
-                      </span>
-                    </div>
-                  </Link>
-                </li>
-              ))}
+                      </div>
+                    </Link>
+                  </li>
+                );
+                })}
               </ul>
               <p className="mt-6 text-center">
                 <Link
@@ -329,15 +356,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 5. Philosophy */}
+        {/* 6. Philosophy */}
         <section
-          className="border-t border-subtle"
+          className="section-bg-olive border-t border-subtle section-padding"
           aria-labelledby="philosophy-heading"
         >
-          <div className="mx-auto max-w-[1100px] px-6 py-14 sm:px-8">
+          <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
             <div className="section-box">
               <header className="section-header">
               <div className="flex flex-col items-center">
+                <span className="section-kicker" aria-hidden="true">About</span>
                 <h2 id="philosophy-heading" className="text-center">
                   Our philosophy
                 </h2>
@@ -365,15 +393,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 6. Newsletter */}
+        {/* 7. Newsletter */}
         <section
-          className="border-t border-subtle"
+          className="section-bg-base border-t border-subtle section-padding"
           aria-labelledby="newsletter-heading"
         >
-          <div className="mx-auto max-w-[1100px] px-6 py-14 sm:px-8">
+          <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
             <div className="section-box max-w-2xl mx-auto text-center">
             <header className="section-header">
                 <div className="flex flex-col items-center">
+                  <span className="section-kicker" aria-hidden="true">Newsletter</span>
                   <h2 id="newsletter-heading" className="text-center">
                     Stay in touch
                   </h2>
