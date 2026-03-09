@@ -231,6 +231,364 @@
   padding-bottom: 80px;
 }
 
+/* Homepage layout: wider sections, consistent padding */
+.home-section {
+  width: 100%;
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(24px, 4vw, 48px);
+  padding-right: clamp(24px, 4vw, 48px);
+}
+.home-section-inner {
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Section header variants: left-aligned (default for editorial sections) */
+.section-header--left {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+.section-header--left .section-lead,
+.section-header--left .section-kicker {
+  margin-left: 0;
+  margin-right: auto;
+}
+.section-header--left .section-lead {
+  max-width: 52ch;
+}
+/* Centered section header — flex so heading and lead are always centered */
+.section-header--center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.section-header--center .section-kicker,
+.section-header--center h2,
+.section-header--center .section-lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-header--center .section-lead {
+  max-width: 52ch;
+}
+/* Editorial row: heading + CTA on same row (e.g. Latest articles) */
+.section-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.section-header-row h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.section-header-row--center {
+  justify-content: center;
+  text-align: center;
+}
+.home-section-inner--center .article-list {
+  max-width: 85ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.home-section-inner--center .article-list__link {
+  text-align: center;
+}
+.home-section-inner--center .article-list__arrow {
+  display: inline-flex;
+}
+/* Philosophy: narrower editorial block */
+.section-philosophy-inner {
+  max-width: 56ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Newsletter: compact CTA block */
+.section-newsletter-inner {
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========== Start here banner: split editorial layout ========== */
+/* Mobile: stacked; Desktop: 45–50% left (content), 50–55% right (guide preview) */
+.start-here-banner__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: stretch;
+}
+@media (min-width: 900px) {
+  .start-here-banner__grid {
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+}
+
+/* Left column: editorial content */
+.start-here-banner__content {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+@media (min-width: 900px) {
+  .start-here-banner__content {
+    flex: 0 1 48%;
+    max-width: 50%;
+  }
+}
+.start-here-banner__eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  font-family: var(--font-body), sans-serif;
+  margin-bottom: 0.75rem;
+}
+.start-here-banner__title {
+  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem 0;
+}
+.start-here-banner__desc {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  max-width: 42ch;
+  margin: 0 0 1.5rem 0;
+}
+.start-here-banner__actions {
+  margin-bottom: 0.5rem;
+}
+.start-here-banner__meta {
+  margin: 0;
+  opacity: 0.85;
+}
+
+/* Right column: guide preview (featured article block) */
+.start-here-banner__preview-wrap {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+@media (min-width: 900px) {
+  .start-here-banner__preview-wrap {
+    flex: 0 1 52%;
+    max-width: 55%;
+  }
+}
+.start-here-banner__preview {
+  display: block;
+  padding: 1.5rem 1.5rem 1.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.start-here-banner__preview:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border-color: var(--border-default);
+}
+.start-here-banner__preview-chip {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(85, 107, 79, 0.12);
+  border-radius: 9999px;
+  margin-bottom: 1rem;
+}
+.start-here-banner__preview-title {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.75rem 0;
+}
+.start-here-banner__preview-desc {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  margin: 0 0 1rem 0;
+  color: var(--text-body);
+}
+.start-here-banner__preview-arrow {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--accent-primary);
+}
+.start-here-banner__preview:hover .start-here-banner__preview-arrow {
+  text-decoration: underline;
+}
+
+/* Dark: preview block */
+[data-theme="dark"] .start-here-banner__preview,
+.theme-dark .start-here-banner__preview {
+  background: var(--surface);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+[data-theme="dark"] .start-here-banner__preview:hover,
+.theme-dark .start-here-banner__preview:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+[data-theme="dark"] .start-here-banner__preview-chip,
+.theme-dark .start-here-banner__preview-chip {
+  background: rgba(150, 170, 102, 0.18);
+  color: var(--accent-primary);
+}
+
+/* ========== Topic blocks: icon + text, no card ========== */
+.topic-block {
+  padding: 0;
+  background: none;
+  border: none;
+  text-align: left;
+}
+.topic-block__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+.topic-block--systems .topic-block__icon { color: var(--accent-primary); }
+.topic-block--tools .topic-block__icon,
+.topic-block--comparisons .topic-block__icon { color: var(--accent-secondary); }
+.topic-block--workflows .topic-block__icon { color: #6B7A58; }
+.topic-block__title {
+  font-family: var(--font-heading), serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin: 0 0 0.35em 0;
+}
+.topic-block__desc {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0 0 0.75rem 0;
+  max-width: 28ch;
+}
+.topic-block__link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.topic-block__link:hover {
+  color: var(--accent-hover);
+}
+
+/* What we cover: centered topic blocks */
+.topic-blocks--center .topic-block {
+  text-align: center;
+}
+.topic-blocks--center .topic-block__icon {
+  margin-left: auto;
+  margin-right: auto;
+}
+.topic-blocks--center .topic-block__desc {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========== Editorial article list: rows with dividers ========== */
+.article-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.article-list__item {
+  border-bottom: 1px solid var(--border-subtle);
+}
+.article-list__item:last-child {
+  border-bottom: none;
+}
+.article-list__link {
+  display: block;
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+.article-list__link:hover {
+  background: var(--tinted-callout);
+}
+.article-list__link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--accent-primary);
+}
+.article-list__title {
+  font-family: var(--font-heading), serif;
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
+}
+.article-list__link:hover .article-list__title {
+  color: var(--accent-primary);
+}
+.article-list__excerpt {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-body);
+  margin: 0 0 0.5rem 0;
+}
+.article-list__meta {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+.article-list__meta .article-list__category {
+  font-weight: 500;
+  color: var(--accent-primary);
+}
+.article-list__arrow {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--accent-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.article-list__link:hover .article-list__arrow {
+  color: var(--accent-hover);
+}
+
+/* ========== Philosophy manifesto: centered narrow, no card ========== */
+.manifesto-statement {
+  font-family: var(--font-heading), serif;
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0 0 1.25rem 0;
+}
+.manifesto-divider {
+  width: 3rem;
+  height: 2px;
+  background: var(--border-subtle);
+  margin: 0 auto 2rem auto;
+}
+.manifesto-divider--top {
+  margin: 0 auto 2rem auto;
+}
+
 @utility bg-surface {
   background-color: var(--surface);
 }
@@ -383,8 +741,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 280px;
-  padding: 28px 32px;
+  min-height: 300px;
+  padding: 30px 34px;
   overflow: hidden;
   border-radius: 14px;
   border: 1px solid rgba(0, 0, 0, 0.06);
@@ -411,12 +769,14 @@
 .card-category.card-rail-workflows { --card-rail: #6B7A58; background: rgba(107, 122, 88, 0.05); }
 .card-category.card-rail-highlight { --card-rail: #C67A3A; background: rgba(198, 122, 58, 0.06); }
 
-/* Homepage Start Here cards (tint from .card-rail-* ) */
+/* Homepage Start Here cards (tint from .card-rail-* ) — larger, more presence */
 .card--home {
   border-radius: 14px;
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
   transition: all 0.25s ease;
+  min-height: 240px;
+  padding: 30px 34px;
 }
 .card--home.card-rail-accent { background: rgba(85, 107, 79, 0.06); }
 .card--home.card-rail-accent-2 { background: rgba(198, 122, 58, 0.06); }
@@ -430,7 +790,7 @@
   border-radius: 14px 0 0 14px;
 }
 
-/* Homepage Latest articles cards */
+/* Homepage Latest articles cards — larger, fuller presence */
 .card-article {
   --card-rail: #556B4F;
   position: relative;
@@ -439,6 +799,8 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
   transition: all 0.25s ease;
   overflow: hidden;
+  min-height: 260px;
+  padding: 30px 34px;
 }
 .card-article::before {
   content: "";
@@ -782,6 +1144,15 @@ button {
   .section-header {
     margin-bottom: 2rem;
   }
+}
+/* Left-aligned section header (e.g. What we cover) — override base center */
+.section-header.section-header--left {
+  text-align: left;
+}
+.section-header.section-header--left h2,
+.section-header.section-header--left .section-lead {
+  margin-left: 0;
+  margin-right: auto;
 }
 
 /* Homepage: section container + stronger heading hierarchy */
