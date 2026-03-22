@@ -11,6 +11,7 @@ export { Highlight } from "./Highlight";
 
 import { SectionDiagram } from "../SectionDiagram";
 import { InsightBlock } from "../InsightBlock";
+import { NotionVisualProof } from "../NotionVisualProof";
 import { KeyIdea } from "./KeyIdea";
 import { KeyInsight } from "./KeyInsight";
 import { Principle } from "./Principle";
@@ -36,4 +37,5 @@ export const mdxBlocks = {
   SectionIntro,
   Highlight,
   SectionDiagram,
+  NotionVisualProof,
 } as const;

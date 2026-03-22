@@ -4,23 +4,6 @@ import { Footer } from "@/components/Footer";
 import { StartHere } from "@/components/StartHere";
 import { StartHereBanner } from "@/components/StartHereBanner";
 
-const startHereBanner = {
-  eyebrow: "Start here",
-  title: "Your first steps",
-  description:
-    "Build habits that stick and clear mental clutter. A short, practical guide to get started—no hype, just what works.",
-  ctaLabel: "Read the guide",
-  ctaHref: "/blog",
-  meta: "For new readers · 10 min read",
-  guidePreview: {
-    title: "First steps",
-    description:
-      "Build habits that stick and clear mental clutter with a short, practical guide to your first steps.",
-    category: "Getting started",
-    href: "/blog",
-  },
-} as const;
-
 const productivityInsightsSection = {
   label: "Curated for you",
   heading: "Productivity insights",
@@ -302,8 +285,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 2. Start here — featured banner (split layout, not a card) */}
-        <StartHereBanner {...startHereBanner} />
+        {/* 2. Start here — editorial mindmap cluster */}
+        <StartHereBanner ctaHref="/blog" />
 
         {/* 3. Productivity insights — ONLY major card grid (3 cards) */}
         <section
